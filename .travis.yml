@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "0.10"
+
+script:
+  - npm install
+
+deploy:
+  provider: npm
+  email: bolczyslaw@gmail.com
+  api_key: "Ym9sbzp6YWtsaW5hY3pla29kdTIwMTU="
+  on:
+    branch: master

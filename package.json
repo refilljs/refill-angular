@@ -1,0 +1,27 @@
+{
+  "name": "gulp-zkflow",
+  "version": "0.0.1",
+  "description": "Gulp tasks for working on angular apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaklinaczekodu/gulp-zkflow.git"
+  },
+  "keywords": [
+    "gulp",
+    "angular",
+    "tasks"
+  ],
+  "author": "Piotr Baranowski <bolczyslaw@gmail.com> (https://github.com/zaklinaczekodu)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zaklinaczekodu/gulp-zkflow/issues"
+  },
+  "homepage": "https://github.com/zaklinaczekodu/gulp-zkflow",
+  "dependencies": {
+    "gulp": "^3.8.10"
+  }
+}
