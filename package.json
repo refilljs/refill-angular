@@ -2,7 +2,7 @@
   "name": "gulp-zkflow",
   "version": "0.0.1",
   "description": "Gulp tasks for working on angular apps",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,6 +22,26 @@
   },
   "homepage": "https://github.com/zaklinaczekodu/gulp-zkflow",
   "dependencies": {
-    "gulp": "^3.8.10"
+    "browserify": "^8.1.1",
+    "browserify-ngannotate": "^0.7.1",
+    "debowerify": "^1.2.0",
+    "del": "^1.1.1",
+    "gulp-bower": "0.0.10",
+    "gulp-inject": "^1.1.1",
+    "gulp-jsbeautifier": "0.0.4",
+    "gulp-karma": "0.0.4",
+    "gulp-less": "^2.0.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-util": "^3.0.2",
+    "gulp-webserver": "^0.9.0",
+    "jasmine-core": "^2.2.0",
+    "karma": "^0.12.31",
+    "karma-browserify": "^3.0.1",
+    "karma-jasmine": "^0.3.5",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "require-dir": "^0.1.0",
+    "run-sequence": "^1.0.2",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.2.1"
   }
 }
