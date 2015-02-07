@@ -3,17 +3,21 @@
 function defaultTask(gulp) {
 
   var runSequence = require('run-sequence').use(gulp);
-  var config = require('../defaults');
+  var internalOptions = require('../internalOptions');
 
   gulp.task('default', function(done) {
 
-    config.singleRun = false;
+    internalOptions.singleRun = false;
 
     runSequence(
       'clean', [
-        'webserver-dev',
+        'inject',
+        'templates',
+        'assets',
+        'glyphiconfont',
         'test'
       ],
+      'webserver',
       done
     );
 

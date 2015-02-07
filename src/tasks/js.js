@@ -7,8 +7,10 @@ function jsTask(gulp) {
   var browserify = require('browserify');
   var gutil = require('gulp-util');
   var notify = require('gulp-notify');
+  var uglify = require('gulp-uglify');
+  var streamify = require('gulp-streamify');
 
-  var config = require('../defaults');
+  var config = require('../internalOptions');
 
   gulp.task('js', ['bower'], function() {
 
@@ -24,8 +26,13 @@ function jsTask(gulp) {
         stream = stream.on('error', notify.onError('Browserify error: <%= error.message %>'));
       }
 
+      stream = stream.pipe(source('index.js'));
+
+      if (!config.dev) {
+        stream = stream.pipe(streamify(uglify()));
+      }
+
       stream = stream
-        .pipe(source('index.js'))
         .pipe(gulp.dest((config.dev ? 'dev/' : 'dist/') + 'humanLibrary/'))
         .on('end', function() {
           gutil.log(gutil.colors.magenta('browserify'), 'finished');
@@ -42,7 +49,7 @@ function jsTask(gulp) {
       packageCache: {},
       fullPaths: true,
       entries: ['./src/humanLibrary/index.js'],
-      debug: true
+      debug: config.dev
     });
 
     bundler.transform(require('debowerify'));

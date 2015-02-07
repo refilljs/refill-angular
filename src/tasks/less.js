@@ -5,7 +5,7 @@ function lessTask(gulp) {
   var less = require('gulp-less');
   var watchLog = require('../watchLog');
 
-  var config = require('../defaults');
+  var config = require('../internalOptions');
 
   gulp.task('less', ['bower'], function() {
 

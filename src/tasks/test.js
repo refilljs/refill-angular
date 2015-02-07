@@ -4,20 +4,26 @@ function testTask(gulp) {
 
   var karma = require('gulp-karma');
 
-  var config = require('../defaults');
+  var internalOptions = require('../internalOptions');
 
-  gulp.task('test', ['bower'], function(done) {
+  gulp.task('test', ['bower'], function() {
 
     var unitTestsFile = 'src/humanLibrary/unitTests.js';
     var preprocessors = {};
+    var stream;
+
     preprocessors[unitTestsFile] = ['browserify'];
 
-    return gulp.src(unitTestsFile)
+    stream = gulp.src(unitTestsFile)
       .pipe(karma({
         configFile: 'karma.conf.js',
-        action: config.singleRun ? 'run' : 'watch',
+        action: internalOptions.singleRun ? 'run' : 'watch',
         preprocessors: preprocessors
       }));
+
+    if (internalOptions.singleRun) {
+      return stream
+    }
 
   });
 

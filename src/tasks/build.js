@@ -3,12 +3,11 @@
 function buildTask(gulp) {
 
   var runSequence = require('run-sequence').use(gulp);
-
-  var config = require('../defaults');
+  var internalOptions = require('../internalOptions');
 
   gulp.task('build', function(done) {
 
-    config.dev = false;
+    internalOptions.dev = false;
 
     runSequence(
       'clean', [

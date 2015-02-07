@@ -4,7 +4,7 @@ function ciTask(gulp) {
 
   var runSequence = require('run-sequence').use(gulp);
 
-  var config = require('../defaults');
+  var config = require('../internalOptions');
 
   gulp.task('ci', function(done) {
     config.jsbeautifierVerifyOnly = true;

@@ -4,7 +4,7 @@ function templatesTask(gulp) {
 
   var watchLog = require('../watchLog');
 
-  var config = require('../defaults');
+  var config = require('../internalOptions');
 
   gulp.task('templates', function() {
 
