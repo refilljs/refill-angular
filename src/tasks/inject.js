@@ -5,7 +5,7 @@ function injectTask(gulp) {
   var inject = require('gulp-inject');
   var watchLog = require('../watchLog');
 
-  var config = require('../defaults');
+  var config = require('../internalOptions');
 
   gulp.task('inject', ['js', 'less'], function() {
 

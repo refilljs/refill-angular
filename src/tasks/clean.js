@@ -4,7 +4,7 @@ function cleanTask(gulp) {
 
   var del = require('del');
 
-  var config = require('../defaults');
+  var config = require('../internalOptions');
 
   gulp.task('clean', function(done) {
 

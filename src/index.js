@@ -1,20 +1,23 @@
 'use strict';
 
-function gulpZkflow(gulp) {
-  require('./tasks/assets')(gulp);
-  require('./tasks/beautify')(gulp);
-  require('./tasks/bower')(gulp);
-  require('./tasks/build')(gulp);
-  require('./tasks/ci')(gulp);
-  require('./tasks/clean')(gulp);
-  require('./tasks/default')(gulp);
-  require('./tasks/inject')(gulp);
-  require('./tasks/js')(gulp);
-  require('./tasks/less')(gulp);
-  require('./tasks/templates')(gulp);
-  require('./tasks/test')(gulp);
-  require('./tasks/webserver-dev')(gulp);
-  require('./tasks/webserver-dist')(gulp);
+function gulpZkflow(gulp, options) {
+  
+  options = {};
+  
+  require('./tasks/assets')(gulp, options);
+  require('./tasks/beautify')(gulp, options);
+  require('./tasks/bower')(gulp, options);
+  require('./tasks/build')(gulp, options);
+  require('./tasks/ci')(gulp, options);
+  require('./tasks/clean')(gulp, options);
+  require('./tasks/default')(gulp, options);
+  require('./tasks/inject')(gulp, options);
+  require('./tasks/js')(gulp, options);
+  require('./tasks/less')(gulp, options);
+  require('./tasks/templates')(gulp, options);
+  require('./tasks/test')(gulp, options);
+  require('./tasks/webserver')(gulp, options);
+
 }
 
 gulpZkflow.bind(null, require('gulp'));

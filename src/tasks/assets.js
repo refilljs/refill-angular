@@ -2,7 +2,7 @@
 
 function assetsTask(gulp) {
 
-  var config = require('../defaults');
+  var config = require('../internalOptions');
 
   gulp.task('assets', function() {
 

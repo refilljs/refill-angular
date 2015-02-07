@@ -4,7 +4,7 @@ function beautifyTask(gulp) {
 
   var jsbeautifier = require('gulp-jsbeautifier');
 
-  var config = require('../defaults');
+  var config = require('../internalOptions');
 
   gulp.task('jsbeautifier', function() {
 
