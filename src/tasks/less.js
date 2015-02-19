@@ -3,7 +3,9 @@
 function lessTask(gulp) {
 
   var less = require('gulp-less');
+  var notify = require('gulp-notify');
   var watchLog = require('../watchLog');
+  var errorLog = require('../errorLog');
 
   var config = require('../internalOptions');
 
@@ -15,6 +17,7 @@ function lessTask(gulp) {
       return gulp
         .src('src/humanLibrary/index.less')
         .pipe(less())
+        .on('error', errorLog('Less'))
         .pipe(gulp.dest(baseDir + 'humanLibrary/'));
     }
 
