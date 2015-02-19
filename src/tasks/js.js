@@ -6,9 +6,9 @@ function jsTask(gulp) {
   var watchify = require('watchify');
   var browserify = require('browserify');
   var gutil = require('gulp-util');
-  var notify = require('gulp-notify');
   var uglify = require('gulp-uglify');
   var streamify = require('gulp-streamify');
+  var errorLog = require('../errorLog');
 
   var config = require('../internalOptions');
 
@@ -23,7 +23,7 @@ function jsTask(gulp) {
       stream = bundler.bundle();
 
       if (config.dev) {
-        stream = stream.on('error', notify.onError('Browserify error: <%= error.message %>'));
+        stream = stream.on('error', errorLog('Browserify'));
       }
 
       stream = stream.pipe(source('index.js'));
