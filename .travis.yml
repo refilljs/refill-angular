@@ -8,6 +8,6 @@ script:
 deploy:
   provider: npm
   email: bolczyslaw@gmail.com
-  api_key: "Ym9sbzp6YWtsaW5hY3pla29kdTIwMTU="
+  api_key: $npmApiKey
   on:
     branch: master
