@@ -22,7 +22,8 @@ function injectTask(gulp) {
           ], {
             read: false
           }), {
-            ignorePath: '/' + baseDir
+            addRootSlash: false,
+            ignorePath: baseDir
           }
         ))
         .pipe(gulp.dest(baseDir + '/'));
