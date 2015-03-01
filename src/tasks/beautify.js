@@ -6,7 +6,7 @@ function beautifyTask(gulp) {
 
   var config = require('../internalOptions');
 
-  gulp.task('jsbeautifier', function() {
+  gulp.task('beautify', function() {
 
     var jsbeautifyConfig = './.jsbeautifyrc';
     var stream;
@@ -17,8 +17,7 @@ function beautifyTask(gulp) {
         'src/**/*.html',
         'gulp/**/*.js',
         'gulpfile.js',
-        'karma.conf.js',
-        '!src/assets/vendor/bower_components/**'
+        'karma.conf.js'
       ], {
         base: './'
       });
