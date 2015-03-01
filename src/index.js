@@ -13,7 +13,7 @@ function gulpZkflow(gulp, options) {
   require('./tasks/default')(gulp, options);
   require('./tasks/inject')(gulp, options);
   require('./tasks/js')(gulp, options);
-  require('./tasks/less')(gulp, options);
+  require('./tasks/css')(gulp, options);
   require('./tasks/templates')(gulp, options);
   require('./tasks/test')(gulp, options);
   require('./tasks/webserver')(gulp, options);

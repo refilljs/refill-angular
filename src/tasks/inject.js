@@ -7,7 +7,7 @@ function injectTask(gulp) {
 
   var config = require('../internalOptions');
 
-  gulp.task('inject', ['js', 'less'], function() {
+  gulp.task('inject', ['js', 'css'], function() {
 
     var baseDir = config.dev ? 'dev' : 'dist';
     var indexPath = 'src/humanLibrary/index.html';
@@ -30,9 +30,7 @@ function injectTask(gulp) {
     }
 
     if (config.dev) {
-      gulp
-        .watch(indexPath, humanLibraryInject)
-        .on('change', watchLog('inject'));
+      watchLog('inject', gulp, indexPath, humanLibraryInject);
     }
 
     return humanLibraryInject();

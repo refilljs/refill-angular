@@ -18,9 +18,7 @@ function templatesTask(gulp) {
     }
 
     if (config.dev) {
-      gulp
-        .watch(templatesGlob, humanLibraryTemplates)
-        .on('change', watchLog('templates'))
+      watchLog('templates', gulp, templatesGlob, humanLibraryTemplates);
     }
 
     return humanLibraryTemplates();
