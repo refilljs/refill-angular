@@ -8,6 +8,7 @@ function jsTask(gulp) {
   var gutil = require('gulp-util');
   var uglify = require('gulp-uglify');
   var streamify = require('gulp-streamify');
+  var rev = require('gulp-rev');
   var errorLog = require('../errorLog');
 
   var config = require('../internalOptions');
@@ -29,7 +30,9 @@ function jsTask(gulp) {
       stream = stream.pipe(source('index.js'));
 
       if (!config.dev) {
-        stream = stream.pipe(streamify(uglify()));
+        stream = stream
+          .pipe(streamify(uglify()))
+          .pipe(streamify(rev()));
       }
 
       stream = stream
@@ -58,7 +61,7 @@ function jsTask(gulp) {
     if (config.dev) {
       bundler = watchify(bundler);
       bundler.on('update', function(changedFiles) {
-        gutil.log(gutil.colors.magenta('watchify'), 'detected files', changedFiles, 'have changed, starting...');
+        gutil.log('Starting', gutil.colors.cyan('browserify'), 'file', event.path, 'changed');
       });
       bundler.on('update', rebundle);
     }

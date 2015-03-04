@@ -17,8 +17,8 @@ function injectTask(gulp) {
         .src(indexPath)
         .pipe(inject(
           gulp.src([
-            baseDir + '/humanLibrary/index.js',
-            baseDir + '/humanLibrary/index.css'
+            baseDir + '/humanLibrary/index*.js',
+            baseDir + '/humanLibrary/index*.css'
           ], {
             read: false
           }), {
