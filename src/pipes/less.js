@@ -2,6 +2,8 @@
 
 var less = require('gulp-less');
 var csso = require('gulp-csso');
+var streamify = require('gulp-streamify');
+var rev = require('gulp-rev');
 var errorLog = require('../errorLog');
 
 function lessBasePipe(gulp) {
@@ -20,7 +22,8 @@ function lessDistPipe(gulp) {
     .on('error', function() {
       process.exit(1);
     })
-    .pipe(csso());
+    .pipe(csso())
+    .pipe(streamify(rev()));
 }
 
 module.exports = {
