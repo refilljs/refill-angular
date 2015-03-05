@@ -1,6 +1,6 @@
 {
   "name": "gulp-zkflow",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Gulp tasks for working on angular apps",
   "main": "src/index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "debowerify": "^1.2.0",
     "del": "^1.1.1",
     "gulp-bower": "0.0.10",
+    "gulp-csso": "^1.0.0",
     "gulp-inject": "^1.1.1",
     "gulp-jsbeautifier": "0.0.4",
     "gulp-karma": "0.0.4",
