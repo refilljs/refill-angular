@@ -10,7 +10,7 @@ function ciTask(gulp) {
     config.jsbeautifierVerifyOnly = true;
     runSequence(
       [
-        'jsbeautifier',
+        'beautify',
         'build',
         'test'
       ],

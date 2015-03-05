@@ -9,7 +9,7 @@ function templatesTask(gulp) {
   gulp.task('templates', function() {
 
     var baseDir = config.dev ? 'dev/' : 'dist/';
-    var templatesGlob = ['src/**/*.html', '!src/humanLibrary/index.html'];
+    var templatesGlob = ['src/**/*.html', '!src/index.html'];
 
     function humanLibraryTemplates() {
       return gulp
@@ -18,9 +18,7 @@ function templatesTask(gulp) {
     }
 
     if (config.dev) {
-      gulp
-        .watch(templatesGlob, humanLibraryTemplates)
-        .on('change', watchLog('templates'))
+      watchLog('templates', gulp, templatesGlob, humanLibraryTemplates);
     }
 
     return humanLibraryTemplates();

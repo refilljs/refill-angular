@@ -7,18 +7,18 @@ function injectTask(gulp) {
 
   var config = require('../internalOptions');
 
-  gulp.task('inject', ['js', 'less'], function() {
+  gulp.task('inject', ['js', 'css'], function() {
 
     var baseDir = config.dev ? 'dev' : 'dist';
-    var indexPath = 'src/humanLibrary/index.html';
+    var indexPath = 'src/index.html';
 
     function humanLibraryInject() {
       return gulp
         .src(indexPath)
         .pipe(inject(
           gulp.src([
-            baseDir + '/humanLibrary/index.js',
-            baseDir + '/humanLibrary/index.css'
+            baseDir + '/index*.js',
+            baseDir + '/index*.css'
           ], {
             read: false
           }), {
@@ -30,9 +30,7 @@ function injectTask(gulp) {
     }
 
     if (config.dev) {
-      gulp
-        .watch(indexPath, humanLibraryInject)
-        .on('change', watchLog('inject'));
+      watchLog('inject', gulp, indexPath, humanLibraryInject);
     }
 
     return humanLibraryInject();
