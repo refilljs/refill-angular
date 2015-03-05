@@ -8,7 +8,7 @@ function testTask(gulp) {
 
   gulp.task('test', ['bower'], function() {
 
-    var unitTestsFile = 'src/humanLibrary/unitTests.js';
+    var unitTestsFile = 'src/unitTests.js';
     var preprocessors = {};
     var stream;
 

@@ -10,12 +10,11 @@ function assetsTask(gulp) {
 
     return gulp
       .src([
-        'src/assets/fonts/**',
-        'src/assets/pictures/**'
+        'src/**/_assets/**'
       ], {
         base: 'src/'
       })
-      .pipe(gulp.dest(baseDir + 'humanLibrary/'));
+      .pipe(gulp.dest(baseDir));
 
   });
 
@@ -25,7 +24,7 @@ function assetsTask(gulp) {
 
     return gulp
       .src('bower_components/bootstrap/fonts/**')
-      .pipe(gulp.dest(baseDir + 'fonts/'));
+      .pipe(gulp.dest(baseDir + '_assets/bootstrap/fonts/'));
 
   });
 

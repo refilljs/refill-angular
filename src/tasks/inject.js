@@ -10,15 +10,15 @@ function injectTask(gulp) {
   gulp.task('inject', ['js', 'css'], function() {
 
     var baseDir = config.dev ? 'dev' : 'dist';
-    var indexPath = 'src/humanLibrary/index.html';
+    var indexPath = 'src/index.html';
 
     function humanLibraryInject() {
       return gulp
         .src(indexPath)
         .pipe(inject(
           gulp.src([
-            baseDir + '/humanLibrary/index*.js',
-            baseDir + '/humanLibrary/index*.css'
+            baseDir + '/index*.js',
+            baseDir + '/index*.css'
           ], {
             read: false
           }), {

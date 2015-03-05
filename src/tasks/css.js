@@ -15,7 +15,7 @@ function cssTask(gulp) {
 
     function cssPipe() {
       return lessPipe(gulp, done)
-        .pipe(gulp.dest(baseDir + 'humanLibrary/'))
+        .pipe(gulp.dest(baseDir))
         .on('end', function() {
           if (done) {
             return;

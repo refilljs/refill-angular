@@ -8,7 +8,7 @@ var errorLog = require('../errorLog');
 
 function lessBasePipe(gulp) {
   return gulp
-    .src('src/humanLibrary/index.less')
+    .src('src/index.less')
     .pipe(less())
     .on('error', errorLog('Less'))
 }

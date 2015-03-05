@@ -36,7 +36,7 @@ function jsTask(gulp) {
       }
 
       stream = stream
-        .pipe(gulp.dest((config.dev ? 'dev/' : 'dist/') + 'humanLibrary/'))
+        .pipe(gulp.dest(config.dev ? 'dev/' : 'dist/'))
         .on('end', function() {
           gutil.log(gutil.colors.magenta('browserify'), 'finished');
         });
@@ -51,7 +51,7 @@ function jsTask(gulp) {
       cache: {},
       packageCache: {},
       fullPaths: true,
-      entries: ['./src/humanLibrary/index.js'],
+      entries: ['./src/index.js'],
       debug: config.dev
     });
 
