@@ -61,7 +61,7 @@ function jsTask(gulp) {
     if (config.dev) {
       bundler = watchify(bundler);
       bundler.on('update', function(changedFiles) {
-        gutil.log('Starting', gutil.colors.cyan('browserify'), 'file', event.path, 'changed');
+        gutil.log('Starting', gutil.colors.cyan('browserify'), 'file', changedFiles, 'changed');
       });
       bundler.on('update', rebundle);
     }
