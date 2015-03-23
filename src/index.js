@@ -1,8 +1,18 @@
 'use strict';
 
-function gulpZkflow(gulp, options) {
+function getGulp(externalGulp) {
 
-  options = {};
+  if (typeof externalGulp === 'undefined') {
+    return require('gulp');
+  }
+
+  return externalGulp;
+
+}
+
+function gulpZkflow(options, externalGulp) {
+
+  var gulp = getGulp(externalGulp);
 
   require('./tasks/assets')(gulp, options);
   require('./tasks/beautify')(gulp, options);
@@ -19,11 +29,5 @@ function gulpZkflow(gulp, options) {
   require('./tasks/webserver')(gulp, options);
 
 }
-
-gulpZkflow.bind(null, require('gulp'));
-
-gulpZkflow.use = function(gulp) {
-  return gulpZkflow.bind(null, gulp);
-};
 
 module.exports = gulpZkflow;
