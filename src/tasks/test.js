@@ -22,7 +22,7 @@ function testTask(gulp) {
       }));
 
     if (internalOptions.singleRun) {
-      return stream
+      return stream;
     }
 
   });

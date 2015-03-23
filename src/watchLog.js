@@ -12,5 +12,5 @@ module.exports = function(name, gulp, glob, pipe) {
     })
     .on('change', function(event) {
       gutil.log('Starting', gutil.colors.cyan(name), 'file', event.path, 'changed');
-    })
+    });
 };

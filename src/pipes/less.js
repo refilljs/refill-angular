@@ -10,7 +10,7 @@ function lessBasePipe(gulp) {
   return gulp
     .src('src/index.less')
     .pipe(less())
-    .on('error', errorLog('Less'))
+    .on('error', errorLog('Less'));
 }
 
 function lessDevPipe(gulp) {

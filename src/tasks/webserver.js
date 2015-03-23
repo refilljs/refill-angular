@@ -15,6 +15,6 @@ function taskWebserver(gulp) {
       }));
   });
 
-};
+}
 
 module.exports = taskWebserver;

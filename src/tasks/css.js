@@ -4,7 +4,6 @@ function cssTask(gulp) {
 
   gulp.task('css', ['bower'], function(doneCallback) {
 
-    var less = require('gulp-less');
     var lessPipe = require('../pipes/less');
     var watchLog = require('../watchLog');
     var config = require('../internalOptions');
