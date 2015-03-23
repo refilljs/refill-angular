@@ -10,7 +10,7 @@ function getGulp(externalGulp) {
 
 }
 
-function gulpZkflow(options, externalGulp) {
+function gulpZkflowAngular(options, externalGulp) {
 
   var gulp = getGulp(externalGulp);
 
@@ -30,4 +30,4 @@ function gulpZkflow(options, externalGulp) {
 
 }
 
-module.exports = gulpZkflow;
+module.exports = gulpZkflowAngular;

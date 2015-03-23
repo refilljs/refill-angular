@@ -1,6 +1,6 @@
 {
-  "name": "gulp-zkflow",
-  "version": "0.0.8",
+  "name": "gulp-zkflow-angular",
+  "version": "0.1.0",
   "description": "Gulp tasks for working on angular apps",
   "main": "src/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zaklinaczekodu/gulp-zkflow.git"
+    "url": "https://github.com/zaklinaczekodu/gulp-zkflow-angular.git"
   },
   "keywords": [
     "gulp",
@@ -18,9 +18,9 @@
   "author": "Piotr Baranowski <bolczyslaw@gmail.com> (https://github.com/zaklinaczekodu)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zaklinaczekodu/gulp-zkflow/issues"
+    "url": "https://github.com/zaklinaczekodu/gulp-zkflow-angular/issues"
   },
-  "homepage": "https://github.com/zaklinaczekodu/gulp-zkflow",
+  "homepage": "https://github.com/zaklinaczekodu/gulp-zkflow-angular",
   "dependencies": {
     "browserify": "^8.1.1",
     "browserify-ngannotate": "^0.7.1",
