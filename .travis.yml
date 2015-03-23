@@ -4,6 +4,7 @@ node_js:
 
 script:
   - npm install
+  - ./node_modules/.bin/gulp ci
 
 deploy:
   provider: npm
