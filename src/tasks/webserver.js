@@ -1,12 +1,12 @@
 'use strict';
 
-function taskWebserver(gulp) {
+function taskWebserver(options, gulp) {
 
   var webserver = require('gulp-webserver');
 
   var internalOptions = require('../internalOptions');
 
-  gulp.task('webserver', function() {
+  gulp.task('webserver', options.dependencies, function() {
     gulp.src(internalOptions.dev ? 'dev/' : 'dist/')
       .pipe(webserver({
         livereload: internalOptions.dev,

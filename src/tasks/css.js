@@ -1,8 +1,8 @@
 'use strict';
 
-function cssTask(gulp) {
+function cssTask(options, gulp) {
 
-  gulp.task('css', ['bower'], function(doneCallback) {
+  gulp.task('css', options.dependencies, function(doneCallback) {
 
     var lessPipe = require('../pipes/less');
     var watchLog = require('../watchLog');

@@ -1,10 +1,10 @@
 'use strict';
 
-function assetsTask(gulp) {
+function assetsTask(options, gulp) {
 
   var config = require('../internalOptions');
 
-  gulp.task('assets', function() {
+  gulp.task('assets', options.dependencies, function() {
 
     var baseDir = config.dev ? 'dev/' : 'dist/';
 
@@ -15,16 +15,6 @@ function assetsTask(gulp) {
         base: 'src/'
       })
       .pipe(gulp.dest(baseDir));
-
-  });
-
-  gulp.task('glyphiconfont', ['bower'], function() {
-
-    var baseDir = config.dev ? 'dev/' : 'dist/';
-
-    return gulp
-      .src('bower_components/bootstrap/fonts/**')
-      .pipe(gulp.dest(baseDir + '_assets/bootstrap/fonts/'));
 
   });
 

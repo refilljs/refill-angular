@@ -1,12 +1,12 @@
 'use strict';
 
-function testTask(gulp) {
+function testTask(options, gulp) {
 
   var karma = require('gulp-karma');
 
   var internalOptions = require('../internalOptions');
 
-  gulp.task('test', ['bower'], function() {
+  gulp.task('test', options.dependencies, function() {
 
     var unitTestsFile = 'src/unitTests.js';
     var preprocessors = {};

@@ -1,5 +1,12 @@
 'use strict';
 
+var _ = require('lodash');
+
+/**
+ * get gulp object from external source if available or from require
+ * @param externalGulp
+ * @return {*} - gulp object
+ */
 function getGulp(externalGulp) {
 
   if (typeof externalGulp === 'undefined') {
@@ -10,23 +17,48 @@ function getGulp(externalGulp) {
 
 }
 
+/**
+ * Load task from list if task is enabled
+ * @param tasksNames
+ * @param options
+ * @param gulp
+ */
+function loadTasks(tasksNames, options, gulp) {
+
+  var defaultOptions = require('./defaultOptions');
+
+  options = options || {};
+
+  tasksNames.forEach(function(taskName) {
+
+    var taskOptions = options[taskName];
+    var taskDefaultOptions = defaultOptions[taskName];
+    var compiledOptions = _.defaults(taskOptions || {}, taskDefaultOptions);
+
+    if (!taskOptions.enabled) {
+      return;
+    }
+
+    require('./tasks/' + taskName)(compiledOptions, gulp);
+
+  });
+
+}
+
+/**
+ * Set zkflow angular tasks
+ * @param options
+ * @param externalGulp
+ */
 function gulpZkflowAngular(options, externalGulp) {
 
   var gulp = getGulp(externalGulp);
 
-  require('./tasks/assets')(gulp, options);
-  require('./tasks/beautify')(gulp, options);
-  require('./tasks/bower')(gulp, options);
-  require('./tasks/build')(gulp, options);
-  require('./tasks/ci')(gulp, options);
-  require('./tasks/clean')(gulp, options);
-  require('./tasks/default')(gulp, options);
-  require('./tasks/inject')(gulp, options);
-  require('./tasks/js')(gulp, options);
-  require('./tasks/css')(gulp, options);
-  require('./tasks/templates')(gulp, options);
-  require('./tasks/test')(gulp, options);
-  require('./tasks/webserver')(gulp, options);
+  loadTasks(
+    ['assets', 'beautify', 'bower', 'build', 'ci', 'clean', 'css', 'default', 'inject', 'js', 'templates', 'test', 'webserver'],
+    options,
+    gulp
+  );
 
 }
 

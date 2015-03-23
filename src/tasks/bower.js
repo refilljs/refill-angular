@@ -1,10 +1,10 @@
 'use strict';
 
-function bowerTask(gulp) {
+function bowerTask(options, gulp) {
 
   var bower = require('gulp-bower');
 
-  gulp.task('bower', function() {
+  gulp.task('bower', options.dependencies, function() {
     return bower();
   });
 

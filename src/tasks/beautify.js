@@ -1,12 +1,12 @@
 'use strict';
 
-function beautifyTask(gulp) {
+function beautifyTask(options, gulp) {
 
   var jsbeautifier = require('gulp-jsbeautifier');
 
   var config = require('../internalOptions');
 
-  gulp.task('beautify', function() {
+  gulp.task('beautify', options.dependencies, function() {
 
     var jsbeautifyConfig = './.jsbeautifyrc';
     var stream;

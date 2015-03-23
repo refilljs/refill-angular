@@ -1,13 +1,13 @@
 'use strict';
 
-function injectTask(gulp) {
+function injectTask(options, gulp) {
 
   var inject = require('gulp-inject');
   var watchLog = require('../watchLog');
 
   var config = require('../internalOptions');
 
-  gulp.task('inject', ['js', 'css'], function() {
+  gulp.task('inject', options.dependencies, function() {
 
     var baseDir = config.dev ? 'dev' : 'dist';
     var indexPath = 'src/index.html';

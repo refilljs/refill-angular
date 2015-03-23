@@ -1,6 +1,6 @@
 'use strict';
 
-function jsTask(gulp) {
+function jsTask(options, gulp) {
 
   var source = require('vinyl-source-stream');
   var watchify = require('watchify');
@@ -13,7 +13,7 @@ function jsTask(gulp) {
 
   var config = require('../internalOptions');
 
-  gulp.task('js', ['bower'], function() {
+  gulp.task('js', options.dependencies, function() {
 
     var bundler;
 
