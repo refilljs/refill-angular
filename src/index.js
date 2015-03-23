@@ -1,9 +1,9 @@
 'use strict';
 
 function gulpZkflow(gulp, options) {
-  
+
   options = {};
-  
+
   require('./tasks/assets')(gulp, options);
   require('./tasks/beautify')(gulp, options);
   require('./tasks/bower')(gulp, options);
