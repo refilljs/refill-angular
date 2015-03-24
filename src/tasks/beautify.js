@@ -1,10 +1,8 @@
 'use strict';
 
-function beautifyTask(options, gulp) {
+function beautifyTask(options, gulp, mode) {
 
   var jsbeautifier = require('gulp-jsbeautifier');
-
-  var config = require('../internalOptions');
 
   gulp.task('beautify', options.dependencies, function() {
 
@@ -22,7 +20,7 @@ function beautifyTask(options, gulp) {
         base: './'
       });
 
-    if (config.jsbeautifierVerifyOnly) {
+    if (mode.jsbeautifierVerifyOnly) {
       return stream.pipe(jsbeautifier({
         mode: 'VERIFY_ONLY',
         config: jsbeautifyConfig

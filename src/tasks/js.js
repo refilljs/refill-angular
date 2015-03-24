@@ -1,6 +1,6 @@
 'use strict';
 
-function jsTask(options, gulp) {
+function jsTask(options, gulp, mode) {
 
   var source = require('vinyl-source-stream');
   var watchify = require('watchify');
@@ -10,8 +10,6 @@ function jsTask(options, gulp) {
   var streamify = require('gulp-streamify');
   var rev = require('gulp-rev');
   var errorLog = require('../errorLog');
-
-  var config = require('../internalOptions');
 
   gulp.task('js', options.dependencies, function() {
 
@@ -23,20 +21,20 @@ function jsTask(options, gulp) {
 
       stream = bundler.bundle();
 
-      if (config.dev) {
+      if (mode.dev) {
         stream = stream.on('error', errorLog('Browserify'));
       }
 
       stream = stream.pipe(source('index.js'));
 
-      if (!config.dev) {
+      if (!mode.dev) {
         stream = stream
           .pipe(streamify(uglify()))
           .pipe(streamify(rev()));
       }
 
       stream = stream
-        .pipe(gulp.dest(config.dev ? 'dev/' : 'dist/'))
+        .pipe(gulp.dest(mode.dev ? 'dev/' : 'dist/'))
         .on('end', function() {
           gutil.log(gutil.colors.magenta('browserify'), 'finished');
         });
@@ -52,13 +50,13 @@ function jsTask(options, gulp) {
       packageCache: {},
       fullPaths: true,
       entries: ['./src/index.js'],
-      debug: config.dev
+      debug: mode.dev
     });
 
     bundler.transform(require('debowerify'));
     bundler.transform(require('browserify-ngannotate'));
 
-    if (config.dev) {
+    if (mode.dev) {
       bundler = watchify(bundler);
       bundler.on('update', function(changedFiles) {
         gutil.log('Starting', gutil.colors.cyan('browserify'), 'file', changedFiles, 'changed');

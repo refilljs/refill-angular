@@ -1,16 +1,12 @@
 'use strict';
 
-function defaultTask(options, gulp) {
+function defaultTask(options, gulp, mode) {
 
-  var runSequence = require('run-sequence').use(gulp);
-  var internalOptions = require('../internalOptions');
 
   gulp.task('default', options.dependencies, function(done) {
-
-    internalOptions.singleRun = false;
-
+    var runSequence = require('run-sequence').use(gulp);
+    mode.singleRun = false;
     runSequence.apply(this, options.sequence.concat([done]));
-
   });
 
 }

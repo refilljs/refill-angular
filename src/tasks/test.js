@@ -1,10 +1,8 @@
 'use strict';
 
-function testTask(options, gulp) {
+function testTask(options, gulp, mode) {
 
   var karma = require('gulp-karma');
-
-  var internalOptions = require('../internalOptions');
 
   gulp.task('test', options.dependencies, function() {
 
@@ -17,11 +15,11 @@ function testTask(options, gulp) {
     stream = gulp.src(unitTestsFile)
       .pipe(karma({
         configFile: 'karma.conf.js',
-        action: internalOptions.singleRun ? 'run' : 'watch',
+        action: mode.singleRun ? 'run' : 'watch',
         preprocessors: preprocessors
       }));
 
-    if (internalOptions.singleRun) {
+    if (mode.singleRun) {
       return stream;
     }
 

@@ -1,16 +1,12 @@
 'use strict';
 
-function buildTask(options, gulp) {
+function buildTask(options, gulp, mode) {
 
-  var runSequence = require('run-sequence').use(gulp);
-  var internalOptions = require('../internalOptions');
 
   gulp.task('build', options.dependencies, function(done) {
-
-    internalOptions.dev = false;
-
+    var runSequence = require('run-sequence').use(gulp);
+    mode.dev = false;
     runSequence.apply(this, options.sequence.concat([done]));
-
   });
 
 }

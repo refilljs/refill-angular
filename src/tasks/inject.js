@@ -1,15 +1,13 @@
 'use strict';
 
-function injectTask(options, gulp) {
+function injectTask(options, gulp, mode) {
 
   var inject = require('gulp-inject');
   var watchLog = require('../watchLog');
 
-  var config = require('../internalOptions');
-
   gulp.task('inject', options.dependencies, function() {
 
-    var baseDir = config.dev ? 'dev' : 'dist';
+    var baseDir = mode.dev ? 'dev' : 'dist';
     var indexPath = 'src/index.html';
 
     function humanLibraryInject() {
@@ -29,7 +27,7 @@ function injectTask(options, gulp) {
         .pipe(gulp.dest(baseDir + '/'));
     }
 
-    if (config.dev) {
+    if (mode.dev) {
       watchLog('inject', gulp, indexPath, humanLibraryInject);
     }
 

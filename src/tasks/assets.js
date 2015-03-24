@@ -1,12 +1,10 @@
 'use strict';
 
-function assetsTask(options, gulp) {
-
-  var config = require('../internalOptions');
+function assetsTask(options, gulp, mode) {
 
   gulp.task('assets', options.dependencies, function() {
 
-    var baseDir = config.dev ? 'dev/' : 'dist/';
+    var baseDir = mode.dev ? 'dev/' : 'dist/';
 
     return gulp
       .src([

@@ -1,14 +1,12 @@
 'use strict';
 
-function templatesTask(options, gulp) {
+function templatesTask(options, gulp, mode) {
 
   var watchLog = require('../watchLog');
 
-  var config = require('../internalOptions');
-
   gulp.task('templates', options.dependencies, function() {
 
-    var baseDir = config.dev ? 'dev/' : 'dist/';
+    var baseDir = mode.dev ? 'dev/' : 'dist/';
     var templatesGlob = ['src/**/*.html', '!src/index.html'];
 
     function templates() {
@@ -17,7 +15,7 @@ function templatesTask(options, gulp) {
         .pipe(gulp.dest(baseDir));
     }
 
-    if (config.dev) {
+    if (mode.dev) {
       watchLog('templates', gulp, templatesGlob, templates);
     }
 

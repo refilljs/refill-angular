@@ -23,7 +23,7 @@ function getGulp(externalGulp) {
  * @param options
  * @param gulp
  */
-function loadTasks(tasksNames, options, gulp) {
+function loadTasks(tasksNames, mode, options, gulp) {
 
   var defaultOptions = require('./defaultOptions');
 
@@ -39,7 +39,7 @@ function loadTasks(tasksNames, options, gulp) {
       return;
     }
 
-    require('./tasks/' + taskName)(compiledOptions, gulp);
+    require('./tasks/' + taskName)(compiledOptions, gulp, mode);
 
   });
 
@@ -53,9 +53,15 @@ function loadTasks(tasksNames, options, gulp) {
 function gulpZkflowAngular(options, externalGulp) {
 
   var gulp = getGulp(externalGulp);
+  var mode = {
+    jsbeautifierVerifyOnly: false,
+    dev: true,
+    singleRun: true
+  };
 
   loadTasks(
     ['assets', 'beautify', 'bower', 'build', 'ci', 'clean', 'css', 'default', 'inject', 'js', 'templates', 'test', 'webserver'],
+    mode,
     options,
     gulp
   );

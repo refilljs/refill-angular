@@ -1,14 +1,12 @@
 'use strict';
 
-function cleanTask(options, gulp) {
+function cleanTask(options, gulp, mode) {
 
   var del = require('del');
 
-  var config = require('../internalOptions');
-
   gulp.task('clean', options.dependencies, function(done) {
 
-    var baseDir = config.dev ? 'dev/**' : 'dist/**';
+    var baseDir = mode.dev ? 'dev/**' : 'dist/**';
 
     del(baseDir, done);
 
