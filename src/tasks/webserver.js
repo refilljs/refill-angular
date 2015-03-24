@@ -9,7 +9,8 @@ function taskWebserver(options, gulp, mode) {
       .pipe(webserver({
         livereload: mode.dev,
         directoryListing: false,
-        open: true
+        open: true,
+        fallback: 'index.html'
       }));
   });
 

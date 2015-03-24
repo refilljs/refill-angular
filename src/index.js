@@ -35,7 +35,7 @@ function loadTasks(tasksNames, mode, options, gulp) {
     var taskDefaultOptions = defaultOptions[taskName];
     var compiledOptions = _.defaults(taskOptions || {}, taskDefaultOptions);
 
-    if (!taskOptions.enabled) {
+    if (!compiledOptions.enabled) {
       return;
     }
 
