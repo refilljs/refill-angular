@@ -27,7 +27,8 @@ module.exports = {
       [
         'beautify',
         'build',
-        'test'
+        'test',
+        'jshint'
       ]
     ]
   },
@@ -45,7 +46,7 @@ module.exports = {
         'inject',
         'templates',
         'assets',
-        'glyphiconfont',
+        'jshint',
         'test'
       ],
       'webserver'
@@ -58,6 +59,15 @@ module.exports = {
   js: {
     enabled: true,
     dependencies: ['bower']
+  },
+  jshint: {
+    enabled: true,
+    globs: [
+      'gulpfile.js',
+      'gulp/**/*.js',
+      'src/**/*.js',
+      'karma.conf.js'
+    ]
   },
   templates: {
     enabled: true
