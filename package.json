@@ -29,7 +29,7 @@
     "gulp-bower": "0.0.10",
     "gulp-csso": "^1.0.0",
     "gulp-inject": "^1.1.1",
-    "gulp-jsbeautifier": "0.0.8",
+    "gulp-jsbeautifier": "0.0.3",
     "gulp-jshint": "^1.9.4",
     "gulp-karma": "0.0.4",
     "gulp-less": "^2.0.1",
