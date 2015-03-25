@@ -5,7 +5,14 @@ module.exports = {
     enabled: true
   },
   beautify: {
-    enabled: true
+    enabled: true,
+    globs: [
+      'src/**/*.js',
+      'src/**/*.html',
+      'gulp/**/*.js',
+      'gulpfile.js',
+      'karma.conf.js'
+    ]
   },
   bower: {
     enabled: true
@@ -16,8 +23,7 @@ module.exports = {
       'clean', [
         'inject',
         'templates',
-        'assets',
-        'glyphiconfont'
+        'assets'
       ]
     ]
   },

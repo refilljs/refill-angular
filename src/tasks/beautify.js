@@ -2,37 +2,37 @@
 
 function beautifyTask(options, gulp, mode) {
 
-  var jsbeautifier = require('gulp-jsbeautifier');
-
   gulp.task('beautify', options.dependencies, function() {
 
-    var jsbeautifyConfig = './.jsbeautifyrc';
+    var jsbeautifier = require('gulp-jsbeautifier');
     var stream;
 
     stream = gulp
-      .src([
-        'src/**/*.js',
-        'src/**/*.html',
-        'gulp/**/*.js',
-        'gulpfile.js',
-        'karma.conf.js'
-      ], {
+      .src(options.globs, {
         base: './'
-      });
+      })
+      .pipe(jsbeautifier({
+        mode: mode.jsbeautifierVerifyOnly ? 'VERIFY_ONLY' : 'VERIFY_AND_WRITE',
+        logSuccess: false,
+        js: {
+          indentSize: '2',
+          endWithNewline: true
+        },
+        css: {
+          indentSize: '2',
+          endWithNewline: true
+        },
+        html: {
+          indentSize: '2',
+          endWithNewline: true
+        }
+      }));
 
     if (mode.jsbeautifierVerifyOnly) {
-      return stream.pipe(jsbeautifier({
-        mode: 'VERIFY_ONLY',
-        config: jsbeautifyConfig
-      }));
+      return stream;
     }
 
-    return stream
-      .pipe(jsbeautifier({
-        mode: 'VERIFY_AND_WRITE',
-        config: jsbeautifyConfig
-      }))
-      .pipe(gulp.dest(''));
+    return stream.pipe(gulp.dest(''));
 
   });
 
