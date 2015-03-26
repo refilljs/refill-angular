@@ -52,11 +52,16 @@ function loadTasks(tasksNames, mode, options, gulp) {
  */
 function gulpZkflowAngular(options, externalGulp) {
 
+  var argv = require('yargs')
+    .boolean('dist')
+    .argv;
+
   var gulp = getGulp(externalGulp);
+
   var mode = {
     jshintFailOnError: false,
     jsbeautifierVerifyOnly: false,
-    dev: true,
+    dev: !argv.dist,
     singleRun: false
   };
 
