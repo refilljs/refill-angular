@@ -10,7 +10,7 @@ function injectTask(options, gulp, mode) {
     var baseDir = mode.dev ? 'dev' : 'dist';
     var indexPath = 'src/index.html';
 
-    function humanLibraryInject() {
+    function injectStream() {
       return gulp
         .src(indexPath)
         .pipe(inject(
@@ -28,10 +28,10 @@ function injectTask(options, gulp, mode) {
     }
 
     if (mode.dev) {
-      watchLog('inject', gulp, indexPath, humanLibraryInject);
+      watchLog('inject', gulp, indexPath, injectStream);
     }
 
-    return humanLibraryInject();
+    return injectStream();
 
   });
 

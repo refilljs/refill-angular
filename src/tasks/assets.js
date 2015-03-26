@@ -4,15 +4,32 @@ function assetsTask(options, gulp, mode) {
 
   gulp.task('assets', options.dependencies, function() {
 
+    var imagemin = require('gulp-imagemin');
+    var changed = require('gulp-changed');
+    var gulpif = require('gulp-if');
+    var watchLog = require('../watchLog');
     var baseDir = mode.dev ? 'dev/' : 'dist/';
+    var stream;
 
-    return gulp
-      .src([
-        'src/**/_assets/**'
-      ], {
-        base: 'src/'
-      })
-      .pipe(gulp.dest(baseDir));
+    function assetsStream() {
+      return gulp
+        .src(options.globs, {
+          base: 'src/'
+        })
+        .pipe(changed(baseDir))
+        .pipe(gulpif(!mode.dev, imagemin()))
+        .pipe(gulp.dest(baseDir));
+    }
+
+    stream = assetsStream();
+
+    if (!mode.dev) {
+      return stream;
+    }
+
+    watchLog('assets', gulp, options.globs, assetsStream);
+
+    return stream;
 
   });
 

@@ -2,7 +2,9 @@
 
 module.exports = {
   assets: {
-    enabled: true
+    enabled: true,
+    globs: 'src/**/_assets/**'
+
   },
   beautify: {
     enabled: true,
