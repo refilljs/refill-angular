@@ -12,7 +12,7 @@ function jsTask(options, gulp, mode) {
     var gulpif = require('gulp-if');
     var streamify = require('gulp-streamify');
     var templateCache = require('gulp-angular-templatecache');
-    var minifyHTML = require('gulp-minify-html');
+    var minifyHtml = require('gulp-minify-html');
     var gutil = require('gulp-util');
     var through2 = require('through2');
     var errorLog = require('../errorLog');
@@ -31,7 +31,7 @@ function jsTask(options, gulp, mode) {
 
     function templetify() {
       return gulp.src(options.templatesGlobs)
-        .pipe(gulpif(!mode.dev, minifyHTML({
+        .pipe(gulpif(!mode.dev, minifyHtml({
           empty: true,
           spare: true,
           quotes: true

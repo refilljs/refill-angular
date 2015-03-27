@@ -60,7 +60,13 @@ module.exports = {
   },
   inject: {
     enabled: true,
-    dependencies: ['js', 'css']
+    dependencies: ['js', 'css'],
+    globs: 'src/index.html',
+    injectablesGlobs: [
+      'index*.js',
+      'index*.css'
+    ],
+    absolute: true
   },
   js: {
     enabled: true,
