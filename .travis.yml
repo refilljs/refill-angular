@@ -2,8 +2,10 @@ language: node_js
 node_js:
   - "0.10"
 
+before_install:
+  - npm update -g npm
+
 script:
-  - npm install
   - ./node_modules/.bin/gulp ci
 
 deploy:
