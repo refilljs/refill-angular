@@ -24,7 +24,6 @@ module.exports = {
     sequence: [
       'clean', [
         'inject',
-        'templates',
         'assets'
       ]
     ]
@@ -52,7 +51,6 @@ module.exports = {
     sequence: [
       'clean', [
         'inject',
-        'templates',
         'assets',
         'jshint',
         'test'
@@ -66,7 +64,11 @@ module.exports = {
   },
   js: {
     enabled: true,
-    dependencies: ['bower']
+    dependencies: ['bower'],
+    devEntries: ['./src/dev/index.js'],
+    distEntries: ['./src/index.js'],
+    templatesGlobs: ['src/**/*.html', '!src/index.html'],
+    templatesModule: 'zk.templates'
   },
   jshint: {
     enabled: true,
@@ -76,9 +78,6 @@ module.exports = {
       'src/**/*.js',
       'karma.conf.js'
     ]
-  },
-  templates: {
-    enabled: true
   },
   test: {
     enabled: true,
