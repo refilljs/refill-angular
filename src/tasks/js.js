@@ -13,9 +13,8 @@ function jsTask(options, gulp, mode) {
     var streamify = require('gulp-streamify');
     var templateCache = require('gulp-angular-templatecache');
     var minifyHtml = require('gulp-minify-html');
-    var gutil = require('gulp-util');
     var through2 = require('through2');
-    var errorLog = require('../errorLog');
+    var jsLogger = require('../utils/logger')('js');
     var bundler;
 
     function requirify() {
@@ -55,7 +54,7 @@ function jsTask(options, gulp, mode) {
       stream = bundler.bundle();
 
       if (mode.dev) {
-        stream = stream.on('error', errorLog('Browserify'));
+        stream = stream.on('error', jsLogger.error);
       }
 
       return stream
@@ -63,13 +62,9 @@ function jsTask(options, gulp, mode) {
         .pipe(gulpif(!mode.dev, streamify(uglify())))
         .pipe(gulpif(!mode.dev, streamify(rev())))
         .pipe(gulp.dest(mode.dev ? 'dev/' : 'dist/'))
-        .on('end', function() {
-          gutil.log(gutil.colors.magenta('browserify'), 'finished');
-        });
+        .on('end', jsLogger.finished);
 
     }
-
-    gutil.log(gutil.colors.magenta('browserify'), 'starting...');
 
     bundler = browserify({
       cache: {},
@@ -85,14 +80,10 @@ function jsTask(options, gulp, mode) {
 
     if (mode.dev) {
       bundler = watchify(bundler);
-      bundler.on('update', function(changedFiles) {
-        gutil.log('Starting', gutil.colors.cyan('browserify'), 'file', changedFiles, 'changed');
-      });
+      bundler.on('update', jsLogger.start);
       bundler.on('update', rebundle);
       gulp.watch(options.templatesGlobs, rebundle)
-        .on('change', function(changedFiles) {
-          gutil.log('Starting', gutil.colors.cyan('browserify'), 'file', changedFiles.path, 'changed');
-        });
+        .on('change', jsLogger.start);
     }
 
     return rebundle();

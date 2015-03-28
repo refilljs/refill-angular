@@ -5,6 +5,7 @@ function beautifyTask(options, gulp, mode) {
   gulp.task('beautify', options.dependencies, function() {
 
     var jsbeautifier = require('gulp-jsbeautifier');
+    var beautifyLogger = require('../utils/logger')('beautify');
     var stream;
 
     stream = gulp
@@ -26,13 +27,17 @@ function beautifyTask(options, gulp, mode) {
           indentSize: '2',
           endWithNewline: true
         }
-      }));
+      }))
+      .on('error', beautifyLogger.error);
 
     if (mode.jsbeautifierVerifyOnly) {
-      return stream;
+      return stream
+        .on('end', beautifyLogger.finished);
     }
 
-    return stream.pipe(gulp.dest(''));
+    return stream
+      .pipe(gulp.dest(''))
+      .on('end', beautifyLogger.finished);
 
   });
 

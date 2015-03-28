@@ -5,20 +5,16 @@ function jshintTask(options, gulp, mode) {
   gulp.task('jshint', options.dependencies, function() {
 
     var jshint = require('gulp-jshint');
-    var watchLog = require('../watchLog');
+    var jshintLogger = require('../utils/logger')('jshint');
 
     function jshintStream() {
 
-      var stream = gulp
+      return gulp
         .src(options.globs)
         .pipe(jshint())
-        .pipe(jshint.reporter(require('jshint-stylish')));
-
-      if (true === mode.jshintFailOnError) {
-        stream = stream.pipe(jshint.reporter('fail'));
-      }
-
-      return stream;
+        .pipe(jshint.reporter(require('jshint-stylish')))
+        .pipe(jshint.reporter('fail'))
+        .on('error', jshintLogger.error);
 
     }
 
@@ -27,7 +23,9 @@ function jshintTask(options, gulp, mode) {
     }
 
     jshintStream();
-    watchLog('jshint', gulp, options.globs, jshintStream);
+
+    gulp.watch(options.globs, jshintStream)
+      .on('change', jshintLogger.start);
 
   });
 

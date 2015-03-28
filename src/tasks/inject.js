@@ -7,7 +7,7 @@ function injectTask(options, gulp, mode) {
     var inject = require('gulp-inject');
     var minifyHtml = require('gulp-minify-html');
     var gulpif = require('gulp-if');
-    var watchLog = require('../watchLog');
+    var injectLogger = require('../utils/logger')('inject');
     var _ = require('lodash');
     var baseDir = mode.dev ? 'dev/' : 'dist/';
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);
@@ -61,12 +61,14 @@ function injectTask(options, gulp, mode) {
           spare: true,
           quotes: true
         })))
-        .pipe(gulp.dest(baseDir));
+        .pipe(gulp.dest(baseDir))
+        .on('end', injectLogger.finished);
 
     }
 
     if (mode.dev) {
-      watchLog('inject', gulp, options.globs, injectStream);
+      gulp.watch(options.globs, injectStream)
+        .on('change', injectLogger.start);
     }
 
     return injectStream();

@@ -59,7 +59,6 @@ function gulpZkflowAngular(options, externalGulp) {
   var gulp = getGulp(externalGulp);
 
   var mode = {
-    jshintFailOnError: false,
     jsbeautifierVerifyOnly: false,
     dev: !argv.dist,
     singleRun: false

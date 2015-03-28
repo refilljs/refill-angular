@@ -2,10 +2,15 @@
 
 function bowerTask(options, gulp) {
 
-  var bower = require('gulp-bower');
-
   gulp.task('bower', options.dependencies, function() {
-    return bower();
+
+    var bower = require('gulp-bower');
+    var bowerLogger = require('../utils/logger')('bower');
+
+    return bower()
+      .on('error', bowerLogger.error)
+      .on('end', bowerLogger.finished);
+
   });
 
 }

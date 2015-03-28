@@ -7,9 +7,8 @@ function assetsTask(options, gulp, mode) {
     var imagemin = require('gulp-imagemin');
     var changed = require('gulp-changed');
     var gulpif = require('gulp-if');
-    var watchLog = require('../watchLog');
+    var assetsLogger = require('../utils/logger')('assets');
     var baseDir = mode.dev ? 'dev/' : 'dist/';
-    var stream;
 
     function assetsStream() {
       return gulp
@@ -18,18 +17,16 @@ function assetsTask(options, gulp, mode) {
         })
         .pipe(changed(baseDir))
         .pipe(gulpif(!mode.dev, imagemin()))
-        .pipe(gulp.dest(baseDir));
+        .pipe(gulp.dest(baseDir))
+        .on('end', assetsLogger.finished);
     }
 
-    stream = assetsStream();
-
-    if (!mode.dev) {
-      return stream;
+    if (mode.dev) {
+      gulp.watch(options.globs, assetsStream)
+        .on('change', assetsLogger.start);
     }
 
-    watchLog('assets', gulp, options.globs, assetsStream);
-
-    return stream;
+    return assetsStream();
 
   });
 

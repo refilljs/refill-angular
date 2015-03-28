@@ -73,7 +73,7 @@ module.exports = {
     dependencies: ['bower'],
     devEntries: ['./src/dev/index.js'],
     distEntries: ['./src/index.js'],
-    templatesGlobs: ['src/**/*.html', '!src/index.html'],
+    templatesGlobs: 'src/**/_templates/**',
     templatesModule: 'zk.templates'
   },
   jshint: {
