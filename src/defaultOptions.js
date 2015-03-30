@@ -89,7 +89,8 @@ module.exports = {
     enabled: true,
     dependencies: ['bower'],
     files: ['src/unitTests.js'],
-    templatesModule: 'zk.templates'
+    templatesModule: 'zk.templates',
+    junitReporterOutputFile: 'test-results.xml'
   },
   webserver: {
     enabled: true

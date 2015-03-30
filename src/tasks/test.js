@@ -6,12 +6,18 @@ function testTask(options, gulp, mode) {
 
     var karma = require('karma');
     var testLogger = require('../utils/logger')('test');
+    var reporters = ['progress'];
+
+    if (!mode.dev) {
+      reporters.push('junit');
+    }
 
     karma.server.start({
       files: options.files,
       plugins: [
         require('karma-browserify'),
         require('karma-jasmine'),
+        require('karma-junit-reporter'),
         require('karma-phantomjs-launcher')
       ],
       logLevel: 'warn',
@@ -42,7 +48,11 @@ function testTask(options, gulp, mode) {
           });
         }
       },
-      browsers: ['PhantomJS']
+      browsers: ['PhantomJS'],
+      junitReporter: {
+        outputFile: options.junitReporterOutputFile
+      },
+      reporters: reporters
     }, function(exitStatus) {
 
       var errorMessage = 'task failed';
