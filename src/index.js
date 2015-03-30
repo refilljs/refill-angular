@@ -1,29 +1,78 @@
 'use strict';
 
-function gulpZkflow(gulp, options) {
-  
-  options = {};
-  
-  require('./tasks/assets')(gulp, options);
-  require('./tasks/beautify')(gulp, options);
-  require('./tasks/bower')(gulp, options);
-  require('./tasks/build')(gulp, options);
-  require('./tasks/ci')(gulp, options);
-  require('./tasks/clean')(gulp, options);
-  require('./tasks/default')(gulp, options);
-  require('./tasks/inject')(gulp, options);
-  require('./tasks/js')(gulp, options);
-  require('./tasks/css')(gulp, options);
-  require('./tasks/templates')(gulp, options);
-  require('./tasks/test')(gulp, options);
-  require('./tasks/webserver')(gulp, options);
+var _ = require('lodash');
+
+/**
+ * get gulp object from external source if available or from require
+ * @param externalGulp
+ * @return {*} - gulp object
+ */
+function getGulp(externalGulp) {
+
+  if (typeof externalGulp === 'undefined') {
+    return require('gulp');
+  }
+
+  return externalGulp;
 
 }
 
-gulpZkflow.bind(null, require('gulp'));
+/**
+ * Load task from list if task is enabled
+ * @param tasksNames
+ * @param options
+ * @param gulp
+ */
+function loadTasks(tasksNames, mode, options, gulp) {
 
-gulpZkflow.use = function(gulp) {
-  return gulpZkflow.bind(null, gulp);
-};
+  var defaultOptions = require('./defaultOptions');
 
-module.exports = gulpZkflow;
+  options = options || {};
+
+  tasksNames.forEach(function(taskName) {
+
+    var taskOptions = options[taskName];
+    var taskDefaultOptions = defaultOptions[taskName];
+    var compiledOptions = _.defaults(taskOptions || {}, taskDefaultOptions);
+
+    if (!compiledOptions.enabled) {
+      return;
+    }
+
+    require('./tasks/' + taskName)(compiledOptions, gulp, mode);
+
+  });
+
+}
+
+/**
+ * Set zkflow angular tasks
+ * @param options
+ * @param externalGulp
+ */
+function gulpZkflowAngular(options, externalGulp) {
+
+  var argv = require('yargs')
+    .boolean('dist')
+    .argv;
+
+  var gulp = getGulp(externalGulp);
+
+  var mode = {
+    jsbeautifierVerifyOnly: false,
+    dev: !argv.dist,
+    singleRun: false
+  };
+
+  loadTasks(
+    ['assets', 'beautify', 'bower', 'build', 'ci', 'clean', 'css', 'default', 'inject', 'js', 'jshint', 'test', 'webserver'],
+    mode,
+    options,
+    gulp
+  );
+
+  return mode;
+
+}
+
+module.exports = gulpZkflowAngular;

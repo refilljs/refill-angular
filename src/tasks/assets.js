@@ -1,30 +1,32 @@
 'use strict';
 
-function assetsTask(gulp) {
+function assetsTask(options, gulp, mode) {
 
-  var config = require('../internalOptions');
+  gulp.task('assets', options.dependencies, function() {
 
-  gulp.task('assets', function() {
+    var imagemin = require('gulp-imagemin');
+    var changed = require('gulp-changed');
+    var gulpif = require('gulp-if');
+    var assetsLogger = require('../utils/logger')('assets');
+    var baseDir = mode.dev ? 'dev/' : 'dist/';
 
-    var baseDir = config.dev ? 'dev/' : 'dist/';
+    function assetsStream() {
+      return gulp
+        .src(options.globs, {
+          base: 'src/'
+        })
+        .pipe(changed(baseDir))
+        .pipe(gulpif(!mode.dev, imagemin()))
+        .pipe(gulp.dest(baseDir))
+        .on('end', assetsLogger.finished);
+    }
 
-    return gulp
-      .src([
-        'src/**/_assets/**'
-      ], {
-        base: 'src/'
-      })
-      .pipe(gulp.dest(baseDir));
+    if (mode.dev) {
+      gulp.watch(options.globs, assetsStream)
+        .on('change', assetsLogger.start);
+    }
 
-  });
-
-  gulp.task('glyphiconfont', ['bower'], function() {
-
-    var baseDir = config.dev ? 'dev/' : 'dist/';
-
-    return gulp
-      .src('bower_components/bootstrap/fonts/**')
-      .pipe(gulp.dest(baseDir + '_assets/bootstrap/fonts/'));
+    return assetsStream();
 
   });
 

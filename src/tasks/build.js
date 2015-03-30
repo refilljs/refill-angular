@@ -1,24 +1,11 @@
 'use strict';
 
-function buildTask(gulp) {
+function buildTask(options, gulp, mode) {
 
-  var runSequence = require('run-sequence').use(gulp);
-  var internalOptions = require('../internalOptions');
-
-  gulp.task('build', function(done) {
-
-    internalOptions.dev = false;
-
-    runSequence(
-      'clean', [
-        'inject',
-        'templates',
-        'assets',
-        'glyphiconfont'
-      ],
-      done
-    );
-
+  gulp.task('build', options.dependencies, function(done) {
+    var runSequence = require('run-sequence').use(gulp);
+    mode.dev = false;
+    runSequence.apply(this, options.sequence.concat([done]));
   });
 
 }

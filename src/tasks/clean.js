@@ -1,16 +1,19 @@
 'use strict';
 
-function cleanTask(gulp) {
+function cleanTask(options, gulp, mode) {
 
-  var del = require('del');
 
-  var config = require('../internalOptions');
+  gulp.task('clean', options.dependencies, function(done) {
 
-  gulp.task('clean', function(done) {
+    var del = require('del');
+    var cleanLogger = require('../utils/logger')('clean');
 
-    var baseDir = config.dev ? 'dev/**' : 'dist/**';
-
-    del(baseDir, done);
+    del(
+      mode.dev ? 'dev/**' : 'dist/**',
+      function() {
+        cleanLogger.finished();
+        done();
+      });
 
   });
 

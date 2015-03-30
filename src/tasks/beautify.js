@@ -1,40 +1,43 @@
 'use strict';
 
-function beautifyTask(gulp) {
+function beautifyTask(options, gulp, mode) {
 
-  var jsbeautifier = require('gulp-jsbeautifier');
+  gulp.task('beautify', options.dependencies, function() {
 
-  var config = require('../internalOptions');
-
-  gulp.task('beautify', function() {
-
-    var jsbeautifyConfig = './.jsbeautifyrc';
+    var jsbeautifier = require('gulp-jsbeautifier');
+    var beautifyLogger = require('../utils/logger')('beautify');
     var stream;
 
     stream = gulp
-      .src([
-        'src/**/*.js',
-        'src/**/*.html',
-        'gulp/**/*.js',
-        'gulpfile.js',
-        'karma.conf.js'
-      ], {
+      .src(options.globs, {
         base: './'
-      });
+      })
+      .pipe(jsbeautifier({
+        mode: mode.jsbeautifierVerifyOnly ? 'VERIFY_ONLY' : 'VERIFY_AND_WRITE',
+        logSuccess: false,
+        js: {
+          indentSize: '2',
+          endWithNewline: true
+        },
+        css: {
+          indentSize: '2',
+          endWithNewline: true
+        },
+        html: {
+          indentSize: '2',
+          endWithNewline: true
+        }
+      }))
+      .on('error', beautifyLogger.error);
 
-    if (config.jsbeautifierVerifyOnly) {
-      return stream.pipe(jsbeautifier({
-        mode: 'VERIFY_ONLY',
-        config: jsbeautifyConfig
-      }));
+    if (mode.jsbeautifierVerifyOnly) {
+      return stream
+        .on('end', beautifyLogger.finished);
     }
 
     return stream
-      .pipe(jsbeautifier({
-        mode: 'VERIFY_AND_WRITE',
-        config: jsbeautifyConfig
-      }))
-      .pipe(gulp.dest(''));
+      .pipe(gulp.dest(''))
+      .on('end', beautifyLogger.finished);
 
   });
 

@@ -1,21 +1,13 @@
 'use strict';
 
-function ciTask(gulp) {
+function ciTask(options, gulp, mode) {
 
-  var runSequence = require('run-sequence').use(gulp);
-
-  var config = require('../internalOptions');
-
-  gulp.task('ci', function(done) {
-    config.jsbeautifierVerifyOnly = true;
-    runSequence(
-      [
-        'beautify',
-        'build',
-        'test'
-      ],
-      done
-    );
+  gulp.task('ci', options.dependencies, function(done) {
+    var runSequence = require('run-sequence').use(gulp);
+    mode.jsbeautifierVerifyOnly = true;
+    mode.singleRun = true;
+    mode.dev = false;
+    runSequence.apply(this, options.sequence.concat([done]));
   });
 
 }
