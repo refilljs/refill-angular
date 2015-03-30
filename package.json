@@ -59,6 +59,6 @@
   },
   "devDependencies": {
     "gulp": "^3.8.11",
-    "gulp-zkflow-nodemodule": "git://github.com/zaklinaczekodu/gulp-zkflow-nodemodule"
+    "gulp-zkflow-nodemodule": "0.0.1"
   }
 }
