@@ -87,7 +87,9 @@ module.exports = {
   },
   test: {
     enabled: true,
-    dependencies: ['bower']
+    dependencies: ['bower'],
+    files: ['src/unitTests.js'],
+    templatesModule: 'zk.templates'
   },
   webserver: {
     enabled: true

@@ -2,25 +2,68 @@
 
 function testTask(options, gulp, mode) {
 
-  var karma = require('gulp-karma');
+  gulp.task('test', options.dependencies, function(done) {
 
-  gulp.task('test', options.dependencies, function() {
+    var karma = require('karma');
+    var testLogger = require('../utils/logger')('test');
 
-    var unitTestsFile = 'src/unitTests.js';
-    var preprocessors = {};
-    var stream;
+    karma.server.start({
+      files: options.files,
+      plugins: [
+        require('karma-browserify'),
+        require('karma-jasmine'),
+        require('karma-phantomjs-launcher')
+      ],
+      logLevel: 'warn',
+      frameworks: ['jasmine', 'browserify'],
+      browserNoActivityTimeout: 120000,
+      singleRun: !mode.dev,
+      autoWatch: mode.dev,
+      preprocessors: {
+        'src/**': ['browserify']
+      },
+      browserify: {
+        debug: true,
+        transform: [
+          require('debowerify'),
+          require('browserify-ngannotate')
+        ],
+        configure: function(bundle) {
+          bundle.exclude(options.templatesModule);
+          bundle.on('prebundle', function() {
+            var stream = require('stream');
+            var s = new stream.Readable();
+            s._read = function() {};
+            s.push('module.exports = angular.module(\'' + options.templatesModule + '\', []);');
+            s.push(null);
+            bundle.require(s, {
+              expose: options.templatesModule
+            });
+          });
+        }
+      },
+      browsers: ['PhantomJS']
+    }, function(exitStatus) {
 
-    preprocessors[unitTestsFile] = ['browserify'];
+      var errorMessage = 'task failed';
 
-    stream = gulp.src(unitTestsFile)
-      .pipe(karma({
-        configFile: 'karma.conf.js',
-        action: mode.singleRun ? 'run' : 'watch',
-        preprocessors: preprocessors
-      }));
+      if (!mode.dev) {
+        if (exitStatus === 0) {
+          testLogger.finished();
+          done();
+          return;
+        }
+        testLogger.error({
+          message: errorMessage
+        });
+        done(errorMessage);
+      }
 
-    if (mode.singleRun) {
-      return stream;
+    });
+
+    if (mode.dev) {
+      testLogger.finished();
+      done();
     }
 
   });
