@@ -12,8 +12,7 @@ module.exports = {
       'src/**/*.js',
       'src/**/*.html',
       'gulp/**/*.js',
-      'gulpfile.js',
-      'karma.conf.js'
+      'gulpfile.js'
     ]
   },
   bower: {
@@ -44,7 +43,9 @@ module.exports = {
   },
   css: {
     enabled: true,
-    dependencies: ['bower']
+    dependencies: ['bower'],
+    globs: 'src/index.less',
+    watchGlobs: 'src/**/*.{less,css}'
   },
   default: {
     enabled: true,
@@ -73,7 +74,7 @@ module.exports = {
     dependencies: ['bower'],
     devEntries: ['./src/dev/index.js'],
     distEntries: ['./src/index.js'],
-    templatesGlobs: 'src/**/_templates/**',
+    templatesGlobs: 'src/**/_templates/**/*.html',
     templatesModule: 'zk.templates'
   },
   jshint: {
@@ -81,8 +82,7 @@ module.exports = {
     globs: [
       'gulpfile.js',
       'gulp/**/*.js',
-      'src/**/*.js',
-      'karma.conf.js'
+      'src/**/*.js'
     ]
   },
   test: {
