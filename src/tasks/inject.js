@@ -13,6 +13,13 @@ function injectTask(options, gulp, mode) {
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);
     var headInjectablesGlobs = prefixGlobs(options.headInjectablesGlobs);
 
+    function addBaseDir(glob) {
+      if (glob.charAt(0) === '!') {
+        return '!' + baseDir + glob.slice(1);
+      }
+      return baseDir + glob;
+    }
+
     function prefixGlobs(globs) {
 
       var prefixedGlobs;
@@ -24,7 +31,7 @@ function injectTask(options, gulp, mode) {
       if (_.isArray(globs)) {
         prefixedGlobs = [];
         globs.forEach(function(glob) {
-          prefixedGlobs.push(baseDir + glob);
+          prefixedGlobs.push(addBaseDir(glob));
         });
         return prefixedGlobs;
       }
