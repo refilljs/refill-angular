@@ -33,20 +33,7 @@ function testTask(options, gulp, mode) {
         transform: [
           require('debowerify'),
           require('browserify-ngannotate')
-        ],
-        configure: function(bundle) {
-          bundle.exclude(options.templatesModule);
-          bundle.on('prebundle', function() {
-            var stream = require('stream');
-            var s = new stream.Readable();
-            s._read = function() {};
-            s.push('module.exports = angular.module(\'' + options.templatesModule + '\', []);');
-            s.push(null);
-            bundle.require(s, {
-              expose: options.templatesModule
-            });
-          });
-        }
+        ]
       },
       browsers: ['PhantomJS'],
       junitReporter: {
