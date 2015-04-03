@@ -96,6 +96,7 @@ module.exports = {
     junitReporterOutputFile: 'test-results.xml'
   },
   webserver: {
-    enabled: true
+    enabled: true,
+    host: 'localhost'
   }
 };

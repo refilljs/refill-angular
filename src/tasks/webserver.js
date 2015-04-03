@@ -10,7 +10,8 @@ function taskWebserver(options, gulp, mode) {
         livereload: mode.dev,
         directoryListing: false,
         open: true,
-        fallback: 'index.html'
+        fallback: 'index.html',
+        host: options.host
       }));
   });
 
