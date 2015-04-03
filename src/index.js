@@ -65,7 +65,7 @@ function gulpZkflowAngular(options, externalGulp) {
   };
 
   loadTasks(
-    ['assets', 'beautify', 'bower', 'build', 'ci', 'clean', 'css', 'default', 'inject', 'js', 'jshint', 'test', 'webserver'],
+    ['assets', 'beautify', 'bower', 'build', 'ci', 'clean', 'css', 'default', 'inject', 'js', 'jshint', 'templates', 'test', 'webserver'],
     mode,
     options,
     gulp
