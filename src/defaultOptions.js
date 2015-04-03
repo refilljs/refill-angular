@@ -71,11 +71,9 @@ module.exports = {
   },
   js: {
     enabled: true,
-    dependencies: ['bower'],
+    dependencies: ['bower', 'templates'],
     devEntries: ['./src/dev/index.js'],
-    distEntries: ['./src/index.js'],
-    templatesGlobs: 'src/**/_templates/**/*.html',
-    templatesModule: 'zk.templates'
+    distEntries: ['./src/index.js']
   },
   jshint: {
     enabled: true,
@@ -85,9 +83,14 @@ module.exports = {
       'src/**/*.js'
     ]
   },
+  templates: {
+    enabled: true,
+    globs: 'src/**/_templates/**/*.html',
+    angularModuleName: 'zk.templates'
+  },
   test: {
     enabled: true,
-    dependencies: ['bower'],
+    dependencies: ['bower', 'templates'],
     files: ['src/unitTests.js'],
     templatesModule: 'zk.templates',
     junitReporterOutputFile: 'test-results.xml'
