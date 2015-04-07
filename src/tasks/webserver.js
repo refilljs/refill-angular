@@ -1,10 +1,12 @@
 'use strict';
 
-function getTaskWebserver(options, gulp, mode) {
+function getWebserverTask(options, gulp, mode) {
 
-  var webserver = require('gulp-webserver');
 
-  gulp.task('webserver', options.dependencies, function() {
+  function webserverTask() {
+
+    var webserver = require('gulp-webserver');
+
     gulp.src(mode.dev ? 'dev/' : 'dist/')
       .pipe(webserver({
         livereload: mode.dev,
@@ -13,12 +15,14 @@ function getTaskWebserver(options, gulp, mode) {
         fallback: 'index.html',
         host: options.host
       }));
-  });
+  }
+
+  return webserverTask;
 
 }
 
 module.exports = {
-  getTask: getTaskWebserver,
+  getTask: getWebserverTask,
   defaultOptions: {
     host: 'localhost'
   }
