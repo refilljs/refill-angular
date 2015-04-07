@@ -1,8 +1,8 @@
 'use strict';
 
-function jshintTask(options, gulp, mode) {
+function getJshintTask(options, gulp, mode) {
 
-  gulp.task('jshint', options.dependencies, function() {
+  function jshintTask() {
 
     var jshint = require('gulp-jshint');
     var jshintLogger = require('../utils/logger')('jshint');
@@ -27,8 +27,19 @@ function jshintTask(options, gulp, mode) {
     gulp.watch(options.globs, jshintStream)
       .on('change', jshintLogger.start);
 
-  });
+  }
+
+  return jshintTask;
 
 }
 
-module.exports = jshintTask;
+module.exports = {
+  getTask: getJshintTask,
+  defaultOptions: {
+    globs: [
+      'gulpfile.js',
+      'gulp/**/*.js',
+      'src/**/*.js'
+    ]
+  }
+};

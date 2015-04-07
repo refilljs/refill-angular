@@ -1,8 +1,8 @@
 'use strict';
 
-function jsTask(options, gulp, mode) {
+function getJsTask(options, gulp, mode) {
 
-  gulp.task('js', options.dependencies, function() {
+  function jsTask() {
 
     var source = require('vinyl-source-stream');
     var watchify = require('watchify');
@@ -52,8 +52,16 @@ function jsTask(options, gulp, mode) {
 
     return rebundle();
 
-  });
+  }
+
+  return jsTask;
 
 }
 
-module.exports = jsTask;
+module.exports = {
+  getTask: getJsTask,
+  defaultOptions: {
+    devEntries: ['./src/dev/index.js'],
+    distEntries: ['./src/index.js']
+  }
+};

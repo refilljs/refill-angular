@@ -1,8 +1,8 @@
 'use strict';
 
-function testTask(options, gulp, mode) {
+function getTestTask(options, gulp, mode) {
 
-  gulp.task('test', options.dependencies, function(done) {
+  function testTask(done) {
 
     var karma = require('karma');
     var testLogger = require('../utils/logger')('test');
@@ -63,8 +63,16 @@ function testTask(options, gulp, mode) {
       done();
     }
 
-  });
+  }
+
+  return testTask;
 
 }
 
-module.exports = testTask;
+module.exports = {
+  getTask: getTestTask,
+  defaultOptions: {
+    files: ['src/unitTests.js'],
+    junitReporterOutputFile: 'test-results.xml'
+  }
+};

@@ -1,22 +1,25 @@
 'use strict';
 
-function cleanTask(options, gulp, mode) {
+function getCleanTask(options, gulp, mode) {
 
-
-  gulp.task('clean', options.dependencies, function(done) {
+  function cleanTask(done) {
 
     var del = require('del');
     var cleanLogger = require('../utils/logger')('clean');
 
     del(
-      mode.dev ? 'dev/**' : 'dist/**',
+      mode.dev ? 'dev/**/*' : 'dist/**/*',
       function() {
         cleanLogger.finished();
         done();
       });
 
-  });
+  }
+
+  return cleanTask;
 
 }
 
-module.exports = cleanTask;
+module.exports = {
+  getTask: getCleanTask
+};

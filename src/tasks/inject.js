@@ -1,8 +1,8 @@
 'use strict';
 
-function injectTask(options, gulp, mode) {
+function getInjectTask(options, gulp, mode) {
 
-  gulp.task('inject', options.dependencies, function() {
+  function injectTask() {
 
     var inject = require('gulp-inject');
     var minifyHtml = require('gulp-minify-html');
@@ -80,8 +80,20 @@ function injectTask(options, gulp, mode) {
 
     return injectStream();
 
-  });
+  }
+
+  return injectTask;
 
 }
 
-module.exports = injectTask;
+module.exports = {
+  getTask: getInjectTask,
+  defaultOptions: {
+    globs: 'src/index.html',
+    injectablesGlobs: [
+      'index*.js',
+      'index*.css'
+    ],
+    absolute: true
+  }
+};
