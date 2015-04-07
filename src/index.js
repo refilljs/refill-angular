@@ -1,7 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
-
 /**
  * get gulp object from external source if available or from require
  * @param externalGulp
@@ -18,58 +16,66 @@ function getGulp(externalGulp) {
 }
 
 /**
- * Load task from list if task is enabled
- * @param tasksNames
- * @param options
- * @param gulp
- */
-function loadTasks(tasksNames, mode, options, gulp) {
-
-  var defaultOptions = require('./defaultOptions');
-
-  options = options || {};
-
-  tasksNames.forEach(function(taskName) {
-
-    var taskOptions = options[taskName];
-    var taskDefaultOptions = defaultOptions[taskName];
-    var compiledOptions = _.defaults(taskOptions || {}, taskDefaultOptions);
-
-    if (!compiledOptions.enabled) {
-      return;
-    }
-
-    require('./tasks/' + taskName)(compiledOptions, gulp, mode);
-
-  });
-
-}
-
-/**
  * Set zkflow angular tasks
  * @param options
  * @param externalGulp
  */
 function gulpZkflowAngular(options, externalGulp) {
 
+  var loadTasks = require('gulp-zkflow-load-tasks');
   var argv = require('yargs')
     .boolean('dist')
     .argv;
 
-  var gulp = getGulp(externalGulp);
-
   var mode = {
-    jsbeautifierVerifyOnly: false,
-    dev: !argv.dist,
-    singleRun: false
+    dev: !argv.dist
   };
 
-  loadTasks(
-    ['assets', 'beautify', 'bower', 'build', 'ci', 'clean', 'css', 'default', 'inject', 'js', 'jshint', 'templates', 'test', 'webserver'],
-    mode,
-    options,
-    gulp
-  );
+  loadTasks(mode, options, getGulp(externalGulp), {
+    assets: require('./tasks/assets'),
+    beautify: require('./tasks/beautify'),
+    bower: require('./tasks/bower'),
+    clean: require('./tasks/clean'),
+    jshint: require('./tasks/jshint'),
+    templates: require('./tasks/templates'),
+    webserver: require('./tasks/webserver'),
+    build: {
+      task: require('./tasks/sequenceDist'),
+      sequence: [
+        'clean', ['inject', 'assets']
+      ]
+    },
+    ci: {
+      task: require('./tasks/sequenceDist'),
+      sequence: [
+        'clean', ['beautify', 'build', 'test', 'jshint']
+      ]
+    },
+    css: {
+      task: require('./tasks/css'),
+      dependencies: ['bower']
+    },
+    default: {
+      task: require('./tasks/sequenceDev'),
+      sequence: [
+        'clean', ['inject', 'assets', 'jshint', 'test'],
+        'webserver'
+      ]
+    },
+    inject: {
+      task: require('./tasks/inject'),
+      dependencies: ['js', 'css']
+    },
+    js: {
+      task: require('./tasks/js'),
+      enabled: true,
+      dependencies: ['bower', 'templates']
+    },
+    test: {
+      task: require('./tasks/test'),
+      dependencies: ['bower', 'templates']
+    }
+  });
 
   return mode;
 

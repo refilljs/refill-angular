@@ -1,8 +1,8 @@
 'use strict';
 
-function assetsTask(options, gulp, mode) {
+function getAssetsTask(options, gulp, mode) {
 
-  gulp.task('assets', options.dependencies, function() {
+  function assetsTask() {
 
     var imagemin = require('gulp-imagemin');
     var changed = require('gulp-changed');
@@ -28,8 +28,15 @@ function assetsTask(options, gulp, mode) {
 
     return assetsStream();
 
-  });
+  }
+
+  return assetsTask;
 
 }
 
-module.exports = assetsTask;
+module.exports = {
+  getTask: getAssetsTask,
+  defaultOptions: {
+    globs: 'src/**/_assets/**/*'
+  }
+};

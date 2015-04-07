@@ -1,8 +1,8 @@
 'use strict';
 
-function bowerTask(options, gulp) {
+function getBowerTask() {
 
-  gulp.task('bower', options.dependencies, function() {
+  function bowerTask() {
 
     var bower = require('gulp-bower');
     var bowerLogger = require('../utils/logger')('bower');
@@ -11,8 +11,12 @@ function bowerTask(options, gulp) {
       .on('error', bowerLogger.error)
       .on('end', bowerLogger.finished);
 
-  });
+  }
+
+  return bowerTask;
 
 }
 
-module.exports = bowerTask;
+module.exports = {
+  getTask: getBowerTask
+};

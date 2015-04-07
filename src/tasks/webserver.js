@@ -1,6 +1,6 @@
 'use strict';
 
-function taskWebserver(options, gulp, mode) {
+function getTaskWebserver(options, gulp, mode) {
 
   var webserver = require('gulp-webserver');
 
@@ -17,4 +17,9 @@ function taskWebserver(options, gulp, mode) {
 
 }
 
-module.exports = taskWebserver;
+module.exports = {
+  getTask: getTaskWebserver,
+  defaultOptions: {
+    host: 'localhost'
+  }
+};

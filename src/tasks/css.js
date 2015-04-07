@@ -1,8 +1,8 @@
 'use strict';
 
-function cssTask(options, gulp, mode) {
+function getCssTask(options, gulp, mode) {
 
-  gulp.task('css', options.dependencies, function(doneCallback) {
+  function cssTask(doneCallback) {
 
     var less = require('gulp-less');
     var csso = require('gulp-csso');
@@ -45,8 +45,16 @@ function cssTask(options, gulp, mode) {
 
     cssStream();
 
-  });
+  }
+
+  return cssTask;
 
 }
 
-module.exports = cssTask;
+module.exports = {
+  getTask: getCssTask,
+  defaultOptions: {
+    globs: 'src/index.less',
+    watchGlobs: 'src/**/*.{less,css}'
+  }
+};

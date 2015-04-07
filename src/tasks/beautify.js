@@ -1,8 +1,8 @@
 'use strict';
 
-function beautifyTask(options, gulp, mode) {
+function getBeautifyTask(options, gulp, mode) {
 
-  gulp.task('beautify', options.dependencies, function() {
+  function beautifyTask() {
 
     var jsbeautifier = require('gulp-jsbeautifier');
     var beautifyLogger = require('../utils/logger')('beautify');
@@ -39,8 +39,20 @@ function beautifyTask(options, gulp, mode) {
       .pipe(gulp.dest(''))
       .on('end', beautifyLogger.finished);
 
-  });
+  }
+
+  return beautifyTask;
 
 }
 
-module.exports = beautifyTask;
+module.exports = {
+  getTask: getBeautifyTask,
+  defaultOptions: {
+    globs: [
+      'src/**/*.js',
+      'src/**/*.html',
+      'gulp/**/*.js',
+      'gulpfile.js'
+    ]
+  }
+};

@@ -1,8 +1,8 @@
 'use strict';
 
-function templatesTask(options, gulp, mode) {
+function getTemplatesTask(options, gulp, mode) {
 
-  gulp.task('templates', options.dependencies, function() {
+  function templatesTask() {
 
     var gulpif = require('gulp-if');
     var templateCache = require('gulp-angular-templatecache');
@@ -33,8 +33,16 @@ function templatesTask(options, gulp, mode) {
 
     return templatesStream();
 
-  });
+  }
+
+  return templatesTask;
 
 }
 
-module.exports = templatesTask;
+module.exports = {
+  getTask: getTemplatesTask,
+  defaultOptions: {
+    globs: 'src/**/_templates/**/*.html',
+    angularModuleName: 'zk.templates'
+  }
+};
