@@ -1,7 +1,12 @@
 'use strict';
 
 /**
+ * @module gulp-zkflow-angular
+ */
+
+/**
  * get gulp object from external source if available or from require
+ * @private
  * @param externalGulp
  * @return {*} - gulp object
  */
@@ -16,9 +21,28 @@ function getGulp(externalGulp) {
 }
 
 /**
- * Set zkflow angular tasks
- * @param options
- * @param externalGulp
+ * Set up zkflow angular tasks.
+ *
+ * Available tasks:
+ * Basic: default, build, ci, beautify
+ *
+ * @param {object} [options] Contains configuration of all zkflow angular tasks
+ *
+ * @param {object} [options.assets] Configuration of assets task
+ * @param {boolean} [options.assets.enabled=true]
+ * If task is enabled you will be able to use it by gulp assets command.
+ * Disabling it won't delete it from other tasks dependencies.
+ * @param {array|undefined|null} [options.assets.dependencies]
+ * Dependencies for this task in form of array of strings e.g. ['someTask', 'someOtherTask'].
+ * @param {string|array} [options.assets.globs='src\/**\/_assets\/**\/*']
+ *
+ * @param {gulp} [externalGulp=require('gulp')]
+ *
+ *
+ * @returns {object} mode - Mode object.
+ * It allows to set different modes of tasks operation
+ *
+ * @alias module:gulp-zkflow-angular
  */
 function gulpZkflowAngular(options, externalGulp) {
 

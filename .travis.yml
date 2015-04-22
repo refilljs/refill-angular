@@ -13,4 +13,4 @@ deploy:
   email: bolczyslaw@gmail.com
   api_key: $npmApiKey
   on:
-    branch: master
+    tags: true

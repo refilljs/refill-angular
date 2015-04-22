@@ -1,6 +1,6 @@
 {
   "name": "gulp-zkflow-angular",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Gulp tasks for working on angular apps",
   "main": "src/index.js",
   "scripts": {
@@ -59,6 +59,6 @@
   },
   "devDependencies": {
     "gulp": "^3.8.11",
-    "gulp-zkflow-nodemodule": "0.0.1"
+    "gulp-zkflow-nodemodule": "~0.1.0"
   }
 }
