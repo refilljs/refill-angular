@@ -1,6 +1,6 @@
 {
   "name": "gulp-zkflow-angular",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Gulp tasks for working on angular apps",
   "main": "src/index.js",
   "scripts": {
