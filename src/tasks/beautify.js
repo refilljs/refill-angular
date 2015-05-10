@@ -13,7 +13,7 @@ function getBeautifyTask(options, gulp, mode) {
         base: './'
       })
       .pipe(jsbeautifier({
-        mode: mode.jsbeautifierVerifyOnly ? 'VERIFY_ONLY' : 'VERIFY_AND_WRITE',
+        mode: mode.dev ? 'VERIFY_AND_WRITE' : 'VERIFY_ONLY',
         logSuccess: false,
         js: {
           indentSize: '2',
@@ -30,13 +30,13 @@ function getBeautifyTask(options, gulp, mode) {
       }))
       .on('error', beautifyLogger.error);
 
-    if (mode.jsbeautifierVerifyOnly) {
+    if (mode.dev) {
       return stream
+        .pipe(gulp.dest(''))
         .on('end', beautifyLogger.finished);
     }
 
     return stream
-      .pipe(gulp.dest(''))
       .on('end', beautifyLogger.finished);
 
   }
