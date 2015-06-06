@@ -9,6 +9,7 @@ function getCssTask(options, gulp, mode) {
     var streamify = require('gulp-streamify');
     var rev = require('gulp-rev');
     var gulpif = require('gulp-if');
+    var autoprefixer = require('gulp-autoprefixer');
     var cssLogger = require('../utils/logger')('css');
     var baseDir = mode.dev ? 'dev/' : 'dist/';
     var done = false;
@@ -25,6 +26,9 @@ function getCssTask(options, gulp, mode) {
           done = true;
           doneCallback(error.message);
         })
+        .pipe(autoprefixer({
+          cascade: false
+        }))
         .pipe(gulpif(!mode.dev, csso()))
         .pipe(gulpif(!mode.dev, streamify(rev())))
         .pipe(gulp.dest(baseDir))
