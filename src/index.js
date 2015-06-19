@@ -72,7 +72,7 @@ function gulpZkflowAngular(options, externalGulp) {
     ci: {
       task: require('./tasks/sequenceDist'),
       sequence: [
-        'clean', ['beautify', 'build', 'test', 'jshint']
+        ['beautify', 'build', 'test', 'jshint']
       ]
     },
     css: {
@@ -82,7 +82,7 @@ function gulpZkflowAngular(options, externalGulp) {
     default: {
       task: require('./tasks/sequenceDev'),
       sequence: [
-        'clean', ['inject', 'assets', 'jshint', 'test'],
+        ['build', 'jshint', 'test'],
         'webserver'
       ]
     },
