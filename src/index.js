@@ -82,7 +82,7 @@ function gulpZkflowAngular(options, externalGulp) {
     default: {
       task: require('./tasks/sequenceDev'),
       sequence: [
-        ['build', 'jshint', 'test'],
+        'clean', ['inject', 'assets', 'jshint', 'test'],
         'webserver'
       ]
     },
