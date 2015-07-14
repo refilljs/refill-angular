@@ -41,7 +41,6 @@ function getJsTask(options, gulp, mode) {
       debug: mode.dev
     });
 
-    bundler.transform(require('debowerify'));
     bundler.transform(require('browserify-ngannotate'));
 
     if (mode.dev) {
