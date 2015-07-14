@@ -25,7 +25,7 @@ This project is a set of industrial-grade gulp tasks aiming to organize your wor
 * Less + autoprefixer
 * Browserify + ngannotate
 * Assets management
-* Bower + debowerify
+* Bower
 * AngularJS templates embedded in js
 * Development environment
     * Webserver with livereload

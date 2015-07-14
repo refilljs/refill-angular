@@ -31,7 +31,6 @@ function getTestTask(options, gulp, mode) {
       browserify: {
         debug: true,
         transform: [
-          require('debowerify'),
           require('browserify-ngannotate')
         ]
       },
