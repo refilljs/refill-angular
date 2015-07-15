@@ -7,7 +7,7 @@ function getInjectTask(options, gulp, mode) {
     var inject = require('gulp-inject');
     var minifyHtml = require('gulp-minify-html');
     var gulpif = require('gulp-if');
-    var injectLogger = require('../utils/logger')('inject');
+    var injectLogger = require('gulp-zkflow-logger')('inject');
     var _ = require('lodash');
     var baseDir = mode.dev ? 'dev/' : 'dist/';
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);

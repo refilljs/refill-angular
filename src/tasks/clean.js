@@ -5,7 +5,7 @@ function getCleanTask(options, gulp, mode) {
   function cleanTask(done) {
 
     var del = require('del');
-    var cleanLogger = require('../utils/logger')('clean');
+    var cleanLogger = require('gulp-zkflow-logger')('clean');
 
     del(
       mode.dev ? 'dev/**/*' : 'dist/**/*',

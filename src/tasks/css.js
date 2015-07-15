@@ -10,7 +10,7 @@ function getCssTask(options, gulp, mode) {
     var rev = require('gulp-rev');
     var gulpif = require('gulp-if');
     var autoprefixer = require('gulp-autoprefixer');
-    var cssLogger = require('../utils/logger')('css');
+    var cssLogger = require('gulp-zkflow-logger')('css');
     var baseDir = mode.dev ? 'dev/' : 'dist/';
     var done = false;
 

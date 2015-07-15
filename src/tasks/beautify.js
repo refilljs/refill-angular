@@ -5,7 +5,7 @@ function getBeautifyTask(options, gulp, mode) {
   function beautifyTask() {
 
     var jsbeautifier = require('gulp-jsbeautifier');
-    var beautifyLogger = require('../utils/logger')('beautify');
+    var beautifyLogger = require('gulp-zkflow-logger')('beautify');
     var stream;
 
     stream = gulp

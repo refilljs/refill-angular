@@ -11,7 +11,7 @@ function getJsTask(options, gulp, mode) {
     var rev = require('gulp-rev');
     var gulpif = require('gulp-if');
     var streamify = require('gulp-streamify');
-    var jsLogger = require('../utils/logger')('js');
+    var jsLogger = require('gulp-zkflow-logger')('js');
     var bundler;
 
     function rebundle() {

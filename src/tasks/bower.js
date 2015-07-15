@@ -5,7 +5,7 @@ function getBowerTask() {
   function bowerTask() {
 
     var bower = require('gulp-bower');
-    var bowerLogger = require('../utils/logger')('bower');
+    var bowerLogger = require('gulp-zkflow-logger')('bower');
 
     return bower()
       .on('error', bowerLogger.error)
