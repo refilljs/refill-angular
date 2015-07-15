@@ -5,7 +5,7 @@ function getTestTask(options, gulp, mode) {
   function testTask(done) {
 
     var karma = require('karma');
-    var testLogger = require('../utils/logger')('test');
+    var testLogger = require('gulp-zkflow-logger')('test');
     var reporters = ['progress'];
 
     if (!mode.dev) {

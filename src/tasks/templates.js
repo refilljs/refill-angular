@@ -7,7 +7,7 @@ function getTemplatesTask(options, gulp, mode) {
     var gulpif = require('gulp-if');
     var templateCache = require('gulp-angular-templatecache');
     var minifyHtml = require('gulp-minify-html');
-    var templatesLogger = require('../utils/logger')('templates');
+    var templatesLogger = require('gulp-zkflow-logger')('templates');
 
     function templatesStream() {
       return gulp.src(options.globs)

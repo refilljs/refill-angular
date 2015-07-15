@@ -7,7 +7,7 @@ function getAssetsTask(options, gulp, mode) {
     var imagemin = require('gulp-imagemin');
     var changed = require('gulp-changed');
     var gulpif = require('gulp-if');
-    var assetsLogger = require('../utils/logger')('assets');
+    var assetsLogger = require('gulp-zkflow-logger')('assets');
     var baseDir = mode.dev ? 'dev/' : 'dist/';
 
     function assetsStream() {
