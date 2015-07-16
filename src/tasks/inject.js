@@ -6,6 +6,7 @@ function getInjectTask(options, gulp, mode) {
 
     var inject = require('gulp-inject');
     var minifyHtml = require('gulp-minify-html');
+    var template = require('gulp-template');
     var gulpif = require('gulp-if');
     var injectLogger = require('gulp-zkflow-logger')('inject');
     var _ = require('lodash');
@@ -63,7 +64,11 @@ function getInjectTask(options, gulp, mode) {
         stream = stream.pipe(getInject(headInjectablesGlobs, 'head'));
       }
 
-      return stream.pipe(gulpif(!mode.dev, minifyHtml({
+      return stream
+        .pipe(template({
+          angularMainModuleName: mode.dev ? options.devAngularMainModuleName : options.prodAngularMainModuleName
+        }))
+        .pipe(gulpif(!mode.dev, minifyHtml({
           empty: true,
           spare: true,
           quotes: true
@@ -94,6 +99,8 @@ module.exports = {
       'index*.js',
       'index*.css'
     ],
-    absolute: true
+    absolute: true,
+    prodAngularMainModuleName: 'app',
+    devAngularMainModuleName: 'appDev'
   }
 };
