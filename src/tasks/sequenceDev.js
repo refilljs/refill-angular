@@ -4,7 +4,7 @@ function getSequenceDevTask(options, gulp, mode) {
 
   function sequenceDevTask(done) {
     var runSequence = require('run-sequence').use(gulp);
-    mode.dev = true;
+    mode.env = 'dev';
     runSequence.apply(null, options.sequence.concat([done]));
   }
 

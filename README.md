@@ -55,5 +55,5 @@ npm install --save gulp-zkflow-angular
 Put this line in your gulpfile.js
 
 ```JavaScript
-require('gulp-zkflow-angular')();
+require('gulp-zkflow-angular').init();
 ```

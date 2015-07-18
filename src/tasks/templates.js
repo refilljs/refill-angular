@@ -11,7 +11,7 @@ function getTemplatesTask(options, gulp, mode) {
 
     function templatesStream() {
       return gulp.src(options.globs)
-        .pipe(gulpif(!mode.dev, minifyHtml({
+        .pipe(gulpif(mode.env !== 'dev', minifyHtml({
           empty: true,
           spare: true,
           quotes: true
@@ -26,7 +26,7 @@ function getTemplatesTask(options, gulp, mode) {
         .on('end', templatesLogger.finished);
     }
 
-    if (mode.dev) {
+    if (mode.env === 'dev') {
       gulp.watch(options.globs, templatesStream)
         .on('change', templatesLogger.start);
     }

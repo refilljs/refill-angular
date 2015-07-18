@@ -8,20 +8,20 @@ function getAssetsTask(options, gulp, mode) {
     var changed = require('gulp-changed');
     var gulpif = require('gulp-if');
     var assetsLogger = require('gulp-zkflow-logger')('assets');
-    var baseDir = mode.dev ? 'dev/' : 'dist/';
+    var outputDir = require('../getOutputDir')();
 
     function assetsStream() {
       return gulp
         .src(options.globs, {
           base: 'src/'
         })
-        .pipe(changed(baseDir))
-        .pipe(gulpif(!mode.dev, imagemin()))
-        .pipe(gulp.dest(baseDir))
+        .pipe(changed(outputDir))
+        .pipe(gulpif(mode.env !== 'dev', imagemin()))
+        .pipe(gulp.dest(outputDir))
         .on('end', assetsLogger.finished);
     }
 
-    if (mode.dev) {
+    if (mode.env === 'dev') {
       gulp.watch(options.globs, assetsStream)
         .on('change', assetsLogger.start);
     }

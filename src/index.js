@@ -4,6 +4,9 @@
  * @module gulp-zkflow-angular
  */
 
+var loadTasks = require('gulp-zkflow-load-tasks');
+var mode = require('./mode');
+
 /**
  * get gulp object from external source if available or from require
  * @private
@@ -38,22 +41,10 @@ function getGulp(externalGulp) {
  *
  * @param {gulp} [externalGulp=require('gulp')]
  *
- *
- * @returns {object} mode - Mode object.
- * It allows to set different modes of tasks operation
- *
- * @alias module:gulp-zkflow-angular
+ * @alias module:gulp-zkflow-angular.init
  */
-function gulpZkflowAngular(options, externalGulp) {
+function init(options, externalGulp) {
 
-  var loadTasks = require('gulp-zkflow-load-tasks');
-  var argv = require('yargs')
-    .boolean('dist')
-    .argv;
-
-  var mode = {
-    dev: !argv.dist
-  };
 
   loadTasks(mode, options, getGulp(externalGulp), {
     assets: require('./tasks/assets'),
@@ -64,13 +55,13 @@ function gulpZkflowAngular(options, externalGulp) {
     templates: require('./tasks/templates'),
     webserver: require('./tasks/webserver'),
     build: {
-      task: require('./tasks/sequenceDist'),
+      task: require('./tasks/sequenceProd'),
       sequence: [
         'clean', ['inject', 'assets']
       ]
     },
     ci: {
-      task: require('./tasks/sequenceDist'),
+      task: require('./tasks/sequenceProd'),
       sequence: [
         ['beautify', 'build', 'test', 'jshint']
       ]
@@ -83,6 +74,13 @@ function gulpZkflowAngular(options, externalGulp) {
       task: require('./tasks/sequenceDev'),
       sequence: [
         'clean', ['inject', 'assets', 'jshint', 'test'],
+        'webserver'
+      ]
+    },
+    e2e: {
+      task: require('./tasks/sequenceTest'),
+      sequence: [
+        'clean', ['inject', 'assets'],
         'webserver'
       ]
     },
@@ -101,8 +99,9 @@ function gulpZkflowAngular(options, externalGulp) {
     }
   });
 
-  return mode;
-
 }
 
-module.exports = gulpZkflowAngular;
+module.exports = {
+  mode: mode,
+  init: init
+};
