@@ -8,7 +8,7 @@ function getTestTask(options, gulp, mode) {
     var testLogger = require('gulp-zkflow-logger')('test');
     var reporters = ['progress'];
 
-    if (!mode.dev) {
+    if (mode.env !== 'dev') {
       reporters.push('junit');
     }
 
@@ -23,8 +23,8 @@ function getTestTask(options, gulp, mode) {
       logLevel: 'warn',
       frameworks: ['jasmine', 'browserify'],
       browserNoActivityTimeout: 120000,
-      singleRun: !mode.dev,
-      autoWatch: mode.dev,
+      singleRun: mode.env !== 'dev',
+      autoWatch: mode.env === 'dev',
       preprocessors: {
         'src/**': ['browserify']
       },
@@ -43,7 +43,7 @@ function getTestTask(options, gulp, mode) {
 
       var errorMessage = 'task failed';
 
-      if (!mode.dev) {
+      if (mode.env !== 'dev') {
         if (exitStatus === 0) {
           testLogger.finished();
           done();
@@ -57,7 +57,7 @@ function getTestTask(options, gulp, mode) {
 
     });
 
-    if (mode.dev) {
+    if (mode.env === 'dev') {
       testLogger.finished();
       done();
     }

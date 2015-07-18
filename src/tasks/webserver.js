@@ -7,9 +7,9 @@ function getWebserverTask(options, gulp, mode) {
 
     var webserver = require('gulp-webserver');
 
-    gulp.src(mode.dev ? 'dev/' : 'dist/')
+    gulp.src(require('../getOutputDir')())
       .pipe(webserver({
-        livereload: mode.dev,
+        livereload: mode.env === 'dev',
         directoryListing: false,
         open: true,
         fallback: 'index.html',

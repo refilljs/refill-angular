@@ -10,15 +10,15 @@ function getInjectTask(options, gulp, mode) {
     var gulpif = require('gulp-if');
     var injectLogger = require('gulp-zkflow-logger')('inject');
     var _ = require('lodash');
-    var baseDir = mode.dev ? 'dev/' : 'dist/';
+    var outputDir = require('../getOutputDir')();
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);
     var headInjectablesGlobs = prefixGlobs(options.headInjectablesGlobs);
 
     function addBaseDir(glob) {
       if (glob.charAt(0) === '!') {
-        return '!' + baseDir + glob.slice(1);
+        return '!' + outputDir + glob.slice(1);
       }
-      return baseDir + glob;
+      return outputDir + glob;
     }
 
     function prefixGlobs(globs) {
@@ -37,7 +37,7 @@ function getInjectTask(options, gulp, mode) {
         return prefixedGlobs;
       }
 
-      return baseDir + globs;
+      return outputDir + globs;
 
     }
 
@@ -47,10 +47,24 @@ function getInjectTask(options, gulp, mode) {
           read: false
         }), {
           addRootSlash: options.absolute,
-          ignorePath: baseDir,
+          ignorePath: outputDir,
           name: name
         }
       );
+    }
+
+    function getAngularMainModuleName() {
+
+      if (mode.env === 'prod') {
+        return options.prodAngularMainModuleName;
+      }
+
+      if (mode.env === 'test') {
+        return options.testAngularMainModuleName;
+      }
+
+      return options.devAngularMainModuleName;
+
     }
 
     function injectStream() {
@@ -66,19 +80,19 @@ function getInjectTask(options, gulp, mode) {
 
       return stream
         .pipe(template({
-          angularMainModuleName: mode.dev ? options.devAngularMainModuleName : options.prodAngularMainModuleName
+          angularMainModuleName: getAngularMainModuleName()
         }))
-        .pipe(gulpif(!mode.dev, minifyHtml({
+        .pipe(gulpif(mode.env !== 'dev', minifyHtml({
           empty: true,
           spare: true,
           quotes: true
         })))
-        .pipe(gulp.dest(baseDir))
+        .pipe(gulp.dest(outputDir))
         .on('end', injectLogger.finished);
 
     }
 
-    if (mode.dev) {
+    if (mode.env === 'dev') {
       gulp.watch(options.globs, injectStream)
         .on('change', injectLogger.start);
     }
@@ -101,6 +115,7 @@ module.exports = {
     ],
     absolute: true,
     prodAngularMainModuleName: 'app',
-    devAngularMainModuleName: 'appDev'
+    devAngularMainModuleName: 'appDev',
+    testAngularMainModuleName: 'appTest'
   }
 };

@@ -14,21 +14,35 @@ function getJsTask(options, gulp, mode) {
     var jsLogger = require('gulp-zkflow-logger')('js');
     var bundler;
 
+    function getEntries() {
+
+      if (mode.env === 'prod') {
+        return options.prodEntries;
+      }
+
+      if (mode.env === 'test') {
+        return options.testEntries;
+      }
+
+      return options.devEntries;
+
+    }
+
     function rebundle() {
 
       var stream;
 
       stream = bundler.bundle();
 
-      if (mode.dev) {
+      if (mode.env === 'dev') {
         stream = stream.on('error', jsLogger.error);
       }
 
       return stream
         .pipe(source('index.js'))
-        .pipe(gulpif(!mode.dev, streamify(uglify())))
-        .pipe(gulpif(!mode.dev, streamify(rev())))
-        .pipe(gulp.dest(mode.dev ? 'dev/' : 'dist/'))
+        .pipe(gulpif(mode.env !== 'dev', streamify(uglify())))
+        .pipe(gulpif(mode.env !== 'dev', streamify(rev())))
+        .pipe(gulp.dest(require('../getOutputDir')()))
         .on('end', jsLogger.finished);
 
     }
@@ -37,13 +51,13 @@ function getJsTask(options, gulp, mode) {
       cache: {},
       packageCache: {},
       fullPaths: true,
-      entries: mode.dev ? options.devEntries : options.distEntries,
-      debug: mode.dev
+      entries: getEntries(),
+      debug: mode.env === 'dev'
     });
 
     bundler.transform(require('browserify-ngannotate'));
 
-    if (mode.dev) {
+    if (mode.env === 'dev') {
       bundler = watchify(bundler);
       bundler.on('update', jsLogger.start);
       bundler.on('update', rebundle);
@@ -61,6 +75,7 @@ module.exports = {
   getTask: getJsTask,
   defaultOptions: {
     devEntries: ['./src/dev/index.js'],
-    distEntries: ['./src/index.js']
+    prodEntries: ['./src/index.js'],
+    testEntries: ['./src/test/index.js']
   }
 };

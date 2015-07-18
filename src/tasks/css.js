@@ -11,7 +11,7 @@ function getCssTask(options, gulp, mode) {
     var gulpif = require('gulp-if');
     var autoprefixer = require('gulp-autoprefixer');
     var cssLogger = require('gulp-zkflow-logger')('css');
-    var baseDir = mode.dev ? 'dev/' : 'dist/';
+    var outputDir = require('../getOutputDir')();
     var done = false;
 
     function cssStream() {
@@ -20,7 +20,7 @@ function getCssTask(options, gulp, mode) {
         .pipe(less())
         .on('error', function(error) {
           cssLogger.error(error);
-          if (mode.dev) {
+          if (mode.env === 'dev') {
             return;
           }
           done = true;
@@ -29,9 +29,9 @@ function getCssTask(options, gulp, mode) {
         .pipe(autoprefixer({
           cascade: false
         }))
-        .pipe(gulpif(!mode.dev, csso()))
-        .pipe(gulpif(!mode.dev, streamify(rev())))
-        .pipe(gulp.dest(baseDir))
+        .pipe(gulpif(mode.env !== 'dev', csso()))
+        .pipe(gulpif(mode.env !== 'dev', streamify(rev())))
+        .pipe(gulp.dest(outputDir))
         .on('end', function() {
           cssLogger.finished();
           if (done) {
@@ -42,7 +42,7 @@ function getCssTask(options, gulp, mode) {
         });
     }
 
-    if (mode.dev) {
+    if (mode.env === 'dev') {
       gulp.watch(options.watchGlobs, cssStream)
         .on('change', cssLogger.start);
     }

@@ -1,6 +1,6 @@
 'use strict';
 
-function getCleanTask(options, gulp, mode) {
+function getCleanTask() {
 
   function cleanTask(done) {
 
@@ -8,7 +8,7 @@ function getCleanTask(options, gulp, mode) {
     var cleanLogger = require('gulp-zkflow-logger')('clean');
 
     del(
-      mode.dev ? 'dev/**/*' : 'dist/**/*',
+      require('../getOutputDir')() + '**/*',
       function() {
         cleanLogger.finished();
         done();

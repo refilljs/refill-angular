@@ -18,7 +18,7 @@ function getJshintTask(options, gulp, mode) {
 
     }
 
-    if (false === mode.dev) {
+    if (mode.env !== 'dev') {
       return jshintStream();
     }
 
