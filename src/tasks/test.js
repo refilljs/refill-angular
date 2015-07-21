@@ -5,12 +5,13 @@ function getTestTask(options, gulp, mode) {
   function testTask(done) {
 
     var karma = require('karma');
+    var istanbul = require('browserify-istanbul');
     var testLogger = require('gulp-zkflow-logger')('test');
     var reporters = ['progress'];
     var server;
 
     if (mode.env !== 'dev') {
-      reporters.push('junit');
+      reporters.push('junit', 'coverage');
     }
 
     server = new karma.Server({
@@ -19,7 +20,8 @@ function getTestTask(options, gulp, mode) {
           require('karma-browserify'),
           require('karma-jasmine'),
           require('karma-junit-reporter'),
-          require('karma-phantomjs-launcher')
+          require('karma-phantomjs-launcher'),
+          require('karma-coverage')
         ],
         logLevel: 'error',
         frameworks: ['jasmine', 'browserify'],
@@ -27,19 +29,26 @@ function getTestTask(options, gulp, mode) {
         singleRun: mode.env !== 'dev',
         autoWatch: mode.env === 'dev',
         preprocessors: {
-          'src/**': ['browserify']
+          'src/**/*': ['browserify']
         },
         browserify: {
           debug: true,
           configure: function(bundle) {
             bundle.on('update', testLogger.start);
-          }
+          },
+          transform: [istanbul({
+            ignore: options.istanbulIgnore
+          })]
         },
         browsers: ['PhantomJS'],
+        reporters: reporters,
         junitReporter: {
           outputDir: options.junitReporterOutputDir
         },
-        reporters: reporters
+        coverageReporter: {
+          dir: options.coverageReporterOutputDir,
+          reporters: options.istanbulReporters
+        }
       },
       function(exitStatus) {
 
@@ -84,6 +93,15 @@ module.exports = {
   getTask: getTestTask,
   defaultOptions: {
     files: ['src/unitTests.js'],
-    junitReporterOutputDir: ''
+    junitReporterOutputDir: 'reports/test/junit/',
+    coverageReporterOutputDir: 'reports/test/',
+    istanbulIgnore: ['**/node_modules/**/*', '**/bower_components/**/*', '**/*Spec.js', '**/unitTests.js'],
+    istanbulReporters: [{
+      type: 'html',
+      subdir: 'coverageHtml'
+    }, {
+      type: 'clover',
+      subdir: 'coverageClover'
+    }]
   }
 };

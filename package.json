@@ -23,6 +23,7 @@
   "homepage": "https://github.com/zaklinaczekodu/gulp-zkflow-angular",
   "dependencies": {
     "browserify": "^11.0.0",
+    "browserify-istanbul": "^0.2.1",
     "browserify-ngannotate": "^1.0.1",
     "del": "^1.1.1",
     "gulp-angular-templatecache": "^1.6.0",
@@ -48,10 +49,12 @@
     "jshint-stylish": "^2.0.0",
     "karma": "~0.13.2",
     "karma-browserify": "^4.0.0",
+    "karma-coverage": "^0.4.2",
     "karma-jasmine": "^0.3.5",
     "karma-junit-reporter": "^0.3.1",
     "karma-phantomjs-launcher": "^0.2.0",
     "lodash": "^3.5.0",
+    "phantomjs": "^1.9.17",
     "run-sequence": "^1.0.2",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^3.3.0"
