@@ -15,3 +15,4 @@ deploy:
   api_key: $npmApiKey
   on:
     tags: true
+    repo: zaklinaczekodu/gulp-zkflow-angular
