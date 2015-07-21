@@ -54,33 +54,74 @@ function init(options, externalGulp) {
     jshint: require('./tasks/jshint'),
     templates: require('./tasks/templates'),
     webserver: require('./tasks/webserver'),
-    build: {
-      task: require('./tasks/sequenceProd'),
+    assemble: {
+      task: require('./tasks/sequence'),
       sequence: [
         'clean', ['inject', 'assets']
       ]
     },
-    ci: {
-      task: require('./tasks/sequenceProd'),
+    build: {
+      task: require('./tasks/sequence'),
       sequence: [
-        ['beautify', 'build', 'test', 'jshint']
+        'assemble'
+      ],
+      mode: {
+        env: 'prod'
+      }
+    },
+    ci: {
+      task: require('./tasks/sequence'),
+      sequence: [
+        'ci-static-analysis',
+        'ci-test',
+        'ci-build',
+        'ci-e2e'
       ]
+    },
+    'ci-build': {
+      task: require('./tasks/sequence'),
+      sequence: [
+        ['assemble']
+      ],
+      mode: {
+        env: 'prod'
+      }
+    },
+    'ci-e2e': {
+      task: require('./tasks/sequence'),
+      sequence: [
+        ['assemble']
+      ],
+      mode: {
+        env: 'test'
+      }
+    },
+    'ci-static-analysis': {
+      task: require('./tasks/sequence'),
+      sequence: [
+        ['beautify', 'jshint']
+      ],
+      mode: {
+        env: 'prod'
+      }
+    },
+    'ci-test': {
+      task: require('./tasks/sequence'),
+      sequence: [
+        ['test']
+      ],
+      mode: {
+        env: 'prod'
+      }
     },
     css: {
       task: require('./tasks/css'),
       dependencies: ['bower']
     },
     default: {
-      task: require('./tasks/sequenceDev'),
+      task: require('./tasks/sequence'),
       sequence: [
-        'clean', ['inject', 'assets', 'jshint', 'test'],
-        'webserver'
-      ]
-    },
-    e2e: {
-      task: require('./tasks/sequenceTest'),
-      sequence: [
-        'clean', ['inject', 'assets'],
+        ['assemble', 'jshint', 'test'],
         'webserver'
       ]
     },
