@@ -9,6 +9,9 @@ function getTestTask(options, gulp, mode) {
     var testLogger = require('gulp-zkflow-logger')('test');
     var reporters = ['progress'];
     var server;
+    var _ = require('lodash');
+
+    _.extend(mode, options.mode);
 
     if (mode.env !== 'dev') {
       reporters.push('junit', 'coverage');

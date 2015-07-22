@@ -6,6 +6,9 @@ function getJshintTask(options, gulp, mode) {
 
     var jshint = require('gulp-jshint');
     var jshintLogger = require('gulp-zkflow-logger')('jshint');
+    var _ = require('lodash');
+
+    _.extend(mode, options.mode);
 
     function jshintStream() {
 
