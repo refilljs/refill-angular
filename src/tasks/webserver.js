@@ -6,6 +6,9 @@ function getWebserverTask(options, gulp, mode) {
   function webserverTask() {
 
     var webserver = require('gulp-webserver');
+    var _ = require('lodash');
+
+    _.extend(mode, options.mode);
 
     gulp.src(require('../getOutputDir')())
       .pipe(webserver({

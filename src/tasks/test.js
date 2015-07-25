@@ -13,7 +13,7 @@ function getTestTask(options, gulp, mode) {
 
     _.extend(mode, options.mode);
 
-    if (mode.env !== 'dev') {
+    if (!mode.watch) {
       reporters.push('junit', 'coverage');
     }
 
@@ -29,8 +29,8 @@ function getTestTask(options, gulp, mode) {
         logLevel: 'error',
         frameworks: ['jasmine', 'browserify'],
         browserNoActivityTimeout: 120000,
-        singleRun: mode.env !== 'dev',
-        autoWatch: mode.env === 'dev',
+        singleRun: !mode.watch,
+        autoWatch: mode.watch,
         preprocessors: {
           'src/**/*': ['browserify']
         },
@@ -57,24 +57,26 @@ function getTestTask(options, gulp, mode) {
 
         var errorMessage = 'task failed';
 
-        if (mode.env !== 'dev') {
-          if (exitStatus === 0) {
-            testLogger.finished();
-            done();
-            return;
-          }
-          testLogger.error({
-            message: errorMessage
-          });
-          done(errorMessage);
+        if (mode.watch) {
+          return;
         }
+
+        if (exitStatus === 0) {
+          testLogger.finished();
+          done();
+          return;
+        }
+
+        testLogger.error({
+          message: errorMessage
+        });
+        done(errorMessage);
 
       }
     );
 
 
-
-    if (mode.env === 'dev') {
+    if (mode.watch) {
 
       server.on('run_complete', function() {
         testLogger.finished();

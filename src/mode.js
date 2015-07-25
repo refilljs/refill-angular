@@ -15,11 +15,19 @@
  * @alias module:gulp-zkflow-angular.mode
  */
 var mode = {
-  env: typeof getZkflowEnv() === 'undefined' ? 'dev' : getZkflowEnv()
+  env: getEnv('ENV', 'dev'),
+  watch: getEnv('WATCH', 'true') === 'true' ? true : false
 };
 
-function getZkflowEnv() {
-  return process.env.ZKFLOW_ENV || process.env.bamboo_ZKFLOW_ENV;
+function getEnv(name, defaultValue) {
+  var env = process.env['ZKFLOW_' + name] || process.env['bamboo_ZKFLOW_' + name];
+
+  if (typeof env === 'undefined') {
+    return defaultValue;
+  }
+
+  return env;
+
 }
 
 module.exports = mode;

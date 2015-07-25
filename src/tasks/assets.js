@@ -9,6 +9,9 @@ function getAssetsTask(options, gulp, mode) {
     var gulpif = require('gulp-if');
     var assetsLogger = require('gulp-zkflow-logger')('assets');
     var outputDir = require('../getOutputDir')();
+    var _ = require('lodash');
+
+    _.extend(mode, options.mode);
 
     function assetsStream() {
       return gulp
@@ -21,7 +24,7 @@ function getAssetsTask(options, gulp, mode) {
         .on('end', assetsLogger.finished);
     }
 
-    if (mode.env === 'dev') {
+    if (mode.watch) {
       gulp.watch(options.globs, assetsStream)
         .on('change', assetsLogger.start);
     }

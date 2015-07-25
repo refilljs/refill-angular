@@ -8,6 +8,9 @@ function getTemplatesTask(options, gulp, mode) {
     var templateCache = require('gulp-angular-templatecache');
     var minifyHtml = require('gulp-minify-html');
     var templatesLogger = require('gulp-zkflow-logger')('templates');
+    var _ = require('lodash');
+
+    _.extend(mode, options.mode);
 
     function templatesStream() {
       return gulp.src(options.globs)
@@ -26,7 +29,7 @@ function getTemplatesTask(options, gulp, mode) {
         .on('end', templatesLogger.finished);
     }
 
-    if (mode.env === 'dev') {
+    if (mode.watch) {
       gulp.watch(options.globs, templatesStream)
         .on('change', templatesLogger.start);
     }

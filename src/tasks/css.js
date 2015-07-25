@@ -13,6 +13,9 @@ function getCssTask(options, gulp, mode) {
     var cssLogger = require('gulp-zkflow-logger')('css');
     var outputDir = require('../getOutputDir')();
     var done = false;
+    var _ = require('lodash');
+
+    _.extend(mode, options.mode);
 
     function cssStream() {
       return gulp
@@ -30,7 +33,7 @@ function getCssTask(options, gulp, mode) {
           cascade: false
         }))
         .pipe(gulpif(mode.env !== 'dev', csso()))
-        .pipe(gulpif(mode.env !== 'dev', streamify(rev())))
+        .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
         .pipe(gulp.dest(outputDir))
         .on('end', function() {
           cssLogger.finished();
@@ -42,7 +45,7 @@ function getCssTask(options, gulp, mode) {
         });
     }
 
-    if (mode.env === 'dev') {
+    if (mode.watch) {
       gulp.watch(options.watchGlobs, cssStream)
         .on('change', cssLogger.start);
     }

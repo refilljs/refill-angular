@@ -66,7 +66,8 @@ function init(options, externalGulp) {
         'assemble'
       ],
       mode: {
-        env: 'prod'
+        env: 'prod',
+        watch: false
       }
     },
     ci: {
@@ -84,16 +85,18 @@ function init(options, externalGulp) {
         ['assemble']
       ],
       mode: {
-        env: 'prod'
+        env: 'prod',
+        watch: false
       }
     },
     'ci-e2e': {
       task: require('./tasks/sequence'),
       sequence: [
-        ['assemble']
+        ['e2e']
       ],
       mode: {
-        env: 'test'
+        env: 'test',
+        watch: false
       }
     },
     'ci-static-analysis': {
@@ -102,7 +105,8 @@ function init(options, externalGulp) {
         ['beautify', 'jshint']
       ],
       mode: {
-        env: 'prod'
+        env: 'prod',
+        watch: false
       }
     },
     'ci-test': {
@@ -111,7 +115,8 @@ function init(options, externalGulp) {
         ['test']
       ],
       mode: {
-        env: 'prod'
+        env: 'prod',
+        watch: false
       }
     },
     css: {
@@ -124,6 +129,15 @@ function init(options, externalGulp) {
         ['assemble', 'jshint', 'test'],
         'webserver'
       ]
+    },
+    'e2e': {
+      task: require('./tasks/sequence'),
+      sequence: [
+        ['assemble']
+      ],
+      mode: {
+        env: 'test'
+      }
     },
     inject: {
       task: require('./tasks/inject'),
