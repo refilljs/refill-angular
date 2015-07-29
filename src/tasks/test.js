@@ -64,7 +64,7 @@ function getTestTask(options, gulp, mode) {
             require('karma-phantomjs-launcher'),
             require('karma-coverage')
           ],
-          logLevel: 'debug',
+          logLevel: 'error',
           frameworks: ['jasmine', 'browserify'],
           browserNoActivityTimeout: 120000,
           singleRun: !mode.watch,

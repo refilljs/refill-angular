@@ -43,7 +43,7 @@ function getJsTask(options, gulp, mode) {
 
       return stream
         .pipe(source('index.js'))
-        .pipe(gulpif(mode.env !== 'dev', streamify(uglify())))
+        .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(uglify())))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
         .pipe(gulp.dest(require('../getOutputDir')()))
         .on('end', jsLogger.finished);

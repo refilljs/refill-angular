@@ -32,7 +32,7 @@ function getCssTask(options, gulp, mode) {
         .pipe(autoprefixer({
           cascade: false
         }))
-        .pipe(gulpif(mode.env !== 'dev', csso()))
+        .pipe(gulpif(mode.env !== 'dev' && !mode.watch, csso()))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
         .pipe(gulp.dest(outputDir))
         .on('end', function() {
