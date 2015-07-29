@@ -5,7 +5,6 @@ function getJsTask(options, gulp, mode) {
   function jsTask() {
 
     var source = require('vinyl-source-stream');
-    var watchify = require('watchify');
     var browserify = require('browserify');
     var uglify = require('gulp-uglify');
     var rev = require('gulp-rev');
@@ -13,6 +12,7 @@ function getJsTask(options, gulp, mode) {
     var streamify = require('gulp-streamify');
     var jsLogger = require('gulp-zkflow-logger')('js');
     var bundler;
+    var watchify;
     var _ = require('lodash');
 
     _.extend(mode, options.mode);
@@ -61,6 +61,7 @@ function getJsTask(options, gulp, mode) {
     bundler.transform(require('browserify-ngannotate'));
 
     if (mode.watch) {
+      watchify = require('watchify');
       bundler = watchify(bundler);
       bundler.on('update', jsLogger.start);
       bundler.on('update', rebundle);

@@ -1,8 +1,8 @@
 'use strict';
 
-function getSequenceDevTask(options, gulp, mode) {
+function getSequenceTask(options, gulp, mode) {
 
-  function sequenceDevTask(done) {
+  function sequenceTask(done) {
 
     var runSequence = require('run-sequence').use(gulp);
     var _ = require('lodash');
@@ -13,10 +13,10 @@ function getSequenceDevTask(options, gulp, mode) {
 
   }
 
-  return sequenceDevTask;
+  return sequenceTask;
 
 }
 
 module.exports = {
-  getTask: getSequenceDevTask
+  getTask: getSequenceTask
 };

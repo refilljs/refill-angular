@@ -53,6 +53,7 @@ function init(options, externalGulp) {
     clean: require('./tasks/clean'),
     jshint: require('./tasks/jshint'),
     templates: require('./tasks/templates'),
+    'webdriver-update': require('./tasks/webdriverUpdate'),
     webserver: require('./tasks/webserver'),
     assemble: {
       task: require('./tasks/sequence'),
@@ -131,10 +132,8 @@ function init(options, externalGulp) {
       ]
     },
     'e2e': {
-      task: require('./tasks/sequence'),
-      sequence: [
-        ['assemble']
-      ],
+      task: require('./tasks/protractor'),
+      dependencies: ['webdriver-update', 'assemble'],
       mode: {
         env: 'test'
       }
