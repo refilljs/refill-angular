@@ -26,36 +26,22 @@ function getProtractorTask(options, gulp, mode) {
 
     function runProtractor() {
 
-      var webserverStream;
-      var promise;
-
       logger.start();
 
-      promise = zkutils
-        .promisify(gulp.src('test/')
-          .pipe(webserver({
-            fallback: 'index.html',
-            livereload: false,
-            port: 8001
-          })))
-        .then(function(stream) {
-          webserverStream = stream;
-          return zkutils
-            .promisify(gulp.src('e2e/features/**/*.feature')
-              .pipe(protractor({
-                configFile: getConfigPath()
-              })));
-        });
+      return zkutils
+        .promisify(gulp.src('e2e/features/**/*.feature')
+          .pipe(protractor({
+            configFile: getConfigPath()
+          })));
 
-      promise.finally(function() {
-        webserverStream.emit('kill');
-        if (mode.watch) {
-          help();
-        }
-      });
+    }
 
-      nextHandler.handle(promise);
-
+    function handleProtractorPromise(protractorPromise) {
+      nextHandler.handle(protractorPromise);
+      if (mode.watch) {
+        protractorPromise.finally(help);
+      }
+      return protractorPromise;
     }
 
     _.extend(mode, options.mode);
@@ -66,29 +52,48 @@ function getProtractorTask(options, gulp, mode) {
       logger: logger
     });
 
-    runProtractor();
+    zkutils
+      .promisify(gulp.src('test/')
+        .pipe(webserver({
+          fallback: 'index.html',
+          livereload: false,
+          port: 8001
+        })))
+      .then(function(webserverStream) {
 
-    if (mode.watch) {
+        var protractorPromise = runProtractor();
 
-      // this will start simple interactive mode. If you press "r" e2e tests will run, "^C" will stop execution
-      process.stdin.setRawMode(true);
-      process.stdin.setEncoding('utf8');
-      process.stdin.on('data', function(chunk) {
+        handleProtractorPromise(protractorPromise);
 
-        var ctrlCCode = 3;
-
-        if (chunk === 'r') {
-          runProtractor();
+        if (!mode.watch) {
+          protractorPromise.finally(function() {
+            webserverStream.emit('kill');
+          });
           return;
         }
-        if (chunk.charCodeAt(0) === ctrlCCode) {
-          process.exit();
-        }
-        help();
+
+        // this will start simple interactive mode. If you press "r" e2e tests will run, "^C" will stop execution
+        process.stdin.setRawMode(true);
+        process.stdin.setEncoding('utf8');
+        process.stdin.on('data', function(chunk) {
+
+          var ctrlCCode = 3;
+
+          if (chunk.charCodeAt(0) === ctrlCCode) {
+            webserverStream.emit('kill');
+            process.exit();
+          }
+
+          if (chunk === 'r') {
+            handleProtractorPromise(runProtractor());
+            return;
+          }
+
+          help();
+
+        });
 
       });
-
-    }
 
   }
 
