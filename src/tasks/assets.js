@@ -7,9 +7,12 @@ function getAssetsTask(options, gulp, mode) {
     var imagemin = require('gulp-imagemin');
     var changed = require('gulp-changed');
     var gulpif = require('gulp-if');
-    var assetsLogger = require('gulp-zkflow-logger')('assets');
+    var zkutils = require('gulp-zkflow-utils');
+    var logger = zkutils.logger('assets');
     var outputDir = require('../getOutputDir')();
     var _ = require('lodash');
+
+    logger.start();
 
     _.extend(mode, options.mode);
 
@@ -21,12 +24,12 @@ function getAssetsTask(options, gulp, mode) {
         .pipe(changed(outputDir))
         .pipe(gulpif(mode.env !== 'dev', imagemin()))
         .pipe(gulp.dest(outputDir))
-        .on('end', assetsLogger.finished);
+        .on('end', logger.finished);
     }
 
     if (mode.watch) {
       gulp.watch(options.globs, assetsStream)
-        .on('change', assetsLogger.start);
+        .on('change', logger.changed);
     }
 
     return assetsStream();

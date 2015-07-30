@@ -9,7 +9,7 @@ function getProtractorTask(options, gulp, mode) {
     var path = require('path');
     var _ = require('lodash');
     var zkutils = require('gulp-zkflow-utils');
-    var logger = new zkutils.Logger('e2e');
+    var logger = zkutils.logger('e2e');
     var nextHandler;
 
     function getConfigPath() {

@@ -5,7 +5,8 @@ function getJshintTask(options, gulp, mode) {
   function jshintTask() {
 
     var jshint = require('gulp-jshint');
-    var jshintLogger = require('gulp-zkflow-logger')('jshint');
+    var zkutils = require('gulp-zkflow-utils');
+    var logger = zkutils.logger('jshint');
     var _ = require('lodash');
     var stream;
     var jshintDefaultOptions = {
@@ -20,6 +21,8 @@ function getJshintTask(options, gulp, mode) {
 
     _.extend(mode, options.mode);
 
+    logger.start();
+
     function jshintStream() {
 
       return gulp
@@ -27,7 +30,7 @@ function getJshintTask(options, gulp, mode) {
         .pipe(jshint(options.jshintrc ? undefined : jshintDefaultOptions))
         .pipe(jshint.reporter(require('jshint-stylish')))
         .pipe(jshint.reporter('fail'))
-        .on('error', jshintLogger.error);
+        .on('error', logger.error);
 
     }
 
@@ -38,7 +41,7 @@ function getJshintTask(options, gulp, mode) {
     }
 
     gulp.watch(options.globs, jshintStream)
-      .on('change', jshintLogger.start);
+      .on('change', logger.changed);
 
   }
 

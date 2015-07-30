@@ -10,12 +10,15 @@ function getJsTask(options, gulp, mode) {
     var rev = require('gulp-rev');
     var gulpif = require('gulp-if');
     var streamify = require('gulp-streamify');
-    var jsLogger = require('gulp-zkflow-logger')('js');
+    var zkutils = require('gulp-zkflow-utils');
+    var logger = zkutils.logger('js');
     var bundler;
     var watchify;
     var _ = require('lodash');
 
     _.extend(mode, options.mode);
+
+    logger.start();
 
     function getEntries() {
 
@@ -38,7 +41,7 @@ function getJsTask(options, gulp, mode) {
       stream = bundler.bundle();
 
       if (mode.watch) {
-        stream = stream.on('error', jsLogger.error);
+        stream = stream.on('error', logger.error);
       }
 
       return stream
@@ -46,7 +49,7 @@ function getJsTask(options, gulp, mode) {
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(uglify())))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
         .pipe(gulp.dest(require('../getOutputDir')()))
-        .on('end', jsLogger.finished);
+        .on('end', logger.finished);
 
     }
 
@@ -63,7 +66,7 @@ function getJsTask(options, gulp, mode) {
     if (mode.watch) {
       watchify = require('watchify');
       bundler = watchify(bundler);
-      bundler.on('update', jsLogger.start);
+      bundler.on('update', logger.changed);
       bundler.on('update', rebundle);
     }
 

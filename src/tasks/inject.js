@@ -8,7 +8,8 @@ function getInjectTask(options, gulp, mode) {
     var minifyHtml = require('gulp-minify-html');
     var template = require('gulp-template');
     var gulpif = require('gulp-if');
-    var injectLogger = require('gulp-zkflow-logger')('inject');
+    var zkutils = require('gulp-zkflow-utils');
+    var logger = zkutils.logger('inject');
     var _ = require('lodash');
     var outputDir = require('../getOutputDir')();
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);
@@ -90,13 +91,13 @@ function getInjectTask(options, gulp, mode) {
           quotes: true
         })))
         .pipe(gulp.dest(outputDir))
-        .on('end', injectLogger.finished);
+        .on('end', logger.finished);
 
     }
 
     if (mode.watch) {
       gulp.watch(options.globs, injectStream)
-        .on('change', injectLogger.start);
+        .on('change', logger.changed);
     }
 
     return injectStream();

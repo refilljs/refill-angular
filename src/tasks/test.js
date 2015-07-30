@@ -12,7 +12,7 @@ function getTestTask(options, gulp, mode) {
     var del = require('del');
     var globby = require('globby');
 
-    var logger = new zkutils.Logger('test');
+    var logger = zkutils.logger('test');
     var globDeferred = q.defer();
 
     var nextHandler;
@@ -75,7 +75,7 @@ function getTestTask(options, gulp, mode) {
           browserify: {
             debug: true,
             configure: function(bundle) {
-              bundle.on('update', logger.changed.bind(logger));
+              bundle.on('update', logger.changed);
             },
             transform: [istanbul({
               ignore: options.istanbulIgnore

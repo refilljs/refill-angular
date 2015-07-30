@@ -5,11 +5,14 @@ function getBowerTask() {
   function bowerTask() {
 
     var bower = require('gulp-bower');
-    var bowerLogger = require('gulp-zkflow-logger')('bower');
+    var zkutils = require('gulp-zkflow-utils');
+    var logger = zkutils.logger('bower');
+
+    logger.start();
 
     return bower()
-      .on('error', bowerLogger.error)
-      .on('end', bowerLogger.finished);
+      .on('error', logger.error)
+      .on('end', logger.finished);
 
   }
 

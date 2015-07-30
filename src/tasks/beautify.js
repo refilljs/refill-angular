@@ -5,11 +5,14 @@ function getBeautifyTask(options, gulp, mode) {
   function beautifyTask() {
 
     var jsbeautifier = require('gulp-jsbeautifier');
-    var beautifyLogger = require('gulp-zkflow-logger')('beautify');
+    var zkutils = require('gulp-zkflow-utils');
+    var logger = zkutils.logger('beautify');
     var stream;
     var _ = require('lodash');
 
     _.extend(mode, options.mode);
+
+    logger.start();
 
     stream = gulp
       .src(options.globs, {
@@ -31,16 +34,16 @@ function getBeautifyTask(options, gulp, mode) {
           endWithNewline: true
         }
       }))
-      .on('error', beautifyLogger.error);
+      .on('error', logger.error);
 
     if (mode.env === 'dev') {
       return stream
         .pipe(gulp.dest(''))
-        .on('end', beautifyLogger.finished);
+        .on('end', logger.finished);
     }
 
     return stream
-      .on('end', beautifyLogger.finished);
+      .on('end', logger.finished);
 
   }
 

@@ -7,10 +7,13 @@ function getTemplatesTask(options, gulp, mode) {
     var gulpif = require('gulp-if');
     var templateCache = require('gulp-angular-templatecache');
     var minifyHtml = require('gulp-minify-html');
-    var templatesLogger = require('gulp-zkflow-logger')('templates');
+    var zkutils = require('gulp-zkflow-utils');
+    var logger = zkutils.logger('templates');
     var _ = require('lodash');
 
     _.extend(mode, options.mode);
+
+    logger.start();
 
     function templatesStream() {
       return gulp.src(options.globs)
@@ -26,12 +29,12 @@ function getTemplatesTask(options, gulp, mode) {
           templateHeader: 'module.exports = angular.module("<%= module %>"<%= standalone %>).run(["$templateCache", function($templateCache) {'
         }))
         .pipe(gulp.dest('.tmp/'))
-        .on('end', templatesLogger.finished);
+        .on('end', logger.finished);
     }
 
     if (mode.watch) {
       gulp.watch(options.globs, templatesStream)
-        .on('change', templatesLogger.start);
+        .on('change', logger.changed);
     }
 
     return templatesStream();
