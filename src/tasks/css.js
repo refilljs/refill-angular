@@ -10,16 +10,22 @@ function getCssTask(options, gulp, mode) {
     var rev = require('gulp-rev');
     var gulpif = require('gulp-if');
     var autoprefixer = require('gulp-autoprefixer');
-    var cssLogger = require('gulp-zkflow-logger')('css');
+    var zkutils = require('gulp-zkflow-utils');
+    var logger = zkutils.logger('css');
     var outputDir = require('../getOutputDir')();
     var done = false;
+    var _ = require('lodash');
+
+    _.extend(mode, options.mode);
+
+    logger.start();
 
     function cssStream() {
       return gulp
         .src('src/index.less')
         .pipe(less())
         .on('error', function(error) {
-          cssLogger.error(error);
+          logger.error(error);
           if (mode.env === 'dev') {
             return;
           }
@@ -29,11 +35,11 @@ function getCssTask(options, gulp, mode) {
         .pipe(autoprefixer({
           cascade: false
         }))
-        .pipe(gulpif(mode.env !== 'dev', csso()))
-        .pipe(gulpif(mode.env !== 'dev', streamify(rev())))
+        .pipe(gulpif(mode.env !== 'dev' && !mode.watch, csso()))
+        .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
         .pipe(gulp.dest(outputDir))
         .on('end', function() {
-          cssLogger.finished();
+          logger.finished();
           if (done) {
             return;
           }
@@ -42,9 +48,9 @@ function getCssTask(options, gulp, mode) {
         });
     }
 
-    if (mode.env === 'dev') {
+    if (mode.watch) {
       gulp.watch(options.watchGlobs, cssStream)
-        .on('change', cssLogger.start);
+        .on('change', logger.changed);
     }
 
     cssStream();

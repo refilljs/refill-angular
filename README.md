@@ -1,10 +1,12 @@
-# Gulp Zkflow for AngularJS
+Gulp Zkflow for AngularJS
+=========================
+
+Automation for AngularJS projects powered by [Gulp](http://gulpjs.com/) 
 
 Made by Zaklinacze Kodu
 
-This project is a set of industrial-grade gulp tasks aiming to organize your workflow with AngularJS.
-
-### Shields
+Shields
+-------
 
 [![npm](https://img.shields.io/npm/v/gulp-zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/gulp-zkflow-angular)
 [![npm](https://img.shields.io/npm/l/gulp-zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/gulp-zkflow-angular)
@@ -20,13 +22,15 @@ This project is a set of industrial-grade gulp tasks aiming to organize your wor
 [![GitHub stars](https://img.shields.io/github/stars/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/gulp-zkflow-angular)
 [![GitHub followers](https://img.shields.io/github/followers/zaklinaczekodu.svg?style=flat-square)](https://github.com/zaklinaczekodu/gulp-zkflow-angular)
 
-### Features
+Features
+--------
 
 * Less + autoprefixer
 * Browserify + ngannotate
 * Assets management
 * Bower
 * AngularJS templates embedded in js
+* E2E tests with protractor and cucumber
 * Development environment
     * Webserver with livereload
     * Watching files for changes and full, fast, incremental rebuilds
@@ -39,21 +43,208 @@ This project is a set of industrial-grade gulp tasks aiming to organize your wor
     * cache busting
     
 * Continous integration
-    * build + jshint + jsbeautifier + tests with guaranteed non-zero exit status on error
-    
-### Installation
+    * build + jshint + jsbeautifier + tests + e2e with guaranteed non-zero exit status on error
+        
+Requirements
+------------
+
+You need: 
+
+* [nodejs](http://nodejs.org/download/)
+* updated npm
+* satisfy [node-gyp](https://github.com/TooTallNate/node-gyp) dependencies
+
+
+### nodejs
+
+If you've never used Node or npm before, you'll need to install Node.
+If you use homebrew, do:
+
+```Shell
+brew install node
+```
+
+Otherwise, you can [download](http://nodejs.org/download/) and install it manually.
+
+### updated npm
+
+Update npm by running
+
+```Shell
+npm update npm -g
+```
+
+### node-gyp dependencies
+
+Node-gyp is used to compile native extensions to node. Zkflow does not require node-gyp directly, but it is installed
+by its dependencies. To install this dependencies properly you need to satisfy node-gyp requirements.
+Go to [node-gyp github page](https://github.com/TooTallNate/node-gyp) and follow instructions in "You will also need to install" paragraph in README file (python etc.)
+
+Installation
+------------
 
 Gulp Zkflow for AngularJS is available through npm
 
 ```Shell
-npm install --save gulp
-npm install --save gulp-zkflow-angular
+npm install --save gulp gulp-zkflow-angular
 ```
-
-### Usage
 
 Put this line in your gulpfile.js
 
 ```JavaScript
 require('gulp-zkflow-angular').init();
 ```
+
+This will create a set of tasks in gulp, which you will be able to use from console
+
+Development flow
+----------------
+
+How you can use ZKflow gulp tasks to work with Your AngularJS project
+
+### write code and test
+
+Run in project root directory
+
+```Shell
+./node_modules/.bin/gulp
+```
+
+or
+
+```Shell
+./node_modules/.bin/gulp default
+```
+
+This task will
+
+* clean whole output dir (dev/)
+* bundle all your js with browserify and watch file changes with watchify
+* bundle all your styles with less and autoprefix
+* run jshint and rerun on any js file change
+* run tests with karma and browserify and watch file changes with watchify
+* run bower install
+* bundle your angular templates into angular module (.tmp/templates.js) and rebundle on any template file change
+* copy your assets and copy any newly created asset since then
+* copy Your index.html and inject styles, scripts, angular main module name into it. Redo on index.html change.
+* start gulp-webserver with livereload
+* open Your default web browser with proper address.
+
+Write some code, enjoy the results
+
+### write e2e tests
+
+Run in project root directory
+
+```Shell
+./node_modules/.bin/gulp e2e
+```
+
+This task will
+
+* clean whole output dir (test/)
+* same as in default task, but will try to start from test module (where you can put Your e2e mocks)
+* run protractor and rerun every time you press 'r'
+
+Write some tests
+
+### beautify your code
+
+Run in project root directory
+
+```Shell
+./node_modules/.bin/gulp beautify
+```
+
+all your code will be automatically beatified with jsbeautifier
+
+### check everything
+
+Run in project root directory
+
+```Shell
+./node_modules/.bin/gulp ci
+```
+
+This task will fail if
+
+* code isn't beautified
+* code isn't jshinted
+* any of karma tests will fail
+* any of protractor e2e tests will fail
+* build fail (less, browserify)
+
+You definitly should add this task to your CI server. This task can be splitted into stages.
+`./node_modules/.bin/gulp ci` is an equivalent for
+
+```Shell
+./node_modules/.bin/gulp ci-static-analysis
+./node_modules/.bin/gulp ci-test
+./node_modules/.bin/gulp ci-build
+./node_modules/.bin/gulp ci-e2e
+```
+
+### commit :D
+
+```Shell
+git commit -m 'awesome code'
+```
+
+Manual tests
+------------
+
+You can speed up your testing process by installing Your project dependencies with --no-optional flag
+
+```Shell
+npm install --no-optional
+./node_modules/.bin/gulp build
+```
+
+but remember
+
+* only `./node_modules/.bin/gulp build` is guaranteed to work
+* not recommended on production, just for testing
+
+Production flow
+---------------
+
+### installing
+
+```Shell
+npm install
+```
+
+### building
+
+```Shell
+./node_modules/.bin/gulp build
+```
+
+This task will
+
+* clean whole output dir (dist/)
+* bundle all your js with browserify and minify with uglifyjs
+* bundle all your styles with less, autoprefix and minify with csso
+* run bower install
+* bundle your angular templates into angular module (.tmp/templates.js) and minify with htmlminify
+* copy your assets and minify all .png/.jpg/.gif/.svg
+* copy Your index.html, htmlminify and inject styles, scripts, angular main module name into it.
+* Do cache busting
+
+### Apache/Nginx
+
+Point it to `./dist` directory, and configure your server to fallback to index.html if file not found (to work with router html5 mode)
+
+Default configuration
+---------------------
+
+### Directory structure
+
+* dist/ - build output
+* dev/ - dev output
+* test/ - e2e output
+
+Configuration
+-------------
+
+ZKflow for angular is highly configurable, just API isn't documented yet ;P

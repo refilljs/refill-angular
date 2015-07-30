@@ -2,77 +2,121 @@
 
 function getTestTask(options, gulp, mode) {
 
-  function testTask(done) {
+  function testTask(next) {
 
     var karma = require('karma');
-    var testLogger = require('gulp-zkflow-logger')('test');
-    var reporters = ['progress'];
-    var server;
+    var istanbul = require('browserify-istanbul');
+    var zkutils = require('gulp-zkflow-utils');
+    var _ = require('lodash');
+    var q = require('q');
+    var del = require('del');
+    var globby = require('globby');
 
-    if (mode.env !== 'dev') {
-      reporters.push('junit');
-    }
+    var logger = zkutils.logger('test');
+    var globDeferred = q.defer();
 
-    server = new karma.Server({
-        files: options.files,
-        plugins: [
-          require('karma-browserify'),
-          require('karma-jasmine'),
-          require('karma-junit-reporter'),
-          require('karma-phantomjs-launcher')
-        ],
-        logLevel: 'error',
-        frameworks: ['jasmine', 'browserify'],
-        browserNoActivityTimeout: 120000,
-        singleRun: mode.env !== 'dev',
-        autoWatch: mode.env === 'dev',
-        preprocessors: {
-          'src/**': ['browserify']
-        },
-        browserify: {
-          debug: true,
-          configure: function(bundle) {
-            bundle.on('update', testLogger.start);
-          }
-        },
-        browsers: ['PhantomJS'],
-        junitReporter: {
-          outputDir: options.junitReporterOutputDir
-        },
-        reporters: reporters
-      },
-      function(exitStatus) {
+    var nextHandler;
+    var testPromise;
 
-        var errorMessage = 'task failed';
+    _.extend(mode, options.mode);
 
-        if (mode.env !== 'dev') {
-          if (exitStatus === 0) {
-            testLogger.finished();
-            done();
-            return;
-          }
-          testLogger.error({
-            message: errorMessage
-          });
-          done(errorMessage);
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: mode.watch,
+      logger: logger
+    });
+
+    logger.start();
+
+    globby(options.files, function(error, files) {
+      if (error !== null) {
+        globDeferred.reject(error);
+        return;
+      }
+      if (files.length === 0) {
+        globDeferred.reject('No test files found');
+        return;
+      }
+      globDeferred.resolve(files);
+      return;
+    });
+
+    testPromise = globDeferred.promise
+      .then(function() {
+        return q.nfcall(del, [options.reportsBaseDir + '**/*']);
+      })
+      .then(function() {
+
+        var reporters = ['progress'];
+        var server;
+        var karmaDeferred = q.defer();
+
+        if (!mode.watch) {
+          reporters.push('junit', 'coverage');
         }
 
-      }
-    );
+        server = new karma.Server({
+          files: options.files,
+          plugins: [
+            require('karma-browserify'),
+            require('karma-jasmine'),
+            require('karma-junit-reporter'),
+            require('karma-phantomjs-launcher'),
+            require('karma-coverage')
+          ],
+          logLevel: 'error',
+          frameworks: ['jasmine', 'browserify'],
+          browserNoActivityTimeout: 120000,
+          singleRun: !mode.watch,
+          autoWatch: mode.watch,
+          preprocessors: {
+            'src/**/*': ['browserify']
+          },
+          browserify: {
+            debug: true,
+            configure: function(bundle) {
+              bundle.on('update', logger.changed);
+            },
+            transform: [istanbul({
+              ignore: options.istanbulIgnore
+            })]
+          },
+          browsers: ['PhantomJS'],
+          reporters: reporters,
+          junitReporter: {
+            outputDir: options.reportsBaseDir + options.junitReporterOutputDir
+          },
+          coverageReporter: {
+            dir: options.reportsBaseDir,
+            reporters: options.istanbulReporters
+          }
+        }, function() {
+          // without this empty function karma will stop execution of entire script after tests
+        });
 
+        server.on('run_complete', function(browsers, results) {
 
+          var oldKarmaDeferred = karmaDeferred;
 
-    if (mode.env === 'dev') {
+          karmaDeferred = q.defer();
+          nextHandler.handle(karmaDeferred.promise);
 
-      server.on('run_complete', function() {
-        testLogger.finished();
+          if (results.exitCode === 0) {
+            oldKarmaDeferred.resolve();
+            return;
+          }
+
+          oldKarmaDeferred.reject('failed');
+
+        });
+
+        server.start();
+
+        return karmaDeferred.promise;
+
       });
 
-      done();
-
-    }
-
-    server.start();
+    nextHandler.handle(testPromise);
 
   }
 
@@ -84,6 +128,16 @@ module.exports = {
   getTask: getTestTask,
   defaultOptions: {
     files: ['src/unitTests.js'],
-    junitReporterOutputDir: ''
+    reportsBaseDir: 'reports/test/',
+    junitReporterOutputDir: 'junit/',
+    htmlReporterOutputDir: 'html/',
+    istanbulIgnore: ['**/node_modules/**/*', '**/bower_components/**/*', '**/*Spec.js', '**/unitTests.js'],
+    istanbulReporters: [{
+      type: 'html',
+      subdir: 'coverageHtml'
+    }, {
+      type: 'clover',
+      subdir: 'coverageClover'
+    }]
   }
 };
