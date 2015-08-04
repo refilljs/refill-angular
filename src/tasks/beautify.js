@@ -8,9 +8,6 @@ function getBeautifyTask(options, gulp, mode) {
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('beautify');
     var stream;
-    var _ = require('lodash');
-
-    _.extend(mode, options.mode);
 
     logger.start();
 

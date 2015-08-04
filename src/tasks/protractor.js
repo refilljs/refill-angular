@@ -2,12 +2,17 @@
 
 function getProtractorTask(options, gulp, mode) {
 
+  var runnedTasks = require('minimist')(process.argv.slice(2))._;
+
+  if (runnedTasks.indexOf('e2e') !== -1) {
+    mode.env = 'test';
+  }
+
   function protractorTask(next) {
 
     var protractor = require('gulp-protractor').protractor;
     var webserver = require('gulp-webserver');
     var path = require('path');
-    var _ = require('lodash');
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('e2e');
     var nextHandler;
@@ -43,8 +48,6 @@ function getProtractorTask(options, gulp, mode) {
       }
       return protractorPromise;
     }
-
-    _.extend(mode, options.mode);
 
     nextHandler = new zkutils.NextHandler({
       next: next,

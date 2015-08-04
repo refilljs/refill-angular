@@ -45,7 +45,6 @@ function getGulp(externalGulp) {
  */
 function init(options, externalGulp) {
 
-
   loadTasks(mode, options, getGulp(externalGulp), {
     assets: require('./tasks/assets'),
     beautify: require('./tasks/beautify'),
@@ -133,10 +132,7 @@ function init(options, externalGulp) {
     },
     'e2e': {
       task: require('./tasks/protractor'),
-      dependencies: ['webdriver-update', 'assemble'],
-      mode: {
-        env: 'test'
-      }
+      dependencies: ['webdriver-update', 'assemble']
     },
     inject: {
       task: require('./tasks/inject'),

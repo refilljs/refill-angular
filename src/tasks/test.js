@@ -7,7 +7,6 @@ function getTestTask(options, gulp, mode) {
     var karma = require('karma');
     var istanbul = require('browserify-istanbul');
     var zkutils = require('gulp-zkflow-utils');
-    var _ = require('lodash');
     var q = require('q');
     var del = require('del');
     var globby = require('globby');
@@ -17,8 +16,6 @@ function getTestTask(options, gulp, mode) {
 
     var nextHandler;
     var testPromise;
-
-    _.extend(mode, options.mode);
 
     nextHandler = new zkutils.NextHandler({
       next: next,

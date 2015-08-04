@@ -14,9 +14,6 @@ function getCssTask(options, gulp, mode) {
     var logger = zkutils.logger('css');
     var outputDir = require('../getOutputDir')();
     var done = false;
-    var _ = require('lodash');
-
-    _.extend(mode, options.mode);
 
     logger.start();
 

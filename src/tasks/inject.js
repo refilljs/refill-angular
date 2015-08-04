@@ -15,8 +15,6 @@ function getInjectTask(options, gulp, mode) {
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);
     var headInjectablesGlobs = prefixGlobs(options.headInjectablesGlobs);
 
-    _.extend(mode, options.mode);
-
     function addBaseDir(glob) {
       if (glob.charAt(0) === '!') {
         return '!' + outputDir + glob.slice(1);

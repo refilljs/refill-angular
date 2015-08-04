@@ -7,7 +7,6 @@ function getJshintTask(options, gulp, mode) {
     var jshint = require('gulp-jshint');
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('jshint');
-    var _ = require('lodash');
     var stream;
     var jshintDefaultOptions = {
       lookup: false,
@@ -18,8 +17,6 @@ function getJshintTask(options, gulp, mode) {
       browserify: true,
       jasmine: true
     };
-
-    _.extend(mode, options.mode);
 
     logger.start();
 

@@ -9,9 +9,6 @@ function getTemplatesTask(options, gulp, mode) {
     var minifyHtml = require('gulp-minify-html');
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('templates');
-    var _ = require('lodash');
-
-    _.extend(mode, options.mode);
 
     logger.start();
 

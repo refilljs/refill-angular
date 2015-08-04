@@ -10,11 +10,8 @@ function getAssetsTask(options, gulp, mode) {
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('assets');
     var outputDir = require('../getOutputDir')();
-    var _ = require('lodash');
 
     logger.start();
-
-    _.extend(mode, options.mode);
 
     function assetsStream() {
       return gulp
