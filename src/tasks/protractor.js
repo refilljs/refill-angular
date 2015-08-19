@@ -34,7 +34,7 @@ function getProtractorTask(options, gulp, mode) {
       logger.start();
 
       return zkutils
-        .promisify(gulp.src('e2e/features/**/*.feature')
+        .promisify(gulp.src(options.globs)
           .pipe(protractor({
             configFile: getConfigPath()
           })));
@@ -107,6 +107,7 @@ function getProtractorTask(options, gulp, mode) {
 module.exports = {
   getTask: getProtractorTask,
   defaultOptions: {
+    globs: 'e2e/features/**/*.feature',
     customConfigFiles: false,
     configFile: 'protractor.conf.js',
     watchConfigFile: 'protractor.watch.conf.js'
