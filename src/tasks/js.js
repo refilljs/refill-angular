@@ -2,7 +2,7 @@
 
 function getJsTask(options, gulp, mode) {
 
-  function jsTask() {
+  function jsTask(next) {
 
     var source = require('vinyl-source-stream');
     var browserify = require('browserify');
@@ -11,11 +11,12 @@ function getJsTask(options, gulp, mode) {
     var gulpif = require('gulp-if');
     var streamify = require('gulp-streamify');
     var zkutils = require('gulp-zkflow-utils');
+    var q = require('q');
     var logger = zkutils.logger('js');
     var bundler;
     var watchify;
-
-    logger.start();
+    var nextHandler;
+    var rebundlePromise;
 
     function getEntries() {
 
@@ -33,22 +34,27 @@ function getJsTask(options, gulp, mode) {
 
     function rebundle() {
 
-      var stream;
+      var deferred = q.defer();
 
-      stream = bundler.bundle();
-
-      if (mode.watch) {
-        stream = stream.on('error', logger.error);
-      }
-
-      return stream
+      bundler.bundle()
+        .on('error', deferred.reject)
         .pipe(source('index.js'))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(uglify())))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
         .pipe(gulp.dest(require('../getOutputDir')()))
-        .on('end', logger.finished);
+        .on('end', deferred.resolve);
+
+      return nextHandler.handle(deferred.promise);
 
     }
+
+    logger.start();
+
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: mode.watch,
+      logger: logger
+    });
 
     bundler = browserify({
       cache: {},
@@ -63,11 +69,17 @@ function getJsTask(options, gulp, mode) {
     if (mode.watch) {
       watchify = require('watchify');
       bundler = watchify(bundler);
-      bundler.on('update', logger.changed);
-      bundler.on('update', rebundle);
     }
 
-    return rebundle();
+    rebundlePromise = rebundle()
+      .finally(function() {
+        if (mode.watch) {
+          bundler.on('update', function(path) {
+            logger.changed(path);
+            rebundlePromise = rebundlePromise.finally(rebundle);
+          });
+        }
+      });
 
   }
 

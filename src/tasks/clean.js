@@ -2,20 +2,21 @@
 
 function getCleanTask() {
 
-  function cleanTask(done) {
+  function cleanTask(next) {
 
-    var del = require('del');
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('clean');
+    var nextHandler;
 
     logger.start();
 
-    del(
-      require('../getOutputDir')() + '**/*',
-      function() {
-        logger.finished();
-        done();
-      });
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: false,
+      logger: logger
+    });
+
+    nextHandler.handle(zkutils.del(require('../getOutputDir')() + '**/*'));
 
   }
 

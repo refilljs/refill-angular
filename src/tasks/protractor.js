@@ -10,92 +10,105 @@ function getProtractorTask(options, gulp, mode) {
 
   function protractorTask(next) {
 
-    var protractor = require('gulp-protractor').protractor;
-    var webserver = require('gulp-webserver');
-    var path = require('path');
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('e2e');
-    var nextHandler;
 
-    function getConfigPath() {
-      var configDir = path.resolve(__dirname, '../defaultConfigs/');
-      if (options.customConfigFiles) {
-        return mode.watch ? options.watchConfigFile : options.configFile;
-      }
-      return path.resolve(configDir, mode.watch ? 'protractor.watch.conf.js' : 'protractor.conf.js');
-    }
+    logger.start();
 
-    function help() {
-      logger.log('press "r" to rerun e2e tests or "^C" to quit');
-    }
+    function startProtractor() {
 
-    function runProtractor() {
+      var protractor = require('gulp-protractor').protractor;
+      var webserver = require('gulp-webserver');
+      var path = require('path');
+      var nextHandler;
 
-      logger.start();
-
-      return zkutils
-        .promisify(gulp.src(options.globs)
-          .pipe(protractor({
-            configFile: getConfigPath()
-          })));
-
-    }
-
-    function handleProtractorPromise(protractorPromise) {
-      nextHandler.handle(protractorPromise);
-      if (mode.watch) {
-        protractorPromise.finally(help);
-      }
-      return protractorPromise;
-    }
-
-    nextHandler = new zkutils.NextHandler({
-      next: next,
-      watch: mode.watch,
-      logger: logger
-    });
-
-    zkutils
-      .promisify(gulp.src('test/')
-        .pipe(webserver({
-          fallback: 'index.html',
-          livereload: false,
-          port: 8001
-        })))
-      .then(function(webserverStream) {
-
-        var protractorPromise = runProtractor();
-
-        handleProtractorPromise(protractorPromise);
-
-        if (!mode.watch) {
-          protractorPromise.finally(function() {
-            webserverStream.emit('kill');
-          });
-          return;
+      function getConfigPath() {
+        var configDir = path.resolve(__dirname, '../defaultConfigs/');
+        if (options.customConfigFiles) {
+          return mode.watch ? options.watchConfigFile : options.configFile;
         }
+        return path.resolve(configDir, mode.watch ? 'protractor.watch.conf.js' : 'protractor.conf.js');
+      }
 
-        // this will start simple interactive mode. If you press "r" e2e tests will run, "^C" will stop execution
-        process.stdin.setRawMode(true);
-        process.stdin.setEncoding('utf8');
-        process.stdin.on('data', function(chunk) {
+      function help() {
+        logger.info('press "r" to rerun e2e tests or "^C" to quit');
+      }
 
-          var ctrlCCode = 3;
+      function runProtractor() {
 
-          if (chunk.charCodeAt(0) === ctrlCCode) {
-            webserverStream.emit('kill');
-            process.exit();
-          }
+        return zkutils
+          .promisify(gulp.src(options.globs)
+            .pipe(protractor({
+              configFile: getConfigPath()
+            })));
 
-          if (chunk === 'r') {
-            handleProtractorPromise(runProtractor());
+      }
+
+      function handleProtractorPromise(protractorPromise) {
+        nextHandler.handle(protractorPromise);
+        if (mode.watch) {
+          protractorPromise.finally(help);
+        }
+        return protractorPromise;
+      }
+
+      nextHandler = new zkutils.NextHandler({
+        next: next,
+        watch: mode.watch,
+        logger: logger
+      });
+
+      zkutils
+        .promisify(gulp.src('test/')
+          .pipe(webserver({
+            fallback: 'index.html',
+            livereload: false,
+            port: 8001
+          })))
+        .then(function(webserverStream) {
+
+          var protractorPromise = runProtractor();
+
+          handleProtractorPromise(protractorPromise);
+
+          if (!mode.watch) {
+            protractorPromise.finally(function() {
+              webserverStream.emit('kill');
+            });
             return;
           }
 
-          help();
+          // this will start simple interactive mode. If you press "r" e2e tests will run, "^C" will stop execution
+          process.stdin.setRawMode(true);
+          process.stdin.setEncoding('utf8');
+          process.stdin.on('data', function(chunk) {
+
+            var ctrlCCode = 3;
+
+            if (chunk.charCodeAt(0) === ctrlCCode) {
+              webserverStream.emit('kill');
+              process.exit();
+            }
+
+            if (chunk === 'r') {
+              logger.start();
+              handleProtractorPromise(runProtractor());
+              return;
+            }
+
+            help();
+
+          });
 
         });
 
+    }
+
+    zkutils.globby(options.globs)
+      .then(startProtractor, function() {
+        logger.info('No e2e test files found');
+        logger.finished();
+        next();
       });
 
   }

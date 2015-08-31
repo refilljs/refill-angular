@@ -45,6 +45,13 @@ function getGulp(externalGulp) {
  */
 function init(options, externalGulp) {
 
+  var zkutils = require('gulp-zkflow-utils');
+  var chalk = require('chalk');
+
+  console.log('');
+  console.log(' %s %s for AngularJS  %s', zkutils.logger.prefix, chalk.green.bold('ZKFlow'), chalk.grey('made by Zaklinacze Kodu'));
+  console.log('');
+
   loadTasks(mode, options, getGulp(externalGulp), {
     assets: require('./tasks/assets'),
     beautify: require('./tasks/beautify'),

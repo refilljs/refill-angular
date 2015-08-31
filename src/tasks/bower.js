@@ -1,18 +1,45 @@
 'use strict';
 
-function getBowerTask() {
+function getBowerTask(options, gulp, mode) {
 
-  function bowerTask() {
+  function bowerTask(next) {
 
-    var bower = require('gulp-bower');
     var zkutils = require('gulp-zkflow-utils');
+    var bower = require('bower');
     var logger = zkutils.logger('bower');
+    var nextHandler;
+    var runBowerPromise;
+
+    function runBower() {
+
+      var promise = zkutils.globby('bower.json', 'No bower.json file found');
+
+      return nextHandler.handle(promise, {
+        ignoreFailures: true,
+        handleSuccess: false
+      }).then(function() {
+        return nextHandler.handle(zkutils.promisify(bower.commands.install()));
+      });
+
+    }
 
     logger.start();
 
-    return bower()
-      .on('error', logger.error)
-      .on('end', logger.finished);
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: mode.watch,
+      logger: logger
+    });
+
+    runBowerPromise = runBower()
+      .finally(function() {
+        if (mode.watch) {
+          gulp.watch('bower.json', function(path) {
+            logger.changed(path);
+            runBowerPromise = runBowerPromise.finally(runBower);
+          });
+        }
+      });
 
   }
 

@@ -2,14 +2,21 @@
 
 function getBeautifyTask(options, gulp, mode) {
 
-  function beautifyTask() {
+  function beautifyTask(next) {
 
     var jsbeautifier = require('gulp-jsbeautifier');
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('beautify');
     var stream;
+    var nextHandler;
 
     logger.start();
+
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: false,
+      logger: logger
+    });
 
     stream = gulp
       .src(options.globs, {
@@ -30,17 +37,13 @@ function getBeautifyTask(options, gulp, mode) {
           indentSize: '2',
           endWithNewline: true
         }
-      }))
-      .on('error', logger.error);
+      }));
 
     if (mode.env === 'dev') {
-      return stream
-        .pipe(gulp.dest(''))
-        .on('end', logger.finished);
+      stream = stream.pipe(gulp.dest(''));
     }
 
-    return stream
-      .on('end', logger.finished);
+    nextHandler.handle(zkutils.promisify(stream));
 
   }
 

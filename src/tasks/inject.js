@@ -2,18 +2,22 @@
 
 function getInjectTask(options, gulp, mode) {
 
-  function injectTask() {
+  function injectTask(next) {
 
     var inject = require('gulp-inject');
     var minifyHtml = require('gulp-minify-html');
     var template = require('gulp-template');
     var gulpif = require('gulp-if');
     var zkutils = require('gulp-zkflow-utils');
-    var logger = zkutils.logger('inject');
+    var q = require('q');
+    var plumber = require('gulp-plumber');
     var _ = require('lodash');
     var outputDir = require('../getOutputDir')();
+    var logger = zkutils.logger('inject');
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);
     var headInjectablesGlobs = prefixGlobs(options.headInjectablesGlobs);
+    var runInjectPromise;
+    var nextHandler;
 
     function addBaseDir(glob) {
       if (glob.charAt(0) === '!') {
@@ -68,37 +72,61 @@ function getInjectTask(options, gulp, mode) {
 
     }
 
-    function injectStream() {
+    function runInject() {
 
-      var stream;
+      var promise = zkutils.globby(options.globs, 'No ' + options.globs + '  file found');
 
-      stream = gulp.src(options.globs)
-        .pipe(getInject(injectablesGlobs));
+      return nextHandler.handle(promise, {
+        ignoreFailures: true,
+        handleSuccess: false
+      }).then(function() {
 
-      if (typeof headInjectablesGlobs !== 'undefined') {
-        stream = stream.pipe(getInject(headInjectablesGlobs, 'head'));
-      }
+        var deferred = q.defer();
+        var stream;
 
-      return stream
-        .pipe(template({
-          angularMainModuleName: getAngularMainModuleName()
-        }))
-        .pipe(gulpif(mode.env !== 'dev', minifyHtml({
-          empty: true,
-          spare: true,
-          quotes: true
-        })))
-        .pipe(gulp.dest(outputDir))
-        .on('end', logger.finished);
+        stream = gulp.src(options.globs)
+          .pipe(plumber(deferred.reject))
+          .pipe(getInject(injectablesGlobs));
+
+        if (typeof headInjectablesGlobs !== 'undefined') {
+          stream = stream.pipe(getInject(headInjectablesGlobs, 'head'));
+        }
+
+        stream
+          .pipe(template({
+            angularMainModuleName: getAngularMainModuleName()
+          }))
+          .pipe(gulpif(mode.env !== 'dev', minifyHtml({
+            empty: true,
+            spare: true,
+            quotes: true
+          })))
+          .pipe(gulp.dest(outputDir))
+          .on('end', deferred.resolve);
+
+        return nextHandler.handle(deferred.promise);
+
+      });
 
     }
 
-    if (mode.watch) {
-      gulp.watch(options.globs, injectStream)
-        .on('change', logger.changed);
-    }
+    logger.start();
 
-    return injectStream();
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: mode.watch,
+      logger: logger
+    });
+
+    runInjectPromise = runInject()
+      .finally(function() {
+        if (mode.watch) {
+          gulp.watch(options.globs, function(path) {
+            logger.changed(path);
+            runInjectPromise = runInjectPromise.finally(runInject);
+          });
+        }
+      });
 
   }
 
