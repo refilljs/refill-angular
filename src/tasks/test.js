@@ -121,7 +121,11 @@ module.exports = {
     reportsBaseDir: 'reports/test/',
     junitReporterOutputDir: 'junit/',
     htmlReporterOutputDir: 'html/',
-    istanbulIgnore: ['**/node_modules/**/*', '**/bower_components/**/*', '**/*Spec.js'],
+    istanbulIgnore: [
+      '**/node_modules/**/*',
+      '**/bower_components/**/*',
+      '**/*Spec.js'
+    ],
     istanbulReporters: [{
       type: 'html',
       subdir: 'coverageHtml'

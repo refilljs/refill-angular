@@ -137,7 +137,7 @@ function init(options, externalGulp) {
         'webserver'
       ]
     },
-    'e2e': {
+    e2e: {
       task: require('./tasks/protractor'),
       dependencies: ['webdriver-update', 'assemble']
     },
