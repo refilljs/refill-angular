@@ -133,7 +133,7 @@ function init(options, externalGulp) {
     default: {
       task: require('./tasks/sequence'),
       sequence: [
-        ['assemble', 'jshint', 'test'],
+        'clean', ['inject', 'assets', 'jshint', 'test'],
         'webserver'
       ]
     },

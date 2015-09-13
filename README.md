@@ -443,7 +443,7 @@ Default options
     enabled: true,
     dependencies: [],
     sequence: [
-      ['assemble', 'jshint', 'test'],
+      'clean', ['inject', 'assets', 'jshint', 'test'],
       'webserver'
     ]
   },
