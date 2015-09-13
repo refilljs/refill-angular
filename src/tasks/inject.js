@@ -94,7 +94,7 @@ function getInjectTask(options, gulp, mode) {
 
           stream
             .pipe(template({
-              angularMainModuleName: getAngularMainModuleName()
+              angularMainModuleName: mode.angularMainModuleProdFallback ? options.prodAngularMainModuleName : getAngularMainModuleName()
             }))
             .pipe(gulpif(mode.env !== 'dev', minifyHtml({
               empty: true,

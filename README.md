@@ -261,7 +261,7 @@ reports/
 
 ```html
 <!DOCTYPE html>
-<html ng-app="appName" lang="en">
+<html ng-app="<%= angularMainModuleName %>" lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -284,10 +284,10 @@ reports/
 
 var angular = require('angular');
 
-angular.module('appName', [
+angular.module('app', [
     require('../.tmp/templates.js').name
   ])
-  .controller('appNameController', /** @ngInject */ function() {
+  .controller('appController', /** @ngInject */ function() {
   });
 ```
 
@@ -513,7 +513,8 @@ Default mode
 ```JavaScript
 {
   env: 'dev',
-  watch: true
+  watch: true,
+  angularMainModuleProdFallback: false
 }
 ```
 

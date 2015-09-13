@@ -48,36 +48,64 @@ function getJsTask(options, gulp, mode) {
 
     }
 
+    function checkEntries() {
+
+      function checkProdEntries() {
+        return nextHandler.handle(
+          zkutils.globby(options.prodEntries, 'prod js not found'), {
+            ignoreFailures: true,
+            handleSuccess: false
+          });
+
+      }
+
+      if (mode.env === 'prod') {
+        return checkProdEntries();
+      }
+
+      return zkutils.globby(getEntries(), mode.env + ' js not found, falling back to prod')
+        .catch(function(error) {
+          logger.info(error);
+          mode.angularMainModuleProdFallback = true;
+          return checkProdEntries();
+        });
+
+    }
+
     nextHandler = new zkutils.NextHandler({
       next: next,
       watch: mode.watch,
       logger: logger
     });
 
-    bundler = browserify({
-      cache: {},
-      packageCache: {},
-      fullPaths: true,
-      entries: getEntries(),
-      debug: mode.env === 'dev'
-    });
+    checkEntries().then(function() {
 
-    bundler.transform(require('browserify-ngannotate'));
-
-    if (mode.watch) {
-      watchify = require('watchify');
-      bundler = watchify(bundler);
-    }
-
-    rebundlePromise = rebundle()
-      .finally(function() {
-        if (mode.watch) {
-          bundler.on('update', function(path) {
-            logger.changed(path);
-            rebundlePromise = rebundlePromise.finally(rebundle);
-          });
-        }
+      bundler = browserify({
+        cache: {},
+        packageCache: {},
+        fullPaths: true,
+        entries: mode.angularMainModuleProdFallback ? options.prodEntries : getEntries(),
+        debug: mode.env === 'dev'
       });
+
+      bundler.transform(require('browserify-ngannotate'));
+
+      if (mode.watch) {
+        watchify = require('watchify');
+        bundler = watchify(bundler);
+      }
+
+      rebundlePromise = rebundle()
+        .finally(function() {
+          if (mode.watch) {
+            bundler.on('update', function(path) {
+              logger.changed(path);
+              rebundlePromise = rebundlePromise.finally(rebundle);
+            });
+          }
+        });
+
+    });
 
   }
 
