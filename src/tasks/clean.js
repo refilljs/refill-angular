@@ -8,8 +8,6 @@ function getCleanTask() {
     var logger = zkutils.logger('clean');
     var nextHandler;
 
-    logger.start();
-
     nextHandler = new zkutils.NextHandler({
       next: next,
       watch: false,

@@ -10,8 +10,6 @@ function getBeautifyTask(options, gulp, mode) {
     var stream;
     var nextHandler;
 
-    logger.start();
-
     nextHandler = new zkutils.NextHandler({
       next: next,
       watch: false,

@@ -35,8 +35,6 @@ function getTemplatesTask(options, gulp, mode) {
 
     }
 
-    logger.start();
-
     nextHandler = new zkutils.NextHandler({
       next: next,
       watch: mode.watch,

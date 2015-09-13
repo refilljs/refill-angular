@@ -11,8 +11,6 @@ function getTestTask(options, gulp, mode) {
     var logger = zkutils.logger('test');
     var nextHandler;
 
-    logger.start();
-
     nextHandler = new zkutils.NextHandler({
       next: next,
       watch: mode.watch,

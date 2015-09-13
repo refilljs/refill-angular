@@ -18,8 +18,6 @@ function getJshintTask(options, gulp, mode) {
       jasmine: true
     };
 
-    logger.start();
-
     function jshintStream() {
 
       return gulp
