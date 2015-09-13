@@ -74,39 +74,39 @@ function getInjectTask(options, gulp, mode) {
 
     function runInject() {
 
-      var promise = zkutils.globby(options.globs, 'No ' + options.globs + '  file found');
+      return nextHandler.handle(
+          zkutils.globby(options.globs, 'No ' + options.globs + ' file found'), {
+            ignoreFailures: true,
+            handleSuccess: false
+          })
+        .then(function() {
 
-      return nextHandler.handle(promise, {
-        ignoreFailures: true,
-        handleSuccess: false
-      }).then(function() {
+          var deferred = q.defer();
+          var stream;
 
-        var deferred = q.defer();
-        var stream;
+          stream = gulp.src(options.globs)
+            .pipe(plumber(deferred.reject))
+            .pipe(getInject(injectablesGlobs));
 
-        stream = gulp.src(options.globs)
-          .pipe(plumber(deferred.reject))
-          .pipe(getInject(injectablesGlobs));
+          if (typeof headInjectablesGlobs !== 'undefined') {
+            stream = stream.pipe(getInject(headInjectablesGlobs, 'head'));
+          }
 
-        if (typeof headInjectablesGlobs !== 'undefined') {
-          stream = stream.pipe(getInject(headInjectablesGlobs, 'head'));
-        }
+          stream
+            .pipe(template({
+              angularMainModuleName: getAngularMainModuleName()
+            }))
+            .pipe(gulpif(mode.env !== 'dev', minifyHtml({
+              empty: true,
+              spare: true,
+              quotes: true
+            })))
+            .pipe(gulp.dest(outputDir))
+            .on('end', deferred.resolve);
 
-        stream
-          .pipe(template({
-            angularMainModuleName: getAngularMainModuleName()
-          }))
-          .pipe(gulpif(mode.env !== 'dev', minifyHtml({
-            empty: true,
-            spare: true,
-            quotes: true
-          })))
-          .pipe(gulp.dest(outputDir))
-          .on('end', deferred.resolve);
+          return nextHandler.handle(deferred.promise);
 
-        return nextHandler.handle(deferred.promise);
-
-      });
+        });
 
     }
 

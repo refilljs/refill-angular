@@ -13,14 +13,6 @@ function getAssetsTask(options, gulp, mode) {
     var nextHandler;
     var runAssetsPromise;
 
-    logger.start();
-
-    nextHandler = new zkutils.NextHandler({
-      next: next,
-      watch: mode.watch,
-      logger: logger
-    });
-
     function runAssets() {
 
       return nextHandler.handle(
@@ -36,6 +28,14 @@ function getAssetsTask(options, gulp, mode) {
       );
 
     }
+
+    logger.start();
+
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: mode.watch,
+      logger: logger
+    });
 
     runAssetsPromise = runAssets()
       .finally(function() {
