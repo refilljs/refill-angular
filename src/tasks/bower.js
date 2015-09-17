@@ -5,6 +5,7 @@ function getBowerTask(options, gulp, mode) {
   function bowerTask(next) {
 
     var zkutils = require('gulp-zkflow-utils');
+    var watch = require('gulp-watch');
     var bower = require('bower');
     var logger = zkutils.logger('bower');
     var nextHandler;
@@ -32,8 +33,8 @@ function getBowerTask(options, gulp, mode) {
     runBowerPromise = runBower()
       .finally(function() {
         if (mode.watch) {
-          gulp.watch('bower.json', function(path) {
-            logger.changed(path);
+          watch('bower.json', function(event) {
+            logger.changed(event);
             runBowerPromise = runBowerPromise.finally(runBower);
           });
         }

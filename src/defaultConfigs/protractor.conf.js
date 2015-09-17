@@ -17,7 +17,7 @@ exports.config = {
   baseUrl: 'http://localhost:8001',
 
   cucumberOpts: {
-    require: process.cwd() + '/e2e/stepDefinitions/**/*.js'
+    require: process.cwd() + '/e2e/stepDefinitions/**.js'
   }
 
 };

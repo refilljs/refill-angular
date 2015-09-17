@@ -11,6 +11,7 @@ function getInjectTask(options, gulp, mode) {
     var zkutils = require('gulp-zkflow-utils');
     var q = require('q');
     var plumber = require('gulp-plumber');
+    var watch = require('gulp-watch');
     var _ = require('lodash');
     var outputDir = require('../getOutputDir')();
     var logger = zkutils.logger('inject');
@@ -119,8 +120,8 @@ function getInjectTask(options, gulp, mode) {
     runInjectPromise = runInject()
       .finally(function() {
         if (mode.watch) {
-          gulp.watch(options.globs, function(path) {
-            logger.changed(path);
+          watch(options.globs, function(event) {
+            logger.changed(event);
             runInjectPromise = runInjectPromise.finally(runInject);
           });
         }

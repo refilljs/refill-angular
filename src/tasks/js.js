@@ -11,6 +11,7 @@ function getJsTask(options, gulp, mode) {
     var gulpif = require('gulp-if');
     var streamify = require('gulp-streamify');
     var zkutils = require('gulp-zkflow-utils');
+    var watch = require('gulp-watch');
     var q = require('q');
     var logger = zkutils.logger('js');
     var bundler;
@@ -20,7 +21,7 @@ function getJsTask(options, gulp, mode) {
 
     function getEntries() {
 
-      if (mode.env === 'prod') {
+      if (mode.angularMainModuleProdFallback || mode.env === 'prod') {
         return options.prodEntries;
       }
 
@@ -56,7 +57,6 @@ function getJsTask(options, gulp, mode) {
             ignoreFailures: true,
             handleSuccess: false
           });
-
       }
 
       if (mode.env === 'prod') {
@@ -72,19 +72,13 @@ function getJsTask(options, gulp, mode) {
 
     }
 
-    nextHandler = new zkutils.NextHandler({
-      next: next,
-      watch: mode.watch,
-      logger: logger
-    });
-
-    checkEntries().then(function() {
+    function runJs() {
 
       bundler = browserify({
         cache: {},
         packageCache: {},
         fullPaths: true,
-        entries: mode.angularMainModuleProdFallback ? options.prodEntries : getEntries(),
+        entries: getEntries(),
         debug: mode.env === 'dev'
       });
 
@@ -105,7 +99,31 @@ function getJsTask(options, gulp, mode) {
           }
         });
 
+    }
+
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: mode.watch,
+      logger: logger
     });
+
+    checkEntries()
+      .then(runJs)
+      .finally(function() {
+        watch(
+            getEntries(), {
+              events: ['add', 'unlink']
+            })
+          .on('add', function(event) {
+            logger.changed(event);
+            runJs();
+          })
+          .on('unlink', function(event) {
+            logger.changed(event);
+            bundler.close();
+            logger.finished();
+          });
+      });
 
   }
 
@@ -116,8 +134,8 @@ function getJsTask(options, gulp, mode) {
 module.exports = {
   getTask: getJsTask,
   defaultOptions: {
-    devEntries: ['./src/dev/index.js'],
-    prodEntries: ['./src/index.js'],
-    testEntries: ['./src/test/index.js']
+    devEntries: 'src/dev/index.js',
+    prodEntries: 'src/index.js',
+    testEntries: 'src/test/index.js'
   }
 };

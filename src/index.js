@@ -37,7 +37,7 @@ function getGulp(externalGulp) {
  * Disabling it won't delete it from other tasks dependencies.
  * @param {array|undefined|null} [options.assets.dependencies]
  * Dependencies for this task in form of array of strings e.g. ['someTask', 'someOtherTask'].
- * @param {string|array} [options.assets.globs='src\/**\/_assets\/**\/*']
+ * @param {string|array} [options.assets.globs='src\/**\/_assets\/**']
  *
  * @param {gulp} [externalGulp=require('gulp')]
  *

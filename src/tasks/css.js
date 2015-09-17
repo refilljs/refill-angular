@@ -11,6 +11,7 @@ function getCssTask(options, gulp, mode) {
     var gulpif = require('gulp-if');
     var autoprefixer = require('gulp-autoprefixer');
     var plumber = require('gulp-plumber');
+    var watch = require('gulp-watch');
     var zkutils = require('gulp-zkflow-utils');
     var q = require('q');
     var outputDir = require('../getOutputDir')();
@@ -55,8 +56,8 @@ function getCssTask(options, gulp, mode) {
     runCssPromise = runCss()
       .finally(function() {
         if (mode.watch) {
-          gulp.watch(options.watchGlobs, function(path) {
-            logger.changed(path);
+          watch(options.watchGlobs, function(event) {
+            logger.changed(event);
             runCssPromise = runCssPromise.finally(runCss);
           });
         }
@@ -72,6 +73,6 @@ module.exports = {
   getTask: getCssTask,
   defaultOptions: {
     globs: 'src/index.less',
-    watchGlobs: 'src/**/*.{less,css}'
+    watchGlobs: 'src/**.{less,css}'
   }
 };

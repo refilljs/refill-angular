@@ -8,6 +8,7 @@ function getTemplatesTask(options, gulp, mode) {
     var templateCache = require('gulp-angular-templatecache');
     var minifyHtml = require('gulp-minify-html');
     var zkutils = require('gulp-zkflow-utils');
+    var watch = require('gulp-watch');
     var logger = zkutils.logger('templates');
     var nextHandler;
     var runTemplatesPromise;
@@ -44,7 +45,7 @@ function getTemplatesTask(options, gulp, mode) {
     runTemplatesPromise = runTemplates()
       .finally(function() {
         if (mode.watch) {
-          gulp.watch(options.globs, function(path) {
+          watch(options.globs, function(path) {
             logger.changed(path);
             runTemplatesPromise = runTemplatesPromise.finally(runTemplates);
           });
@@ -60,7 +61,7 @@ function getTemplatesTask(options, gulp, mode) {
 module.exports = {
   getTask: getTemplatesTask,
   defaultOptions: {
-    globs: 'src/**/_templates/**/*.html',
+    globs: 'src/**/_templates/**.html',
     angularModuleName: 'zk.templates'
   }
 };

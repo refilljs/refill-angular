@@ -6,6 +6,7 @@ function getJshintTask(options, gulp, mode) {
 
     var jshint = require('gulp-jshint');
     var zkutils = require('gulp-zkflow-utils');
+    var watch = require('gulp-watch');
     var logger = zkutils.logger('jshint');
     var stream;
     var jshintDefaultOptions = {
@@ -35,8 +36,10 @@ function getJshintTask(options, gulp, mode) {
       return stream;
     }
 
-    gulp.watch(options.globs, jshintStream)
-      .on('change', logger.changed);
+    watch(options.globs, function(event) {
+      logger.changed(event);
+      jshintStream();
+    });
 
   }
 

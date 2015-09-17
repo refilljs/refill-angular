@@ -7,6 +7,7 @@ function getAssetsTask(options, gulp, mode) {
     var imagemin = require('gulp-imagemin');
     var changed = require('gulp-changed');
     var gulpif = require('gulp-if');
+    var watch = require('gulp-watch');
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('assets');
     var outputDir = require('../getOutputDir')();
@@ -38,8 +39,8 @@ function getAssetsTask(options, gulp, mode) {
     runAssetsPromise = runAssets()
       .finally(function() {
         if (mode.watch) {
-          gulp.watch(options.globs, function(path) {
-            logger.changed(path);
+          watch(options.globs, function(event) {
+            logger.changed(event);
             runAssetsPromise = runAssetsPromise.finally(runAssets);
           });
         }
@@ -54,6 +55,6 @@ function getAssetsTask(options, gulp, mode) {
 module.exports = {
   getTask: getAssetsTask,
   defaultOptions: {
-    globs: 'src/**/_assets/**/*'
+    globs: 'src/**/_assets/**'
   }
 };
