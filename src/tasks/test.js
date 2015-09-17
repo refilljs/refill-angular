@@ -96,6 +96,9 @@ function getTestTask(options, gulp, mode) {
           handleSuccess: false
         })
       .then(runTest, function() {
+        if (!mode.watch) {
+          return;
+        }
         var watchStream = watch(options.files, function(event) {
           watchStream.close();
           logger.changed(event);
@@ -112,14 +115,18 @@ function getTestTask(options, gulp, mode) {
 module.exports = {
   getTask: getTestTask,
   defaultOptions: {
-    files: ['src/**Spec.js'],
+    files: [
+      'src/*Spec.js',
+      'src/**/*Spec.js'
+    ],
     reportsBaseDir: 'reports/test/',
     junitReporterOutputDir: 'junit/',
     htmlReporterOutputDir: 'html/',
     istanbulIgnore: [
       '**/node_modules/**',
       '**/bower_components/**',
-      '**Spec.js'
+      '*Spec.js',
+      '**/*Spec.js'
     ],
     istanbulReporters: [{
       type: 'html',

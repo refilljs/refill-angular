@@ -73,6 +73,9 @@ module.exports = {
   getTask: getCssTask,
   defaultOptions: {
     globs: 'src/index.less',
-    watchGlobs: 'src/**.{less,css}'
+    watchGlobs: [
+      'src/*.{less,css}',
+      'src/**/*.{less,css}'
+    ]
   }
 };

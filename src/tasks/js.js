@@ -91,12 +91,13 @@ function getJsTask(options, gulp, mode) {
 
       rebundlePromise = rebundle()
         .finally(function() {
-          if (mode.watch) {
-            bundler.on('update', function(path) {
-              logger.changed(path);
-              rebundlePromise = rebundlePromise.finally(rebundle);
-            });
+          if (!mode.watch) {
+            return;
           }
+          bundler.on('update', function(path) {
+            logger.changed(path);
+            rebundlePromise = rebundlePromise.finally(rebundle);
+          });
         });
 
     }
@@ -110,6 +111,9 @@ function getJsTask(options, gulp, mode) {
     checkEntries()
       .then(runJs)
       .finally(function() {
+        if (!mode.watch) {
+          return;
+        }
         watch(
             getEntries(), {
               events: ['add', 'unlink']

@@ -61,7 +61,10 @@ function getTemplatesTask(options, gulp, mode) {
 module.exports = {
   getTask: getTemplatesTask,
   defaultOptions: {
-    globs: 'src/**/_templates/**.html',
+    globs: [
+      'src/**/_templates/*.html',
+      'src/**/_templates/**/*.html'
+    ],
     angularModuleName: 'zk.templates'
   }
 };

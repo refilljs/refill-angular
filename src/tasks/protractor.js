@@ -110,7 +110,10 @@ function getProtractorTask(options, gulp, mode) {
 module.exports = {
   getTask: getProtractorTask,
   defaultOptions: {
-    globs: 'e2e/features/**.feature',
+    globs: [
+      'e2e/features/*.feature',
+      'e2e/features/**/*.feature'
+    ],
     customConfigFiles: false,
     configFile: 'protractor.conf.js',
     watchConfigFile: 'protractor.watch.conf.js'

@@ -53,9 +53,12 @@ module.exports = {
   getTask: getBeautifyTask,
   defaultOptions: {
     globs: [
-      'src/**.js',
-      'src/**.html',
-      'gulp/**.js',
+      'src/*.js',
+      'src/**/*.js',
+      'src/*.html',
+      'src/**/*.html',
+      'gulp/*.js',
+      'gulp/**/*.js',
       'gulpfile.js'
     ]
   }

@@ -322,9 +322,12 @@ Default options
     enabled: true,
     dependencies: [],
     globs: [
-      'src/**.js',
-      'src/**.html',
-      'gulp/**.js',
+      'src/*.js',
+      'src/**/*.js',
+      'src/*.html',
+      'src/**/*.html',
+      'gulp/*.js',
+      'gulp/**/*.js',
       'gulpfile.js'
     ]
   },
@@ -341,15 +344,20 @@ Default options
     dependencies: [],
     globs: [
       'gulpfile.js',
-      'gulp/**.js',
-      'src/**.js'
+      'gulp/*.js',
+      'gulp/**/*.js',
+      'src/*.js',
+      'src/**/*.js'
     ],
     jshintrc: false
   },
   templates: {
     enabled: true,
     dependencies: [],
-    globs: 'src/**/_templates/**.html',
+    globs: [
+      'src/**/_templates/*.html',
+      'src/**/_templates/**/*.html'
+    ],
     angularModuleName: 'zk.templates'
   },
   'webdriver-update': {
@@ -437,7 +445,10 @@ Default options
     enabled: true,
     dependencies: ['bower']
     globs: 'src/index.less',
-    watchGlobs: 'src/**.{less,css}'
+    watchGlobs: [
+      'src/*.{less,css}',
+      'src/**/*.{less,css}'
+    ]
   },
   default: {
     enabled: true,
@@ -450,7 +461,10 @@ Default options
   e2e: {
     enabled: true,
     dependencies: ['webdriver-update', 'assemble'],
-    globs: 'e2e/features/**.feature',
+    globs: [
+      'e2e/features/*.feature',
+      'e2e/features/**/*.feature'
+    ],
     customConfigFiles: false,
     configFile: 'protractor.conf.js',
     watchConfigFile: 'protractor.watch.conf.js'
@@ -478,14 +492,18 @@ Default options
   test: {
     enabled: true,
     dependencies: ['bower', 'templates'],
-    files: ['src/**Spec.js'],
+    files: [
+      'src/*Spec.js',
+      'src/**/*Spec.js'
+    ],
     reportsBaseDir: 'reports/test/',
     junitReporterOutputDir: 'junit/',
     htmlReporterOutputDir: 'html/',
     istanbulIgnore: [
       '**/node_modules/**',
       '**/bower_components/**',
-      '**Spec.js'
+      '*Spec.js',
+      '**/*Spec.js'
     ],
     istanbulReporters: [{
       type: 'html',

@@ -52,7 +52,9 @@ module.exports = {
   defaultOptions: {
     globs: [
       'gulpfile.js',
+      'gulp/*.js',
       'gulp/**/*.js',
+      'src/*.js',
       'src/**/*.js'
     ],
     jshintrc: false
