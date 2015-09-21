@@ -187,21 +187,6 @@ You definitly should add this task to your CI server. This task can be splitted 
 git commit -m 'awesome code'
 ```
 
-Manual tests
-------------
-
-You can speed up your testing process by installing Your project dependencies with --no-optional flag
-
-```Shell
-npm install --no-optional
-./node_modules/.bin/gulp build
-```
-
-but remember
-
-* only `./node_modules/.bin/gulp build` is guaranteed to work
-* not recommended on production, just for testing
-
 Production flow
 ---------------
 
