@@ -22,7 +22,7 @@ Shields
 Features
 --------
 
-* Sass + css globbing + autoprefixer
+* Sass + saasdoc + css globbing + autoprefixer
 * Browserify + ngannotate
 * Assets management
 * Bower
@@ -118,6 +118,7 @@ This task will
 * clean whole output dir (dev/)
 * bundle all your js with browserify and watch file changes with watchify
 * bundle all your styles with sass, css globbing and autoprefix
+* generate documentation with sassdoc if enabled
 * run jshint and rerun on any js file change
 * run tests with karma and browserify and watch file changes with watchify
 * run bower install
@@ -207,6 +208,7 @@ This task will
 * clean whole output dir (dist/)
 * bundle all your js with browserify and minify with uglifyjs
 * bundle all your styles with sass, css globbing, autoprefix and minify with csso
+* generate documentation with sassdoc if enabled
 * run bower install
 * bundle your angular templates into angular module (.tmp/templates.js) and minify with htmlminify
 * copy your assets and minify all .png/.jpg/.gif/.svg
@@ -429,8 +431,8 @@ Default options
   css: {
     enabled: true,
     dependencies: ['bower']
-    globs: 'src/index.scss',
-    watchGlobs: [
+    globs: [
+      'src/index.scss',
       'src/**/_styles/*.{scss,sass}',
       'src/**/_styles/**/*.{scss,sass}'
     ],
@@ -449,7 +451,10 @@ Default options
     sass: undefined,
     sourcemapsInit: undefined,
     sourcemapsWrite: undefined,
-    cssoStructureMinimization: undefined
+    cssoStructureMinimization: undefined,
+    sassdoc: {
+      dest: 'docs/sass/'
+    }
   },
   default: {
     enabled: true,

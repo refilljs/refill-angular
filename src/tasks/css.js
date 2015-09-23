@@ -6,6 +6,7 @@ function getCssTask(options, gulp, mode) {
 
     var cssGlobbing = require('gulp-css-globbing');
     var sass = require('gulp-sass');
+    var sassdoc = require('sassdoc');
     var csso = require('gulp-csso');
     var streamify = require('gulp-streamify');
     var rev = require('gulp-rev');
@@ -24,7 +25,7 @@ function getCssTask(options, gulp, mode) {
     function runCss() {
 
       return nextHandler
-        .handle(zkutils.globby(options.globs, 'No ' + options.globs + '  file found'), {
+        .handle(zkutils.globby(options.globs, 'No css files found'), {
           ignoreFailures: true,
           handleSuccess: false
         })
@@ -36,6 +37,7 @@ function getCssTask(options, gulp, mode) {
             .src(options.globs)
             .pipe(plumber(deferred.reject))
             .pipe(cssGlobbing(options.cssGlobbing))
+            .pipe(gulpif(options.sassdocEnabled, sassdoc(options.sassdoc)))
             .pipe(gulpif(mode.env === 'dev', sourcemaps.init(options.sourcemapsInit)))
             .pipe(sass(options.sass))
             .pipe(autoprefixer(options.autoprefixer))
@@ -60,7 +62,7 @@ function getCssTask(options, gulp, mode) {
     runCssPromise = runCss()
       .finally(function() {
         if (mode.watch) {
-          watch(options.watchGlobs, function(event) {
+          watch(options.globs, function(event) {
             logger.changed(event);
             runCssPromise = runCssPromise.finally(runCss);
           });
@@ -76,8 +78,8 @@ function getCssTask(options, gulp, mode) {
 module.exports = {
   getTask: getCssTask,
   defaultOptions: {
-    globs: 'src/index.scss',
-    watchGlobs: [
+    globs: [
+      'src/index.scss',
       'src/**/_styles/*.{scss,sass}',
       'src/**/_styles/**/*.{scss,sass}'
     ],
@@ -92,6 +94,10 @@ module.exports = {
     autoprefixer: {
       browsers: ['last 2 versions', 'ie 9'],
       cascade: false
+    },
+    sassdocEnabled: true,
+    sassdoc: {
+      dest: 'docs/sass/'
     }
   }
 };
