@@ -22,7 +22,7 @@ Shields
 Features
 --------
 
-* Less + autoprefixer
+* Sass + css globbing + autoprefixer
 * Browserify + ngannotate
 * Assets management
 * Bower
@@ -117,7 +117,7 @@ This task will
 
 * clean whole output dir (dev/)
 * bundle all your js with browserify and watch file changes with watchify
-* bundle all your styles with less and autoprefix
+* bundle all your styles with sass, css globbing and autoprefix
 * run jshint and rerun on any js file change
 * run tests with karma and browserify and watch file changes with watchify
 * run bower install
@@ -169,7 +169,7 @@ This task will fail if
 * code isn't jshinted
 * any of karma tests will fail
 * any of protractor e2e tests will fail
-* build fail (less, browserify)
+* build fail (sass, browserify)
 
 You definitly should add this task to your CI server. This task can be splitted into stages.
 `./node_modules/.bin/gulp ci` is an equivalent for
@@ -206,7 +206,7 @@ This task will
 
 * clean whole output dir (dist/)
 * bundle all your js with browserify and minify with uglifyjs
-* bundle all your styles with less, autoprefix and minify with csso
+* bundle all your styles with sass, css globbing, autoprefix and minify with csso
 * run bower install
 * bundle your angular templates into angular module (.tmp/templates.js) and minify with htmlminify
 * copy your assets and minify all .png/.jpg/.gif/.svg
@@ -429,11 +429,27 @@ Default options
   css: {
     enabled: true,
     dependencies: ['bower']
-    globs: 'src/index.less',
+    globs: 'src/index.scss',
     watchGlobs: [
-      'src/*.{less,css}',
-      'src/**/*.{less,css}'
-    ]
+      'src/**/_styles/*.{scss,sass}',
+      'src/**/_styles/**/*.{scss,sass}'
+    ],
+    outputDirSuffix: '',
+    cssGlobbing: {
+      extensions: ['.sass', '.scss'],
+      scssImportPath: {
+        leading_underscore: false,
+        filename_extension: false
+      }
+    },
+    autoprefixer: {
+      browsers: ['last 2 versions', 'ie 9'],
+      cascade: false
+    },
+    sass: undefined,
+    sourcemapsInit: undefined,
+    sourcemapsWrite: undefined,
+    cssoStructureMinimization: undefined
   },
   default: {
     enabled: true,
