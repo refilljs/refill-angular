@@ -242,6 +242,7 @@ dist/
 dev/
 test/
 reports/
+docs/
 ```
 
 ### src/index.html
@@ -290,13 +291,17 @@ require('gulp-zkflow-angular').init(undefined, require('gulp'));
 
 ### options
 
+
 You can pass options object to init function
 
 ```JavaScript
 require('gulp-zkflow-angular').init(options);
 ```
 
-Default options
+#### Default options
+
+We recommend using as much default options as possible. They are based on our experience with AngularJS and
+they set up some solid structure for your project.
 
 ```JavaScript
 {
@@ -354,7 +359,20 @@ Default options
   webserver: {
     enabled: true,
     dependencies: [],
-    host: 'localhost'
+    host: 'localhost',
+    docsGlobs: 'docs/',
+    docsWebserver: {
+      livereload: {
+        enable: true,
+        port: 35730
+      },
+      directoryListing: {
+        enable: true,
+        path: 'docs/'
+      },
+      open: true,
+      port: 8010
+    }
   },
   assemble: {
     enabled: true,

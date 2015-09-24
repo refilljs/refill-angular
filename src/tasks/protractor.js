@@ -17,6 +17,15 @@ function getProtractorTask(options, gulp, mode) {
     var path = require('path');
     var nextHandler;
 
+    var noE2eFilesMessage =
+      '\nNo e2e test files found.\n\n' +
+      'Your e2e test files are determined by globs\n' +
+      options.globs.toString() + '\n' +
+      'You can add some matching files with e2e tests.\n' +
+      'Learn more about e2e tools:\n' +
+      'https://angular.github.io/protractor/#/\n' +
+      'https://github.com/cucumber/cucumber-js\n';
+
     function getConfigPath() {
       var configDir = path.resolve(__dirname, '../defaultConfigs/');
       if (options.customConfigFiles) {
@@ -32,7 +41,7 @@ function getProtractorTask(options, gulp, mode) {
     function runProtractor() {
 
       var protractorPromise = nextHandler.handle(
-          zkutils.globby(options.globs, 'No e2e test files found'), {
+          zkutils.globby(options.globs, noE2eFilesMessage), {
             ignoreFailures: true,
             handleSuccess: false
           })

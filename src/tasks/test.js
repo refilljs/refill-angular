@@ -12,6 +12,16 @@ function getTestTask(options, gulp, mode) {
     var logger = zkutils.logger('test');
     var nextHandler;
 
+    var noTestFilesMessage =
+      '\nNo test files found.\n\n' +
+      'Your test files are determined by globs\n' +
+      options.files.toString() + '\n' +
+      'You can add some matching files with tests.\n' +
+      'Learn more about testing tools:\n' +
+      'http://karma-runner.github.io/0.13/index.html\n' +
+      'http://jasmine.github.io/2.3/introduction.html\n' +
+      'http://browserify.org/\n';
+
     function runTest() {
 
       var reporters = ['progress'];
@@ -91,7 +101,7 @@ function getTestTask(options, gulp, mode) {
 
     nextHandler.handle(
         zkutils.del(options.reportsBaseDir + '**')
-        .then(zkutils.globby.bind(undefined, options.files, 'No test files found')), {
+        .then(zkutils.globby.bind(undefined, options.files, noTestFilesMessage)), {
           ignoreFailures: true,
           handleSuccess: false
         })

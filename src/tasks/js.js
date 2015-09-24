@@ -19,6 +19,16 @@ function getJsTask(options, gulp, mode) {
     var nextHandler;
     var rebundlePromise;
 
+    var noJsFilesMessage =
+      '\nNo js entry files found.\n\n' +
+      'Your js entry files are determined by globs\n' +
+      options.prodEntries.toString() + '\n' +
+      'You can add some matching files with JavaScript.\n' +
+      'Learn more about JavaScript tools:\n' +
+      'https://angularjs.org/\n' +
+      'http://browserify.org/\n' +
+      'https://github.com/omsmith/browserify-ngannotate\n';
+
     function getEntries() {
 
       if (mode.angularMainModuleProdFallback || mode.env === 'prod') {
@@ -53,7 +63,7 @@ function getJsTask(options, gulp, mode) {
 
       function checkProdEntries() {
         return nextHandler.handle(
-          zkutils.globby(options.prodEntries, 'prod js not found'), {
+          zkutils.globby(options.prodEntries, noJsFilesMessage), {
             ignoreFailures: true,
             handleSuccess: false
           });

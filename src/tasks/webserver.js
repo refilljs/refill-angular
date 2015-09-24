@@ -2,19 +2,25 @@
 
 function getWebserverTask(options, gulp, mode) {
 
-
-  function webserverTask() {
+  function webserverTask(next) {
 
     var webserver = require('gulp-webserver');
 
-    gulp.src(require('../getOutputDir')())
-      .pipe(webserver({
-        livereload: mode.env === 'dev',
-        directoryListing: false,
-        open: true,
-        fallback: 'index.html',
-        host: options.host
-      }));
+    gulp.src(options.docsGlobs)
+      .pipe(webserver(options.docsWebserver))
+      .on('end', function() {
+
+        gulp.src(require('../getOutputDir')())
+          .pipe(webserver({
+            livereload: mode.env === 'dev',
+            open: true,
+            fallback: 'index.html',
+            host: options.host
+          }))
+          .on('end', next);
+
+      });
+
   }
 
   return webserverTask;
@@ -24,6 +30,19 @@ function getWebserverTask(options, gulp, mode) {
 module.exports = {
   getTask: getWebserverTask,
   defaultOptions: {
-    host: 'localhost'
+    host: 'localhost',
+    docsGlobs: 'docs/',
+    docsWebserver: {
+      livereload: {
+        enable: true,
+        port: 35730
+      },
+      directoryListing: {
+        enable: true,
+        path: 'docs/'
+      },
+      open: true,
+      port: 8010
+    }
   }
 };
