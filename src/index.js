@@ -6,6 +6,7 @@
 
 var loadTasks = require('gulp-zkflow-load-tasks');
 var mode = require('./mode');
+var _ = require('lodash');
 
 /**
  * get gulp object from external source if available or from require
@@ -47,20 +48,33 @@ function init(options, externalGulp) {
 
   var zkutils = require('gulp-zkflow-utils');
   var chalk = require('chalk');
+  var computedOptions;
 
-  console.log('');
-  console.log(' %s %s for AngularJS  %s', zkutils.logger.prefix, chalk.green.bold('ZKFlow'), chalk.grey('made by Zaklinacze Kodu'));
-  console.log('');
-
-  loadTasks(mode, options, getGulp(externalGulp), {
-    assets: require('./tasks/assets'),
-    beautify: require('./tasks/beautify'),
-    bower: require('./tasks/bower'),
-    clean: require('./tasks/clean'),
-    jshint: require('./tasks/jshint'),
-    templates: require('./tasks/templates'),
-    'webdriver-update': require('./tasks/webdriverUpdate'),
-    webserver: require('./tasks/webserver'),
+  var defaultOptions = {
+    assets: {
+      task: require('./tasks/assets')
+    },
+    beautify: {
+      task: require('./tasks/beautify')
+    },
+    bower: {
+      task: require('./tasks/bower')
+    },
+    clean: {
+      task: require('./tasks/clean')
+    },
+    jshint: {
+      task: require('./tasks/jshint')
+    },
+    templates: {
+      task: require('./tasks/templates')
+    },
+    'webdriver-update': {
+      task: require('./tasks/webdriverUpdate')
+    },
+    webserver: {
+      task: require('./tasks/webserver')
+    },
     assemble: {
       task: require('./tasks/sequence'),
       sequence: [
@@ -154,7 +168,19 @@ function init(options, externalGulp) {
       task: require('./tasks/test'),
       dependencies: ['bower', 'templates']
     }
+  };
+
+  console.log('');
+  console.log(' %s %s for AngularJS  %s', zkutils.logger.prefix, chalk.green.bold('ZKFlow'), chalk.grey('made by Zaklinacze Kodu'));
+  console.log('');
+
+  computedOptions = _.defaults({}, defaultOptions, options);
+
+  _.forEach(computedOptions, function(taskOptions, taskName) {
+    computedOptions[taskName] = _.defaults({}, options[taskName], taskOptions);
   });
+
+  loadTasks(computedOptions, getGulp(externalGulp), mode, require('./getOutputDir'));
 
 }
 

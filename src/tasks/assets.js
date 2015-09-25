@@ -1,6 +1,6 @@
 'use strict';
 
-function getAssetsTask(options, gulp, mode) {
+function getAssetsTask(options, gulp, mode, getOutputDir) {
 
   function assetsTask(next) {
 
@@ -10,7 +10,7 @@ function getAssetsTask(options, gulp, mode) {
     var watch = require('gulp-watch');
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('assets');
-    var outputDir = require('../getOutputDir')();
+    var outputDir = getOutputDir();
     var nextHandler;
     var runAssetsPromise;
 

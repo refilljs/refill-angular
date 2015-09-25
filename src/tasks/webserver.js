@@ -1,6 +1,6 @@
 'use strict';
 
-function getWebserverTask(options, gulp, mode) {
+function getWebserverTask(options, gulp, mode, getOutputDir) {
 
   function webserverTask(next) {
 
@@ -10,7 +10,7 @@ function getWebserverTask(options, gulp, mode) {
       .pipe(webserver(options.docsWebserver))
       .on('end', function() {
 
-        gulp.src(require('../getOutputDir')())
+        gulp.src(getOutputDir())
           .pipe(webserver({
             livereload: mode.env === 'dev',
             open: true,

@@ -1,6 +1,6 @@
 'use strict';
 
-function getJsTask(options, gulp, mode) {
+function getJsTask(options, gulp, mode, getOutputDir) {
 
   function jsTask(next) {
 
@@ -52,7 +52,7 @@ function getJsTask(options, gulp, mode) {
         .pipe(source('index.js'))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(uglify())))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
-        .pipe(gulp.dest(require('../getOutputDir')()))
+        .pipe(gulp.dest(getOutputDir()))
         .on('end', deferred.resolve);
 
       return nextHandler.handle(deferred.promise);

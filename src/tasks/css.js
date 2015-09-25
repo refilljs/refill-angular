@@ -1,6 +1,6 @@
 'use strict';
 
-function getCssTask(options, gulp, mode) {
+function getCssTask(options, gulp, mode, getOutputDir) {
 
   function cssTask(next) {
 
@@ -17,7 +17,7 @@ function getCssTask(options, gulp, mode) {
     var zkutils = require('gulp-zkflow-utils');
     var sourcemaps = require('gulp-sourcemaps');
     var q = require('q');
-    var outputDir = require('../getOutputDir')();
+    var outputDir = getOutputDir();
     var logger = zkutils.logger('css');
     var nextHandler;
     var runCssPromise;

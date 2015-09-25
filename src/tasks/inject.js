@@ -1,6 +1,6 @@
 'use strict';
 
-function getInjectTask(options, gulp, mode) {
+function getInjectTask(options, gulp, mode, getOutputDir) {
 
   function injectTask(next) {
 
@@ -13,7 +13,7 @@ function getInjectTask(options, gulp, mode) {
     var plumber = require('gulp-plumber');
     var watch = require('gulp-watch');
     var _ = require('lodash');
-    var outputDir = require('../getOutputDir')();
+    var outputDir = getOutputDir();
     var logger = zkutils.logger('inject');
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);
     var headInjectablesGlobs = prefixGlobs(options.headInjectablesGlobs);

@@ -1,6 +1,6 @@
 'use strict';
 
-function getCleanTask() {
+function getCleanTask(options, gulp, mode, getOutputDir) {
 
   function cleanTask(next) {
 
@@ -14,7 +14,7 @@ function getCleanTask() {
       logger: logger
     });
 
-    nextHandler.handle(zkutils.del(require('../getOutputDir')() + '**'));
+    nextHandler.handle(zkutils.del(getOutputDir() + '**'));
 
   }
 
