@@ -12,7 +12,7 @@
     "angular",
     "tasks"
   ],
-  "author": "Piotr Baranowski <bolczyslaw@gmail.com> (https://github.com/zaklinaczekodu)",
+  "author": "Piotr Baranowski <piotr.baranowski@zaklinaczekodu.com> (https://github.com/zaklinaczekodu)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zaklinaczekodu/gulp-zkflow-angular/issues"

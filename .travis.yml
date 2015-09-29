@@ -1,15 +1,26 @@
 language: node_js
+
 node_js:
   - 0.10
   - 0.12
   - 4
 
+os:
+  - linux
+#  - osx
+
+env:
+  - WORKING_DIR=.
+  - WORKING_DIR=e2e/mini/
+
 matrix:
+  fast_finish: true
   allow_failures:
     - node_js: 4
 
 before_install:
   - npm update -g npm
+  - cd $WORKING_DIR
 
 script:
   - ./node_modules/.bin/gulp ci
