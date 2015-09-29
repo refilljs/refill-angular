@@ -306,9 +306,11 @@ they set up some solid structure for your project.
 ```JavaScript
 {
   assets: {
+    task: require('./tasks/assets'),
     enabled: true,
     dependencies: [],
-    globs: 'src/**/_assets/**'
+    globs: 'src/**/_assets/**',
+    imagemin: undefined
   },
   beautify: {
     enabled: true,

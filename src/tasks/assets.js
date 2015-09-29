@@ -23,7 +23,7 @@ function getAssetsTask(options, gulp, mode, getOutputDir) {
             base: 'src/'
           })
           .pipe(changed(outputDir))
-          .pipe(gulpif(mode.env !== 'dev', imagemin()))
+          .pipe(gulpif(mode.env !== 'dev', imagemin(options.imagemin)))
           .pipe(gulp.dest(outputDir))
         )
       );
