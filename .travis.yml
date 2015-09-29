@@ -1,8 +1,17 @@
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-4.9
+      - g++-4.9
+
 language: node_js
 
 node_js:
   - 0.10
   - 0.12
+  - iojs
   - 4
 
 os:
@@ -10,13 +19,16 @@ os:
 #  - osx
 
 env:
-  - WORKING_DIR=.
-  - WORKING_DIR=e2e/mini/
+  global:
+    - CC=gcc-4.9 CXX=g++-4.9
+  matrix:
+    - WORKING_DIR=.
+    - WORKING_DIR=e2e/mini/
 
-matrix:
-  fast_finish: true
-  allow_failures:
-    - node_js: 4
+#matrix:
+#  fast_finish: true
+#  allow_failures:
+#    - node_js: 4
 
 before_install:
   - npm update -g npm
