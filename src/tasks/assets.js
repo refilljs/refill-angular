@@ -1,35 +1,50 @@
 'use strict';
 
-function getAssetsTask(options, gulp, mode) {
+function getAssetsTask(options, gulp, mode, getOutputDir) {
 
-  function assetsTask() {
+  function assetsTask(next) {
 
     var imagemin = require('gulp-imagemin');
     var changed = require('gulp-changed');
     var gulpif = require('gulp-if');
+    var watch = require('gulp-watch');
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('assets');
-    var outputDir = require('../getOutputDir')();
+    var outputDir = getOutputDir();
+    var nextHandler;
+    var runAssetsPromise;
 
-    logger.start();
+    function runAssets() {
 
-    function assetsStream() {
-      return gulp
-        .src(options.globs, {
-          base: 'src/'
-        })
-        .pipe(changed(outputDir))
-        .pipe(gulpif(mode.env !== 'dev', imagemin()))
-        .pipe(gulp.dest(outputDir))
-        .on('end', logger.finished);
+      return nextHandler.handle(
+        zkutils.promisify(
+          gulp
+          .src(options.globs, {
+            base: 'src/'
+          })
+          .pipe(changed(outputDir))
+          .pipe(gulpif(mode.env !== 'dev', imagemin()))
+          .pipe(gulp.dest(outputDir))
+        )
+      );
+
     }
 
-    if (mode.watch) {
-      gulp.watch(options.globs, assetsStream)
-        .on('change', logger.changed);
-    }
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: mode.watch,
+      logger: logger
+    });
 
-    return assetsStream();
+    runAssetsPromise = runAssets()
+      .finally(function() {
+        if (mode.watch) {
+          watch(options.globs, function(event) {
+            logger.changed(event);
+            runAssetsPromise = runAssetsPromise.finally(runAssets);
+          });
+        }
+      });
 
   }
 
@@ -40,6 +55,6 @@ function getAssetsTask(options, gulp, mode) {
 module.exports = {
   getTask: getAssetsTask,
   defaultOptions: {
-    globs: 'src/**/_assets/**/*'
+    globs: 'src/**/_assets/**'
   }
 };

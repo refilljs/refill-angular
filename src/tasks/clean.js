@@ -1,21 +1,20 @@
 'use strict';
 
-function getCleanTask() {
+function getCleanTask(options, gulp, mode, getOutputDir) {
 
-  function cleanTask(done) {
+  function cleanTask(next) {
 
-    var del = require('del');
     var zkutils = require('gulp-zkflow-utils');
     var logger = zkutils.logger('clean');
+    var nextHandler;
 
-    logger.start();
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: false,
+      logger: logger
+    });
 
-    del(
-      require('../getOutputDir')() + '**/*',
-      function() {
-        logger.finished();
-        done();
-      });
+    nextHandler.handle(zkutils.del(getOutputDir() + '**'));
 
   }
 

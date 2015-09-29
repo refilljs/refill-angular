@@ -10,14 +10,11 @@ Shields
 
 [![npm](https://img.shields.io/npm/v/gulp-zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/gulp-zkflow-angular)
 [![npm](https://img.shields.io/npm/l/gulp-zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/gulp-zkflow-angular)
-[![npm](https://img.shields.io/npm/dm/gulp-zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/gulp-zkflow-angular)
-
+[![npm](https://img.shields.io/npm/dm/gulp-zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/gulp-zkflow-angular)<br>
 [![Travis](https://img.shields.io/travis/zaklinaczekodu/gulp-zkflow-angular/master.svg?style=flat-square)](https://travis-ci.org/zaklinaczekodu/gulp-zkflow-angular)
-[![Code Climate](https://img.shields.io/codeclimate/github/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://codeclimate.com/github/zaklinaczekodu/gulp-zkflow-angular)
-
+[![Code Climate](https://img.shields.io/codeclimate/github/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://codeclimate.com/github/zaklinaczekodu/gulp-zkflow-angular)<br>
 [![David](https://img.shields.io/david/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://david-dm.org/zaklinaczekodu/gulp-zkflow-angular)
-[![David](https://img.shields.io/david/dev/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://david-dm.org/zaklinaczekodu/gulp-zkflow-angular)
-
+[![David](https://img.shields.io/david/dev/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://david-dm.org/zaklinaczekodu/gulp-zkflow-angular)<br>
 [![GitHub forks](https://img.shields.io/github/forks/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/gulp-zkflow-angular)
 [![GitHub stars](https://img.shields.io/github/stars/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/gulp-zkflow-angular)
 [![GitHub followers](https://img.shields.io/github/followers/zaklinaczekodu.svg?style=flat-square)](https://github.com/zaklinaczekodu/gulp-zkflow-angular)
@@ -25,7 +22,7 @@ Shields
 Features
 --------
 
-* Less + autoprefixer
+* Sass + saasdoc + css globbing + autoprefixer
 * Browserify + ngannotate
 * Assets management
 * Bower
@@ -120,7 +117,8 @@ This task will
 
 * clean whole output dir (dev/)
 * bundle all your js with browserify and watch file changes with watchify
-* bundle all your styles with less and autoprefix
+* bundle all your styles with sass, css globbing and autoprefix
+* generate documentation with sassdoc if enabled
 * run jshint and rerun on any js file change
 * run tests with karma and browserify and watch file changes with watchify
 * run bower install
@@ -172,7 +170,7 @@ This task will fail if
 * code isn't jshinted
 * any of karma tests will fail
 * any of protractor e2e tests will fail
-* build fail (less, browserify)
+* build fail (sass, browserify)
 
 You definitly should add this task to your CI server. This task can be splitted into stages.
 `./node_modules/.bin/gulp ci` is an equivalent for
@@ -189,21 +187,6 @@ You definitly should add this task to your CI server. This task can be splitted 
 ```Shell
 git commit -m 'awesome code'
 ```
-
-Manual tests
-------------
-
-You can speed up your testing process by installing Your project dependencies with --no-optional flag
-
-```Shell
-npm install --no-optional
-./node_modules/.bin/gulp build
-```
-
-but remember
-
-* only `./node_modules/.bin/gulp build` is guaranteed to work
-* not recommended on production, just for testing
 
 Production flow
 ---------------
@@ -224,7 +207,8 @@ This task will
 
 * clean whole output dir (dist/)
 * bundle all your js with browserify and minify with uglifyjs
-* bundle all your styles with less, autoprefix and minify with csso
+* bundle all your styles with sass, css globbing, autoprefix and minify with csso
+* generate documentation with sassdoc if enabled
 * run bower install
 * bundle your angular templates into angular module (.tmp/templates.js) and minify with htmlminify
 * copy your assets and minify all .png/.jpg/.gif/.svg
@@ -235,16 +219,357 @@ This task will
 
 Point it to `./dist` directory, and configure your server to fallback to index.html if file not found (to work with router html5 mode)
 
-Default configuration
----------------------
-
-### Directory structure
+Directory structure
+-------------------
 
 * dist/ - build output
 * dev/ - dev output
 * test/ - e2e output
 
-Configuration
--------------
+Files
+-----
 
-ZKflow for angular is highly configurable, just API isn't documented yet ;P
+### .gitignore
+
+You should probably add this entries in .gitignore file
+
+```
+bower_components/
+npm-debug.log
+node_modules/
+.tmp/
+dist/
+dev/
+test/
+reports/
+docs/
+```
+
+### src/index.html
+
+```html
+<!DOCTYPE html>
+<html ng-app="<%= angularMainModuleName %>" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+
+<body ng-controller="appNameController">
+
+  <!-- inject:js -->
+  <!-- endinject -->
+</body>
+
+</html>
+```
+
+### src/index.js
+
+```JavaScript
+'use strict';
+
+var angular = require('angular');
+
+angular.module('app', [
+    require('../.tmp/templates.js').name
+  ])
+  .controller('appController', /** @ngInject */ function() {
+  });
+```
+
+
+API
+---
+
+If you get 'task not found' error from gulp, you probably should pass gulp to init
+
+```JavaScript
+require('gulp-zkflow-angular').init(undefined, require('gulp'));
+```
+
+### options
+
+
+You can pass options object to init function
+
+```JavaScript
+require('gulp-zkflow-angular').init(options);
+```
+
+#### Default options
+
+We recommend using as much default options as possible. They are based on our experience with AngularJS and
+they set up some solid structure for your project.
+
+```JavaScript
+{
+  assets: {
+    enabled: true,
+    dependencies: [],
+    globs: 'src/**/_assets/**'
+  },
+  beautify: {
+    enabled: true,
+    dependencies: [],
+    globs: [
+      'src/*.js',
+      'src/**/*.js',
+      'src/*.html',
+      'src/**/*.html',
+      'gulp/*.js',
+      'gulp/**/*.js',
+      'gulpfile.js'
+    ]
+  },
+  bower: {
+    enabled: true,
+    dependencies: []
+  },
+  clean: {
+    enabled: true,
+    dependencies: []
+  },
+  jshint: {
+    enabled: true,
+    dependencies: [],
+    globs: [
+      'gulpfile.js',
+      'gulp/*.js',
+      'gulp/**/*.js',
+      'src/*.js',
+      'src/**/*.js'
+    ],
+    jshintrc: false
+  },
+  templates: {
+    enabled: true,
+    dependencies: [],
+    globs: [
+      'src/**/_templates/*.html',
+      'src/**/_templates/**/*.html'
+    ],
+    angularModuleName: 'zk.templates'
+  },
+  'webdriver-update': {
+    enabled: true,
+    dependencies: []
+  },
+  webserver: {
+    enabled: true,
+    dependencies: [],
+    host: 'localhost',
+    docsGlobs: 'docs/',
+    docsWebserver: {
+      livereload: {
+        enable: true,
+        port: 35730
+      },
+      directoryListing: {
+        enable: true,
+        path: 'docs/'
+      },
+      open: true,
+      port: 8010
+    }
+  },
+  assemble: {
+    enabled: true,
+    dependencies: [],
+    sequence: [
+      'clean', ['inject', 'assets']
+    ]
+  },
+  build: {
+    enabled: true,
+    dependencies: [],
+    sequence: [
+      'assemble'
+    ],
+     mode: {
+       env: 'prod',
+       watch: false
+     }
+  },
+  ci: {
+    enabled: true,
+    dependencies: [],
+    sequence: [
+      'ci-static-analysis',
+      'ci-test',
+      'ci-build',
+      'ci-e2e'
+    ]
+  },
+  'ci-build': {
+    enabled: true,
+    dependencies: [],
+    sequence: [
+      ['assemble']
+    ],
+    mode: {
+      env: 'prod',
+      watch: false
+    }
+  },
+  'ci-e2e': {
+    enabled: true,
+    dependencies: [],
+    sequence: [
+      ['e2e']
+    ],
+    mode: {
+      env: 'test',
+      watch: false
+    }
+  },
+  'ci-static-analysis': {
+    enabled: true,
+    dependencies: [],
+    sequence: [
+      ['beautify', 'jshint']
+    ],
+    mode: {
+      env: 'prod',
+      watch: false
+    }
+  },
+  'ci-test': {
+    enabled: true,
+    dependencies: [],
+    sequence: [
+      ['test']
+    ],
+    mode: {
+      env: 'prod',
+      watch: false
+    }
+  },
+  css: {
+    enabled: true,
+    dependencies: ['bower']
+    globs: [
+      'src/index.scss',
+      'src/**/_styles/*.{scss,sass}',
+      'src/**/_styles/**/*.{scss,sass}'
+    ],
+    outputDirSuffix: '',
+    cssGlobbing: {
+      extensions: ['.sass', '.scss'],
+      scssImportPath: {
+        leading_underscore: false,
+        filename_extension: false
+      }
+    },
+    autoprefixer: {
+      browsers: ['last 2 versions', 'ie 9'],
+      cascade: false
+    },
+    sass: undefined,
+    sourcemapsInit: undefined,
+    sourcemapsWrite: undefined,
+    cssoStructureMinimization: undefined,
+    sassdoc: {
+      dest: 'docs/sass/'
+    }
+  },
+  default: {
+    enabled: true,
+    dependencies: [],
+    sequence: [
+      'clean', ['inject', 'assets', 'jshint', 'test'],
+      'webserver'
+    ]
+  },
+  e2e: {
+    enabled: true,
+    dependencies: ['webdriver-update', 'assemble'],
+    globs: [
+      'e2e/features/*.feature',
+      'e2e/features/**/*.feature'
+    ],
+    customConfigFiles: false,
+    configFile: 'protractor.conf.js',
+    watchConfigFile: 'protractor.watch.conf.js'
+  },
+  inject: {
+    enabled: true,
+    dependencies: ['js', 'css'],
+    globs: 'src/index.html',
+    injectablesGlobs: [
+      'index*.js',
+      'index*.css'
+    ],
+    absolute: true,
+    prodAngularMainModuleName: 'app',
+    devAngularMainModuleName: 'appDev',
+    testAngularMainModuleName: 'appTest'
+  },
+  js: {
+    enabled: true,
+    dependencies: ['bower', 'templates'],
+    devEntries: 'src/dev/index.js',
+    prodEntries: 'src/index.js',
+    testEntries: 'src/test/index.js'
+  },
+  test: {
+    enabled: true,
+    dependencies: ['bower', 'templates'],
+    files: [
+      'src/*Spec.js',
+      'src/**/*Spec.js'
+    ],
+    reportsBaseDir: 'reports/test/',
+    junitReporterOutputDir: 'junit/',
+    htmlReporterOutputDir: 'html/',
+    istanbulIgnore: [
+      '**/node_modules/**',
+      '**/bower_components/**',
+      '*Spec.js',
+      '**/*Spec.js'
+    ],
+    istanbulReporters: [{
+      type: 'html',
+      subdir: 'coverageHtml'
+    }, {
+      type: 'clover',
+      subdir: 'coverageClover'
+    }]
+  }
+}
+```
+
+### mode
+
+you can retrieve mode object from zkflow
+
+```JavaScript
+var mode = require('gulp-zkflow-angular').mode;
+```
+
+This object is shared across all tasks and it define mode of operation.
+
+Default mode
+
+```JavaScript
+{
+  env: 'dev',
+  watch: true,
+  angularMainModuleProdFallback: false
+}
+```
+
+Some of the mode properties can be changed on run by environment variables
+
+```Shell
+ZKFLOW_ENV=prod ZKFLOW_WATCH=false ./node_modules/.bin/gulp css
+```
+
+which is equivalent to
+
+```Shell
+bamboo_ZKFLOW_ENV=prod bamboo_ZKFLOW_WATCH=false ./node_modules/.bin/gulp css
+```
+
+Some tasks overwrites mode

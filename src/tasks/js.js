@@ -1,8 +1,8 @@
 'use strict';
 
-function getJsTask(options, gulp, mode) {
+function getJsTask(options, gulp, mode, getOutputDir) {
 
-  function jsTask() {
+  function jsTask(next) {
 
     var source = require('vinyl-source-stream');
     var browserify = require('browserify');
@@ -11,15 +11,27 @@ function getJsTask(options, gulp, mode) {
     var gulpif = require('gulp-if');
     var streamify = require('gulp-streamify');
     var zkutils = require('gulp-zkflow-utils');
+    var watch = require('gulp-watch');
+    var q = require('q');
     var logger = zkutils.logger('js');
     var bundler;
     var watchify;
+    var nextHandler;
+    var rebundlePromise;
 
-    logger.start();
+    var noJsFilesMessage =
+      '\nNo js entry files found.\n\n' +
+      'Your js entry files are determined by globs\n' +
+      options.prodEntries.toString() + '\n' +
+      'You can add some matching files with JavaScript.\n' +
+      'Learn more about JavaScript tools:\n' +
+      'https://angularjs.org/\n' +
+      'http://browserify.org/\n' +
+      'https://github.com/omsmith/browserify-ngannotate\n';
 
     function getEntries() {
 
-      if (mode.env === 'prod') {
+      if (mode.angularMainModuleProdFallback || mode.env === 'prod') {
         return options.prodEntries;
       }
 
@@ -33,41 +45,99 @@ function getJsTask(options, gulp, mode) {
 
     function rebundle() {
 
-      var stream;
+      var deferred = q.defer();
 
-      stream = bundler.bundle();
-
-      if (mode.watch) {
-        stream = stream.on('error', logger.error);
-      }
-
-      return stream
+      bundler.bundle()
+        .on('error', deferred.reject)
         .pipe(source('index.js'))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(uglify())))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
-        .pipe(gulp.dest(require('../getOutputDir')()))
-        .on('end', logger.finished);
+        .pipe(gulp.dest(getOutputDir()))
+        .on('end', deferred.resolve);
+
+      return nextHandler.handle(deferred.promise);
 
     }
 
-    bundler = browserify({
-      cache: {},
-      packageCache: {},
-      fullPaths: true,
-      entries: getEntries(),
-      debug: mode.env === 'dev'
+    function checkEntries() {
+
+      function checkProdEntries() {
+        return nextHandler.handle(
+          zkutils.globby(options.prodEntries, noJsFilesMessage), {
+            ignoreFailures: true,
+            handleSuccess: false
+          });
+      }
+
+      if (mode.env === 'prod') {
+        return checkProdEntries();
+      }
+
+      return zkutils.globby(getEntries(), mode.env + ' js not found, falling back to prod')
+        .catch(function(error) {
+          logger.info(error);
+          mode.angularMainModuleProdFallback = true;
+          return checkProdEntries();
+        });
+
+    }
+
+    function runJs() {
+
+      bundler = browserify({
+        cache: {},
+        packageCache: {},
+        fullPaths: true,
+        entries: getEntries(),
+        debug: mode.env === 'dev'
+      });
+
+      bundler.transform(require('browserify-ngannotate'));
+
+      if (mode.watch) {
+        watchify = require('watchify');
+        bundler = watchify(bundler);
+      }
+
+      rebundlePromise = rebundle()
+        .finally(function() {
+          if (!mode.watch) {
+            return;
+          }
+          bundler.on('update', function(path) {
+            logger.changed(path);
+            rebundlePromise = rebundlePromise.finally(rebundle);
+          });
+        });
+
+    }
+
+    nextHandler = new zkutils.NextHandler({
+      next: next,
+      watch: mode.watch,
+      logger: logger
     });
 
-    bundler.transform(require('browserify-ngannotate'));
-
-    if (mode.watch) {
-      watchify = require('watchify');
-      bundler = watchify(bundler);
-      bundler.on('update', logger.changed);
-      bundler.on('update', rebundle);
-    }
-
-    return rebundle();
+    checkEntries()
+      .then(runJs)
+      .finally(function() {
+        if (!mode.watch) {
+          return;
+        }
+        watch(
+            getEntries(), {
+              events: ['add', 'unlink']
+            })
+          .on('add', function(event) {
+            logger.changed(event);
+            runJs();
+          })
+          .on('unlink', function(event) {
+            logger.changed(event);
+            bundler.close();
+            logger.finished();
+          });
+      });
 
   }
 
@@ -78,8 +148,8 @@ function getJsTask(options, gulp, mode) {
 module.exports = {
   getTask: getJsTask,
   defaultOptions: {
-    devEntries: ['./src/dev/index.js'],
-    prodEntries: ['./src/index.js'],
-    testEntries: ['./src/test/index.js']
+    devEntries: 'src/dev/index.js',
+    prodEntries: 'src/index.js',
+    testEntries: 'src/test/index.js'
   }
 };

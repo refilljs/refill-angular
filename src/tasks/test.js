@@ -4,18 +4,94 @@ function getTestTask(options, gulp, mode) {
 
   function testTask(next) {
 
+    var zkutils = require('gulp-zkflow-utils');
     var karma = require('karma');
     var istanbul = require('browserify-istanbul');
-    var zkutils = require('gulp-zkflow-utils');
+    var watch = require('gulp-watch');
     var q = require('q');
-    var del = require('del');
-    var globby = require('globby');
-
     var logger = zkutils.logger('test');
-    var globDeferred = q.defer();
-
     var nextHandler;
-    var testPromise;
+
+    var noTestFilesMessage =
+      '\nNo test files found.\n\n' +
+      'Your test files are determined by globs\n' +
+      options.files.toString() + '\n' +
+      'You can add some matching files with tests.\n' +
+      'Learn more about testing tools:\n' +
+      'http://karma-runner.github.io/0.13/index.html\n' +
+      'http://jasmine.github.io/2.3/introduction.html\n' +
+      'http://browserify.org/\n';
+
+    function runTest() {
+
+      var reporters = ['progress'];
+      var karmaDeferred = q.defer();
+      var server;
+
+      if (!mode.watch) {
+        reporters.push('junit', 'coverage');
+      }
+
+      server = new karma.Server({
+        files: options.files,
+        plugins: [
+          require('karma-browserify'),
+          require('karma-jasmine'),
+          require('karma-junit-reporter'),
+          require('karma-phantomjs-launcher'),
+          require('karma-coverage')
+        ],
+        logLevel: 'error',
+        frameworks: ['jasmine', 'browserify'],
+        browserNoActivityTimeout: 120000,
+        singleRun: !mode.watch,
+        autoWatch: mode.watch,
+        preprocessors: {
+          'src/**': ['browserify']
+        },
+        browserify: {
+          debug: true,
+          configure: function(bundle) {
+            bundle.on('update', logger.changed);
+          },
+          transform: [istanbul({
+            ignore: options.istanbulIgnore
+          })]
+        },
+        browsers: ['PhantomJS'],
+        reporters: reporters,
+        junitReporter: {
+          outputDir: options.reportsBaseDir + options.junitReporterOutputDir
+        },
+        coverageReporter: {
+          dir: options.reportsBaseDir,
+          reporters: options.istanbulReporters
+        }
+      }, function() {
+        // without this empty function karma will stop execution of entire script after tests
+      });
+
+      server.on('run_complete', function(browsers, results) {
+
+        var oldKarmaDeferred = karmaDeferred;
+
+        karmaDeferred = q.defer();
+        nextHandler.handle(karmaDeferred.promise);
+
+        if (results.exitCode === 0) {
+          oldKarmaDeferred.resolve();
+          return;
+        }
+
+        oldKarmaDeferred.reject('failed');
+
+      });
+
+      server.start();
+
+      return nextHandler.handle(karmaDeferred.promise);
+
+    }
 
     nextHandler = new zkutils.NextHandler({
       next: next,
@@ -23,97 +99,22 @@ function getTestTask(options, gulp, mode) {
       logger: logger
     });
 
-    logger.start();
-
-    globby(options.files, function(error, files) {
-      if (error !== null) {
-        globDeferred.reject(error);
-        return;
-      }
-      if (files.length === 0) {
-        globDeferred.reject('No test files found');
-        return;
-      }
-      globDeferred.resolve(files);
-      return;
-    });
-
-    testPromise = globDeferred.promise
-      .then(function() {
-        return q.nfcall(del, [options.reportsBaseDir + '**/*']);
-      })
-      .then(function() {
-
-        var reporters = ['progress'];
-        var server;
-        var karmaDeferred = q.defer();
-
+    nextHandler.handle(
+        zkutils.del(options.reportsBaseDir + '**')
+        .then(zkutils.globby.bind(undefined, options.files, noTestFilesMessage)), {
+          ignoreFailures: true,
+          handleSuccess: false
+        })
+      .then(runTest, function() {
         if (!mode.watch) {
-          reporters.push('junit', 'coverage');
+          return;
         }
-
-        server = new karma.Server({
-          files: options.files,
-          plugins: [
-            require('karma-browserify'),
-            require('karma-jasmine'),
-            require('karma-junit-reporter'),
-            require('karma-phantomjs-launcher'),
-            require('karma-coverage')
-          ],
-          logLevel: 'error',
-          frameworks: ['jasmine', 'browserify'],
-          browserNoActivityTimeout: 120000,
-          singleRun: !mode.watch,
-          autoWatch: mode.watch,
-          preprocessors: {
-            'src/**/*': ['browserify']
-          },
-          browserify: {
-            debug: true,
-            configure: function(bundle) {
-              bundle.on('update', logger.changed);
-            },
-            transform: [istanbul({
-              ignore: options.istanbulIgnore
-            })]
-          },
-          browsers: ['PhantomJS'],
-          reporters: reporters,
-          junitReporter: {
-            outputDir: options.reportsBaseDir + options.junitReporterOutputDir
-          },
-          coverageReporter: {
-            dir: options.reportsBaseDir,
-            reporters: options.istanbulReporters
-          }
-        }, function() {
-          // without this empty function karma will stop execution of entire script after tests
+        var watchStream = watch(options.files, function(event) {
+          watchStream.close();
+          logger.changed(event);
+          runTest();
         });
-
-        server.on('run_complete', function(browsers, results) {
-
-          var oldKarmaDeferred = karmaDeferred;
-
-          karmaDeferred = q.defer();
-          nextHandler.handle(karmaDeferred.promise);
-
-          if (results.exitCode === 0) {
-            oldKarmaDeferred.resolve();
-            return;
-          }
-
-          oldKarmaDeferred.reject('failed');
-
-        });
-
-        server.start();
-
-        return karmaDeferred.promise;
-
       });
-
-    nextHandler.handle(testPromise);
 
   }
 
@@ -124,11 +125,19 @@ function getTestTask(options, gulp, mode) {
 module.exports = {
   getTask: getTestTask,
   defaultOptions: {
-    files: ['src/unitTests.js'],
+    files: [
+      'src/*Spec.js',
+      'src/**/*Spec.js'
+    ],
     reportsBaseDir: 'reports/test/',
     junitReporterOutputDir: 'junit/',
     htmlReporterOutputDir: 'html/',
-    istanbulIgnore: ['**/node_modules/**/*', '**/bower_components/**/*', '**/*Spec.js', '**/unitTests.js'],
+    istanbulIgnore: [
+      '**/node_modules/**',
+      '**/bower_components/**',
+      '*Spec.js',
+      '**/*Spec.js'
+    ],
     istanbulReporters: [{
       type: 'html',
       subdir: 'coverageHtml'

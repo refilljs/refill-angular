@@ -10,12 +10,21 @@ function getProtractorTask(options, gulp, mode) {
 
   function protractorTask(next) {
 
+    var zkutils = require('gulp-zkflow-utils');
+    var logger = zkutils.logger('e2e');
     var protractor = require('gulp-protractor').protractor;
     var webserver = require('gulp-webserver');
     var path = require('path');
-    var zkutils = require('gulp-zkflow-utils');
-    var logger = zkutils.logger('e2e');
     var nextHandler;
+
+    var noE2eFilesMessage =
+      '\nNo e2e test files found.\n\n' +
+      'Your e2e test files are determined by globs\n' +
+      options.globs.toString() + '\n' +
+      'You can add some matching files with e2e tests.\n' +
+      'Learn more about e2e tools:\n' +
+      'https://angular.github.io/protractor/#/\n' +
+      'https://github.com/cucumber/cucumber-js\n';
 
     function getConfigPath() {
       var configDir = path.resolve(__dirname, '../defaultConfigs/');
@@ -26,27 +35,32 @@ function getProtractorTask(options, gulp, mode) {
     }
 
     function help() {
-      logger.log('press "r" to rerun e2e tests or "^C" to quit');
+      logger.info('press "r" to rerun e2e tests or "^C" to quit');
     }
 
     function runProtractor() {
 
-      logger.start();
+      var protractorPromise = nextHandler.handle(
+          zkutils.globby(options.globs, noE2eFilesMessage), {
+            ignoreFailures: true,
+            handleSuccess: false
+          })
+        .then(function() {
 
-      return zkutils
-        .promisify(gulp.src(options.globs)
-          .pipe(protractor({
-            configFile: getConfigPath()
-          })));
+          return nextHandler.handle(zkutils
+            .promisify(gulp.src(options.globs)
+              .pipe(protractor({
+                configFile: getConfigPath()
+              }))));
 
-    }
+        });
 
-    function handleProtractorPromise(protractorPromise) {
-      nextHandler.handle(protractorPromise);
       if (mode.watch) {
         protractorPromise.finally(help);
       }
+
       return protractorPromise;
+
     }
 
     nextHandler = new zkutils.NextHandler({
@@ -55,8 +69,7 @@ function getProtractorTask(options, gulp, mode) {
       logger: logger
     });
 
-    zkutils
-      .promisify(gulp.src('test/')
+    zkutils.promisify(gulp.src('test/')
         .pipe(webserver({
           fallback: 'index.html',
           livereload: false,
@@ -65,8 +78,6 @@ function getProtractorTask(options, gulp, mode) {
       .then(function(webserverStream) {
 
         var protractorPromise = runProtractor();
-
-        handleProtractorPromise(protractorPromise);
 
         if (!mode.watch) {
           protractorPromise.finally(function() {
@@ -88,7 +99,8 @@ function getProtractorTask(options, gulp, mode) {
           }
 
           if (chunk === 'r') {
-            handleProtractorPromise(runProtractor());
+            logger.start();
+            runProtractor();
             return;
           }
 
@@ -107,7 +119,10 @@ function getProtractorTask(options, gulp, mode) {
 module.exports = {
   getTask: getProtractorTask,
   defaultOptions: {
-    globs: 'e2e/features/**/*.feature',
+    globs: [
+      'e2e/features/*.feature',
+      'e2e/features/**/*.feature'
+    ],
     customConfigFiles: false,
     configFile: 'protractor.conf.js',
     watchConfigFile: 'protractor.watch.conf.js'
