@@ -25,22 +25,27 @@ function getTestTask(options, gulp, mode) {
     function runTest() {
 
       var reporters = ['progress'];
+      var transform = [];
+      var plugins = [
+        require('karma-browserify'),
+        require('karma-jasmine'),
+        require('karma-phantomjs-launcher')
+      ];
       var karmaDeferred = q.defer();
       var server;
 
       if (!mode.watch) {
         reporters.push('junit', 'coverage');
+        transform.push(istanbul({
+          ignore: options.istanbulIgnore
+        }));
+        plugins.push(require('karma-junit-reporter'));
+        plugins.push(require('karma-coverage'));
       }
 
       server = new karma.Server({
         files: options.files,
-        plugins: [
-          require('karma-browserify'),
-          require('karma-jasmine'),
-          require('karma-junit-reporter'),
-          require('karma-phantomjs-launcher'),
-          require('karma-coverage')
-        ],
+        plugins: plugins,
         logLevel: 'error',
         frameworks: ['jasmine', 'browserify'],
         browserNoActivityTimeout: 120000,
@@ -54,9 +59,7 @@ function getTestTask(options, gulp, mode) {
           configure: function(bundle) {
             bundle.on('update', logger.changed);
           },
-          transform: [istanbul({
-            ignore: options.istanbulIgnore
-          })]
+          transform: transform
         },
         browsers: ['PhantomJS'],
         reporters: reporters,
