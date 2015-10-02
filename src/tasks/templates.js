@@ -19,18 +19,9 @@ function getTemplatesTask(options, gulp, mode) {
         zkutils.promisify(
           gulp
           .src(options.globs)
-          .pipe(gulpif(mode.env !== 'dev' && !mode.watch, minifyHtml({
-            empty: true,
-            spare: true,
-            quotes: true
-          })))
-          .pipe(templateCache('templates.js', {
-            standalone: true,
-            module: options.angularModuleName,
-            root: '/',
-            templateHeader: 'module.exports = angular.module("<%= module %>"<%= standalone %>).run(["$templateCache", function($templateCache) {'
-          }))
-          .pipe(gulp.dest('.tmp/'))
+          .pipe(gulpif(mode.env !== 'dev' && !mode.watch, minifyHtml(options.minifyHtml)))
+          .pipe(templateCache(options.templateModuleFileName, options.templateCache))
+          .pipe(gulp.dest(options.outputDir))
         )
       );
 
@@ -65,6 +56,19 @@ module.exports = {
       'src/**/_templates/*.html',
       'src/**/_templates/**/*.html'
     ],
-    angularModuleName: 'zk.templates'
+    minifyHtml: {
+      empty: true,
+      spare: true,
+      quotes: true
+    },
+    templateCache: {
+      standalone: true,
+      module: 'zk.templates',
+      root: '/',
+      moduleSystem: 'browserify',
+      templateFooter: '}]).name;'
+    },
+    templateModuleFileName: 'templates.js',
+    outputDir: '.tmp/'
   }
 };

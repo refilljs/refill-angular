@@ -70,11 +70,7 @@ function getProtractorTask(options, gulp, mode) {
     });
 
     zkutils.promisify(gulp.src('test/')
-        .pipe(webserver({
-          fallback: 'index.html',
-          livereload: false,
-          port: 8001
-        })))
+        .pipe(webserver(options.webserver)))
       .then(function(webserverStream) {
 
         var protractorPromise = runProtractor();
@@ -125,6 +121,11 @@ module.exports = {
     ],
     customConfigFiles: false,
     configFile: 'protractor.conf.js',
-    watchConfigFile: 'protractor.watch.conf.js'
+    watchConfigFile: 'protractor.watch.conf.js',
+    webserver: {
+      fallback: 'index.html',
+      livereload: false,
+      port: 8001
+    }
   }
 };

@@ -306,13 +306,14 @@ they set up some solid structure for your project.
 ```JavaScript
 {
   assets: {
-    task: require('./tasks/assets'),
+    task: require('gulp-zkflow-angular/src/tasks/assets'),
     enabled: true,
     dependencies: [],
     globs: 'src/**/_assets/**',
-    imagemin: undefined
+    imagemin: undefined //options for gulp-imagemin
   },
   beautify: {
+    task: require('gulp-zkflow-angular/src/tasks/beautify')
     enabled: true,
     dependencies: [],
     globs: [
@@ -326,14 +327,17 @@ they set up some solid structure for your project.
     ]
   },
   bower: {
+    task: require('gulp-zkflow-angular/src/tasks/bower')
     enabled: true,
     dependencies: []
   },
   clean: {
+    task: require('gulp-zkflow-angular/src/tasks/clean')
     enabled: true,
     dependencies: []
-  },
+  },  
   jshint: {
+    task: require('gulp-zkflow-angular/src/tasks/jshint')
     enabled: true,
     dependencies: [],
     globs: [
@@ -346,19 +350,36 @@ they set up some solid structure for your project.
     jshintrc: false
   },
   templates: {
+    task: require('gulp-zkflow-angular/src/tasks/templates')
     enabled: true,
     dependencies: [],
     globs: [
       'src/**/_templates/*.html',
       'src/**/_templates/**/*.html'
     ],
-    angularModuleName: 'zk.templates'
+    minifyHtml: {
+      empty: true,
+      spare: true,
+      quotes: true
+    },
+    templateCache: {
+      standalone: true,
+      module: 'zk.templates',
+      root: '/',
+      moduleSystem: 'browserify',
+      templateFooter: '}]).name;'
+    },
+    templateModuleFileName: 'templates.js',
+    outputDir: '.tmp/'
   },
   'webdriver-update': {
+    task: require('gulp-zkflow-angular/src/tasks/webdriverUpdate')
     enabled: true,
-    dependencies: []
-  },
+    dependencies: [],
+    webdriverUpdate: undefined
+  },  
   webserver: {
+    task: require('gulp-zkflow-angular/src/tasks/webserver')
     enabled: true,
     dependencies: [],
     host: 'localhost',
@@ -377,13 +398,16 @@ they set up some solid structure for your project.
     }
   },
   assemble: {
+    task: require('gulp-zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
       'clean', ['inject', 'assets']
-    ]
+    ],
+    mode: undefined
   },
   build: {
+    task: require('gulp-zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -395,6 +419,7 @@ they set up some solid structure for your project.
      }
   },
   ci: {
+    task: require('gulp-zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -402,9 +427,11 @@ they set up some solid structure for your project.
       'ci-test',
       'ci-build',
       'ci-e2e'
-    ]
+    ],
+    mode: undefined
   },
   'ci-build': {
+    task: require('gulp-zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -416,6 +443,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-e2e': {
+    task: require('gulp-zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -427,6 +455,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-static-analysis': {
+    task: require('gulp-zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -438,6 +467,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-test': {
+    task: require('gulp-zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -449,6 +479,7 @@ they set up some solid structure for your project.
     }
   },
   css: {
+    task: require('gulp-zkflow-angular/src/tasks/css'),
     enabled: true,
     dependencies: ['bower']
     globs: [
@@ -477,14 +508,17 @@ they set up some solid structure for your project.
     }
   },
   default: {
+    task: require('gulp-zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
       'clean', ['inject', 'assets', 'jshint', 'test'],
       'webserver'
-    ]
+    ],
+    mode: undefined
   },
   e2e: {
+    task: require('gulp-zkflow-angular/src/tasks/protractor'),
     enabled: true,
     dependencies: ['webdriver-update', 'assemble'],
     globs: [
@@ -496,6 +530,7 @@ they set up some solid structure for your project.
     watchConfigFile: 'protractor.watch.conf.js'
   },
   inject: {
+    task: require('gulp-zkflow-angular/src/tasks/inject'),
     enabled: true,
     dependencies: ['js', 'css'],
     globs: 'src/index.html',
@@ -503,19 +538,28 @@ they set up some solid structure for your project.
       'index*.js',
       'index*.css'
     ],
+    headInjectablesGlobs: undefined,
     absolute: true,
     prodAngularMainModuleName: 'app',
     devAngularMainModuleName: 'appDev',
-    testAngularMainModuleName: 'appTest'
+    testAngularMainModuleName: 'appTest',
+    minifyHtml: {
+      empty: true,
+      spare: true,
+      quotes: true
+    }
   },
   js: {
+    task: require('gulp-zkflow-angular/src/tasks/js'),
     enabled: true,
     dependencies: ['bower', 'templates'],
     devEntries: 'src/dev/index.js',
     prodEntries: 'src/index.js',
-    testEntries: 'src/test/index.js'
+    testEntries: 'src/test/index.js',
+    uglify: undefined
   },
   test: {
+    task: require('gulp-zkflow-angular/src/tasks/test'),
     enabled: true,
     dependencies: ['bower', 'templates'],
     files: [

@@ -50,7 +50,7 @@ function getJsTask(options, gulp, mode, getOutputDir) {
       bundler.bundle()
         .on('error', deferred.reject)
         .pipe(source('index.js'))
-        .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(uglify())))
+        .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(uglify(options.uglify))))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
         .pipe(gulp.dest(getOutputDir()))
         .on('end', deferred.resolve);

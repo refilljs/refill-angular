@@ -97,11 +97,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
             .pipe(template({
               angularMainModuleName: mode.angularMainModuleProdFallback ? options.prodAngularMainModuleName : getAngularMainModuleName()
             }))
-            .pipe(gulpif(mode.env !== 'dev', minifyHtml({
-              empty: true,
-              spare: true,
-              quotes: true
-            })))
+            .pipe(gulpif(mode.env !== 'dev', minifyHtml(options.minifyHtml)))
             .pipe(gulp.dest(outputDir))
             .on('end', deferred.resolve);
 
@@ -144,6 +140,11 @@ module.exports = {
     absolute: true,
     prodAngularMainModuleName: 'app',
     devAngularMainModuleName: 'appDev',
-    testAngularMainModuleName: 'appTest'
+    testAngularMainModuleName: 'appTest',
+    minifyHtml: {
+      empty: true,
+      spare: true,
+      quotes: true
+    }
   }
 };
