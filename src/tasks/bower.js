@@ -11,9 +11,15 @@ function getBowerTask(options, gulp, mode) {
     var nextHandler;
     var runBowerPromise;
 
+    var noBowerMessage =
+      '\nNo bower.json found.\n\n' +
+      'You can add bower.json and bower install will be handled automatically.\n' +
+      'Learn more about bower:\n' +
+      'http://bower.io/\n';
+
     function runBower() {
 
-      var promise = zkutils.globby('bower.json', 'No bower.json file found');
+      var promise = zkutils.globby('bower.json', noBowerMessage);
 
       return nextHandler.handle(promise, {
         ignoreFailures: true,

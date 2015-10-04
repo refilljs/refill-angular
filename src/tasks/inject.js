@@ -20,6 +20,13 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
     var runInjectPromise;
     var nextHandler;
 
+    var noInjectFilesMessage =
+      '\nNo inject files found.\n\n' +
+      'Your inject files are determined by globs\n' +
+      options.globs.toString() + '\n\n' +
+      'You can add some matching files with inject.\n' +
+      'See README.md for example file\n';
+
     function addBaseDir(glob) {
       if (glob.charAt(0) === '!') {
         return '!' + outputDir + glob.slice(1);
@@ -76,7 +83,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
     function runInject() {
 
       return nextHandler.handle(
-          zkutils.globby(options.globs, 'No ' + options.globs + ' file found'), {
+          zkutils.globby(options.globs, noInjectFilesMessage), {
             ignoreFailures: true,
             handleSuccess: false
           })

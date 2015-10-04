@@ -20,7 +20,7 @@ function getProtractorTask(options, gulp, mode) {
     var noE2eFilesMessage =
       '\nNo e2e test files found.\n\n' +
       'Your e2e test files are determined by globs\n' +
-      options.globs.toString() + '\n' +
+      options.globs.toString() + '\n\n' +
       'You can add some matching files with e2e tests.\n' +
       'Learn more about e2e tools:\n' +
       'https://angular.github.io/protractor/#/\n' +

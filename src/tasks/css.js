@@ -22,10 +22,22 @@ function getCssTask(options, gulp, mode, getOutputDir) {
     var nextHandler;
     var runCssPromise;
 
+    var noCssFilesMessage =
+      '\nNo css files found.\n\n' +
+      'Your css files are determined by globs\n' +
+      options.globs.toString() + '\n\n' +
+      'You can add some matching files with css.\n' +
+      'Learn more about ZKFlow css toolstack:\n' +
+      'https://github.com/jsahlen/gulp-css-globbing\n' +
+      'http://sass-lang.com/\n' +
+      'http://sassdoc.com/\n' +
+      'https://github.com/postcss/autoprefixer\n' +
+      'http://css.github.io/csso/\n';
+
     function runCss() {
 
       return nextHandler
-        .handle(zkutils.globby(options.globs, 'No css files found'), {
+        .handle(zkutils.globby(options.globs, noCssFilesMessage), {
           ignoreFailures: true,
           handleSuccess: false
         })

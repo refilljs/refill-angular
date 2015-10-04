@@ -2,4 +2,4 @@
 
 var zkflow = require('gulp-zkflow-angular');
 
-zkflow.init();
+zkflow.init(undefined, require('gulp'));

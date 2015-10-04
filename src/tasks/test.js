@@ -15,9 +15,9 @@ function getTestTask(options, gulp, mode) {
     var noTestFilesMessage =
       '\nNo test files found.\n\n' +
       'Your test files are determined by globs\n' +
-      options.files.toString() + '\n' +
+      options.files.toString() + '\n\n' +
       'You can add some matching files with tests.\n' +
-      'Learn more about testing tools:\n' +
+      'Learn more about ZKFlow testing toolstack:\n' +
       'http://karma-runner.github.io/0.13/index.html\n' +
       'http://jasmine.github.io/2.3/introduction.html\n' +
       'http://browserify.org/\n';
