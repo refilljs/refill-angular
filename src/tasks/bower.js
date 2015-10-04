@@ -1,6 +1,6 @@
 'use strict';
 
-function getBowerTask(options, gulp, mode) {
+function getBowerTask(options, gulp, mode, getOutputDir) {
 
   function bowerTask(next) {
 
@@ -21,12 +21,18 @@ function getBowerTask(options, gulp, mode) {
 
       var promise = zkutils.globby('bower.json', noBowerMessage);
 
-      return nextHandler.handle(promise, {
+      promise = nextHandler.handle(promise, {
         ignoreFailures: true,
         handleSuccess: false
       }).then(function() {
-        return nextHandler.handle(zkutils.promisify(bower.commands.install()));
+        return zkutils.promisify(bower.commands.install());
+      }).then(function() {
+        return zkutils.promisify(gulp
+          .src(options.globs, options.globsOptions)
+          .pipe(gulp.dest(getOutputDir() + options.outputDirSuffix)));
       });
+
+      return nextHandler.handle(promise);
 
     }
 
@@ -53,5 +59,12 @@ function getBowerTask(options, gulp, mode) {
 }
 
 module.exports = {
-  getTask: getBowerTask
+  getTask: getBowerTask,
+  defaultOptions: {
+    globs: 'bower_components/**',
+    globsOptions: {
+      base: './'
+    },
+    outputDirSuffix: ''
+  }
 };

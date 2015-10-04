@@ -329,7 +329,12 @@ they set up some solid structure for your project.
   bower: {
     task: require('gulp-zkflow-angular/src/tasks/bower')
     enabled: true,
-    dependencies: []
+    dependencies: [],
+    globs: 'bower_components/**',
+    globsOptions: {
+      base: './'
+    },
+    outputDirSuffix: ''
   },
   clean: {
     task: require('gulp-zkflow-angular/src/tasks/clean')
