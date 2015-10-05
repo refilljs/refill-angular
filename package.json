@@ -1,6 +1,6 @@
 {
   "name": "gulp-zkflow-angular",
-  "version": "1.0.0-11",
+  "version": "1.0.0-12",
   "description": "Automation for AngularJS projects powered by Gulp",
   "main": "src/index.js",
   "repository": {
