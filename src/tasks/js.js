@@ -19,12 +19,21 @@ function getJsTask(options, gulp, mode, getOutputDir) {
     var nextHandler;
     var rebundlePromise;
 
+    var noEnvJsFilesMessage =
+      '\nNo ' + mode.env + ' js entry files found,\n' +
+      'falling back to prod.\n\n' +
+      'Your ' + mode.env + ' js entry files are determined by globs\n' +
+      getEntries().toString() + '\n\n' +
+      'You can add some environment specific js to handle mocks.\n' +
+      'Learn more about AngularJS mocks:\n' +
+      'https://code.angularjs.org/1.4.7/docs/api/ngMockE2E\n';
+
     var noJsFilesMessage =
       '\nNo js entry files found.\n\n' +
       'Your js entry files are determined by globs\n' +
-      options.prodEntries.toString() + '\n' +
+      options.prodEntries.toString() + '\n\n' +
       'You can add some matching files with JavaScript.\n' +
-      'Learn more about JavaScript tools:\n' +
+      'Learn more about ZKFlow JavaScript toolstack:\n' +
       'https://angularjs.org/\n' +
       'http://browserify.org/\n' +
       'https://github.com/omsmith/browserify-ngannotate\n';
@@ -50,7 +59,7 @@ function getJsTask(options, gulp, mode, getOutputDir) {
       bundler.bundle()
         .on('error', deferred.reject)
         .pipe(source('index.js'))
-        .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(uglify())))
+        .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(uglify(options.uglify))))
         .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
         .pipe(gulp.dest(getOutputDir()))
         .on('end', deferred.resolve);
@@ -73,7 +82,7 @@ function getJsTask(options, gulp, mode, getOutputDir) {
         return checkProdEntries();
       }
 
-      return zkutils.globby(getEntries(), mode.env + ' js not found, falling back to prod')
+      return zkutils.globby(getEntries(), noEnvJsFilesMessage)
         .catch(function(error) {
           logger.info(error);
           mode.angularMainModuleProdFallback = true;

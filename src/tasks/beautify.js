@@ -17,9 +17,7 @@ function getBeautifyTask(options, gulp, mode) {
     });
 
     stream = gulp
-      .src(options.globs, {
-        base: './'
-      })
+      .src(options.globs, options.globsOptions)
       .pipe(jsbeautifier({
         mode: mode.env === 'dev' ? 'VERIFY_AND_WRITE' : 'VERIFY_ONLY',
         logSuccess: false,
@@ -60,6 +58,9 @@ module.exports = {
       'gulp/*.js',
       'gulp/**/*.js',
       'gulpfile.js'
-    ]
+    ],
+    globsOptions: {
+      base: './'
+    }
   }
 };

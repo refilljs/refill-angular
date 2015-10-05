@@ -22,7 +22,7 @@ function getJshintTask(options, gulp, mode) {
     function jshintStream() {
 
       return gulp
-        .src(options.globs)
+        .src(options.globs, options.globsOptions)
         .pipe(jshint(options.jshintrc ? undefined : jshintDefaultOptions))
         .pipe(jshint.reporter(require('jshint-stylish')))
         .pipe(jshint.reporter('fail'))

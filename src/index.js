@@ -174,6 +174,8 @@ function init(options, externalGulp) {
   console.log(' %s %s for AngularJS  %s', zkutils.logger.prefix, chalk.green.bold('ZKFlow'), chalk.grey('made by Zaklinacze Kodu'));
   console.log('');
 
+  options = options || {};
+
   computedOptions = _.defaults({}, defaultOptions, options);
 
   _.forEach(computedOptions, function(taskOptions, taskName) {

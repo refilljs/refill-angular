@@ -15,9 +15,9 @@ function getTestTask(options, gulp, mode) {
     var noTestFilesMessage =
       '\nNo test files found.\n\n' +
       'Your test files are determined by globs\n' +
-      options.files.toString() + '\n' +
+      options.files.toString() + '\n\n' +
       'You can add some matching files with tests.\n' +
-      'Learn more about testing tools:\n' +
+      'Learn more about ZKFlow testing toolstack:\n' +
       'http://karma-runner.github.io/0.13/index.html\n' +
       'http://jasmine.github.io/2.3/introduction.html\n' +
       'http://browserify.org/\n';
@@ -25,22 +25,27 @@ function getTestTask(options, gulp, mode) {
     function runTest() {
 
       var reporters = ['progress'];
+      var transform = [];
+      var plugins = [
+        require('karma-browserify'),
+        require('karma-jasmine'),
+        require('karma-phantomjs-launcher')
+      ];
       var karmaDeferred = q.defer();
       var server;
 
       if (!mode.watch) {
         reporters.push('junit', 'coverage');
+        transform.push(istanbul({
+          ignore: options.istanbulIgnore
+        }));
+        plugins.push(require('karma-junit-reporter'));
+        plugins.push(require('karma-coverage'));
       }
 
       server = new karma.Server({
         files: options.files,
-        plugins: [
-          require('karma-browserify'),
-          require('karma-jasmine'),
-          require('karma-junit-reporter'),
-          require('karma-phantomjs-launcher'),
-          require('karma-coverage')
-        ],
+        plugins: plugins,
         logLevel: 'error',
         frameworks: ['jasmine', 'browserify'],
         browserNoActivityTimeout: 120000,
@@ -54,9 +59,7 @@ function getTestTask(options, gulp, mode) {
           configure: function(bundle) {
             bundle.on('update', logger.changed);
           },
-          transform: [istanbul({
-            ignore: options.istanbulIgnore
-          })]
+          transform: transform
         },
         browsers: ['PhantomJS'],
         reporters: reporters,

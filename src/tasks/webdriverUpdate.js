@@ -7,7 +7,7 @@ function getWebdriverUpdateTask(options) {
 
     var webdriverUpdate = require('gulp-protractor').webdriver_update;
 
-    webdriverUpdate(options.webdriverUpdateOptions, next);
+    webdriverUpdate(options.webdriverUpdate, next);
 
   }
 

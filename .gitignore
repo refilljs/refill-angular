@@ -1,4 +1,12 @@
-/docs
+/docs/
 /node_modules/
 /npm-debug.log
 /.idea
+
+/e2e/mini/docs/
+/e2e/mini/node_modules/
+/e2e/mini/bower_components/
+/e2e/mini/npm-debug.log
+/e2e/mini/dist/
+/e2e/mini/test/
+/e2e/mini/dev/

@@ -20,6 +20,13 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
     var runInjectPromise;
     var nextHandler;
 
+    var noInjectFilesMessage =
+      '\nNo inject files found.\n\n' +
+      'Your inject files are determined by globs\n' +
+      options.globs.toString() + '\n\n' +
+      'You can add some matching files with inject.\n' +
+      'See README.md for example file\n';
+
     function addBaseDir(glob) {
       if (glob.charAt(0) === '!') {
         return '!' + outputDir + glob.slice(1);
@@ -49,9 +56,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
 
     function getInject(globs, name) {
       return inject(
-        gulp.src(globs, {
-          read: false
-        }), {
+        gulp.src(globs, options.headInjectablesGlobs), {
           addRootSlash: options.absolute,
           ignorePath: outputDir,
           name: name
@@ -76,7 +81,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
     function runInject() {
 
       return nextHandler.handle(
-          zkutils.globby(options.globs, 'No ' + options.globs + ' file found'), {
+          zkutils.globby(options.globs, noInjectFilesMessage), {
             ignoreFailures: true,
             handleSuccess: false
           })
@@ -85,7 +90,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
           var deferred = q.defer();
           var stream;
 
-          stream = gulp.src(options.globs)
+          stream = gulp.src(options.globs, options.globsOptions)
             .pipe(plumber(deferred.reject))
             .pipe(getInject(injectablesGlobs));
 
@@ -97,11 +102,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
             .pipe(template({
               angularMainModuleName: mode.angularMainModuleProdFallback ? options.prodAngularMainModuleName : getAngularMainModuleName()
             }))
-            .pipe(gulpif(mode.env !== 'dev', minifyHtml({
-              empty: true,
-              spare: true,
-              quotes: true
-            })))
+            .pipe(gulpif(mode.env !== 'dev', minifyHtml(options.minifyHtml)))
             .pipe(gulp.dest(outputDir))
             .on('end', deferred.resolve);
 
@@ -141,9 +142,17 @@ module.exports = {
       'index*.js',
       'index*.css'
     ],
+    injectablesGlobsOptions: {
+      read: false
+    },
     absolute: true,
     prodAngularMainModuleName: 'app',
     devAngularMainModuleName: 'appDev',
-    testAngularMainModuleName: 'appTest'
+    testAngularMainModuleName: 'appTest',
+    minifyHtml: {
+      empty: true,
+      spare: true,
+      quotes: true
+    }
   }
 };

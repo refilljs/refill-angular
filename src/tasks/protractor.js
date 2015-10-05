@@ -20,7 +20,7 @@ function getProtractorTask(options, gulp, mode) {
     var noE2eFilesMessage =
       '\nNo e2e test files found.\n\n' +
       'Your e2e test files are determined by globs\n' +
-      options.globs.toString() + '\n' +
+      options.globs.toString() + '\n\n' +
       'You can add some matching files with e2e tests.\n' +
       'Learn more about e2e tools:\n' +
       'https://angular.github.io/protractor/#/\n' +
@@ -48,7 +48,7 @@ function getProtractorTask(options, gulp, mode) {
         .then(function() {
 
           return nextHandler.handle(zkutils
-            .promisify(gulp.src(options.globs)
+            .promisify(gulp.src(options.globs, options.globsOptions)
               .pipe(protractor({
                 configFile: getConfigPath()
               }))));
@@ -70,11 +70,7 @@ function getProtractorTask(options, gulp, mode) {
     });
 
     zkutils.promisify(gulp.src('test/')
-        .pipe(webserver({
-          fallback: 'index.html',
-          livereload: false,
-          port: 8001
-        })))
+        .pipe(webserver(options.webserver)))
       .then(function(webserverStream) {
 
         var protractorPromise = runProtractor();
@@ -125,6 +121,11 @@ module.exports = {
     ],
     customConfigFiles: false,
     configFile: 'protractor.conf.js',
-    watchConfigFile: 'protractor.watch.conf.js'
+    watchConfigFile: 'protractor.watch.conf.js',
+    webserver: {
+      fallback: 'index.html',
+      livereload: false,
+      port: 8001
+    }
   }
 };
