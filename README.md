@@ -310,6 +310,9 @@ they set up some solid structure for your project.
     enabled: true,
     dependencies: [],
     globs: 'src/**/_assets/**',
+    globsOptions: {
+      base: 'src/'
+    },
     imagemin: undefined //options for gulp-imagemin
   },
   beautify: {
@@ -324,7 +327,10 @@ they set up some solid structure for your project.
       'gulp/*.js',
       'gulp/**/*.js',
       'gulpfile.js'
-    ]
+    ],
+    globsOptions: {
+      base: './'
+    }
   },
   bower: {
     task: require('gulp-zkflow-angular/src/tasks/bower')
@@ -352,6 +358,7 @@ they set up some solid structure for your project.
       'src/*.js',
       'src/**/*.js'
     ],
+    globsOptions: undefined,
     jshintrc: false
   },
   templates: {
@@ -362,6 +369,7 @@ they set up some solid structure for your project.
       'src/**/_templates/*.html',
       'src/**/_templates/**/*.html'
     ],
+    globsOptions: undefined,
     minifyHtml: {
       empty: true,
       spare: true,
@@ -492,6 +500,7 @@ they set up some solid structure for your project.
       'src/**/_styles/*.{scss,sass}',
       'src/**/_styles/**/*.{scss,sass}'
     ],
+    globsOptions: undefined,
     outputDirSuffix: '',
     cssGlobbing: {
       extensions: ['.sass', '.scss'],
@@ -530,6 +539,7 @@ they set up some solid structure for your project.
       'e2e/features/*.feature',
       'e2e/features/**/*.feature'
     ],
+    globsOptions: undefined
     customConfigFiles: false,
     configFile: 'protractor.conf.js',
     watchConfigFile: 'protractor.watch.conf.js'
@@ -539,10 +549,14 @@ they set up some solid structure for your project.
     enabled: true,
     dependencies: ['js', 'css'],
     globs: 'src/index.html',
+    globsOptions: undefined
     injectablesGlobs: [
       'index*.js',
       'index*.css'
     ],
+    injectablesGlobsOptions: {
+      read: false
+    },
     headInjectablesGlobs: undefined,
     absolute: true,
     prodAngularMainModuleName: 'app',

@@ -48,7 +48,7 @@ function getProtractorTask(options, gulp, mode) {
         .then(function() {
 
           return nextHandler.handle(zkutils
-            .promisify(gulp.src(options.globs)
+            .promisify(gulp.src(options.globs, options.globsOptions)
               .pipe(protractor({
                 configFile: getConfigPath()
               }))));

@@ -19,9 +19,7 @@ function getAssetsTask(options, gulp, mode, getOutputDir) {
       return nextHandler.handle(
         zkutils.promisify(
           gulp
-          .src(options.globs, {
-            base: 'src/'
-          })
+          .src(options.globs, options.globsOptions)
           .pipe(changed(outputDir))
           .pipe(gulpif(mode.env !== 'dev', imagemin(options.imagemin)))
           .pipe(gulp.dest(outputDir))
@@ -55,6 +53,9 @@ function getAssetsTask(options, gulp, mode, getOutputDir) {
 module.exports = {
   getTask: getAssetsTask,
   defaultOptions: {
-    globs: 'src/**/_assets/**'
+    globs: 'src/**/_assets/**',
+    globsOptions: {
+      base: 'src/'
+    }
   }
 };

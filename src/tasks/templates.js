@@ -18,7 +18,7 @@ function getTemplatesTask(options, gulp, mode) {
       return nextHandler.handle(
         zkutils.promisify(
           gulp
-          .src(options.globs)
+          .src(options.globs, options.globsOptions)
           .pipe(gulpif(mode.env !== 'dev' && !mode.watch, minifyHtml(options.minifyHtml)))
           .pipe(templateCache(options.templateModuleFileName, options.templateCache))
           .pipe(gulp.dest(options.outputDir))

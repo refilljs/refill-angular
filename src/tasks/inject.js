@@ -56,9 +56,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
 
     function getInject(globs, name) {
       return inject(
-        gulp.src(globs, {
-          read: false
-        }), {
+        gulp.src(globs, options.headInjectablesGlobs), {
           addRootSlash: options.absolute,
           ignorePath: outputDir,
           name: name
@@ -92,7 +90,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
           var deferred = q.defer();
           var stream;
 
-          stream = gulp.src(options.globs)
+          stream = gulp.src(options.globs, options.globsOptions)
             .pipe(plumber(deferred.reject))
             .pipe(getInject(injectablesGlobs));
 
@@ -144,6 +142,9 @@ module.exports = {
       'index*.js',
       'index*.css'
     ],
+    injectablesGlobsOptions: {
+      read: false
+    },
     absolute: true,
     prodAngularMainModuleName: 'app',
     devAngularMainModuleName: 'appDev',

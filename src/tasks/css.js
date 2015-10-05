@@ -46,7 +46,7 @@ function getCssTask(options, gulp, mode, getOutputDir) {
           var deferred = q.defer();
 
           gulp
-            .src(options.globs)
+            .src(options.globs, options.globsOptions)
             .pipe(plumber(deferred.reject))
             .pipe(cssGlobbing(options.cssGlobbing))
             .pipe(gulpif(options.sassdocEnabled, sassdoc(options.sassdoc)))
