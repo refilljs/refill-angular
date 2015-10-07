@@ -44,11 +44,12 @@ function getGulp(externalGulp) {
  *
  * @alias module:gulp-zkflow-angular.init
  */
-function init(options, externalGulp) {
+function init(options, outputDirsMap, externalGulp) {
 
   var zkutils = require('gulp-zkflow-utils');
   var chalk = require('chalk');
   var computedOptions;
+  var computedOutputDirsMap;
 
   var defaultOptions = {
     assets: {
@@ -170,19 +171,33 @@ function init(options, externalGulp) {
     }
   };
 
+  var defaultOutputDirsMap = {
+    prod: 'dist/',
+    test: 'test/',
+    dev: 'dev/'
+  };
+
+  function getOutputDir() {
+    return computedOutputDirsMap[mode.env];
+  }
+
   console.log('');
   console.log(' %s %s for AngularJS  %s', zkutils.logger.prefix, chalk.green.bold('ZKFlow'), chalk.grey('made by Zaklinacze Kodu'));
   console.log('');
 
-  options = options || {};
+  outputDirsMap = outputDirsMap || {};
+  computedOutputDirsMap = _.defaults({}, defaultOutputDirsMap, outputDirsMap);
 
+  options = options || {};
   computedOptions = _.defaults({}, defaultOptions, options);
 
   _.forEach(computedOptions, function(taskOptions, taskName) {
     computedOptions[taskName] = _.defaults({}, options[taskName], taskOptions);
   });
 
-  loadTasks(computedOptions, getGulp(externalGulp), mode, require('./getOutputDir'));
+  loadTasks(computedOptions, getGulp(externalGulp), mode, getOutputDir);
+
+  return getOutputDir;
 
 }
 
