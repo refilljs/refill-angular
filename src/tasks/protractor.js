@@ -69,18 +69,17 @@ function getProtractorTask(options, gulp, mode) {
       logger: logger
     });
 
-    zkutils.promisify(gulp.src('test/')
-        .pipe(webserver(options.webserver)))
+    zkutils.promisify(gulp.src('test/').pipe(webserver(options.webserver)))
       .then(function(webserverStream) {
 
-        var protractorPromise = runProtractor();
-
         if (!mode.watch) {
-          protractorPromise.finally(function() {
+          runProtractor().finally(function() {
             webserverStream.emit('kill');
           });
           return;
         }
+
+        help();
 
         // this will start simple interactive mode. If you press "r" e2e tests will run, "^C" will stop execution
         process.stdin.setRawMode(true);

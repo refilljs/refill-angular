@@ -286,7 +286,7 @@ API
 If you get 'task not found' error from gulp, you probably should pass gulp to init
 
 ```JavaScript
-require('gulp-zkflow-angular').init(undefined, require('gulp'));
+require('gulp-zkflow-angular').init(undefined, undefined, require('gulp'));
 ```
 
 ### options
@@ -295,7 +295,7 @@ require('gulp-zkflow-angular').init(undefined, require('gulp'));
 You can pass options object to init function
 
 ```JavaScript
-require('gulp-zkflow-angular').init(options);
+require('gulp-zkflow-angular').init(options, outputDirsMap);
 ```
 
 #### Default options
@@ -605,9 +605,28 @@ they set up some solid structure for your project.
 }
 ```
 
+### output dirs map
+
+You can pass output dirs map object to init function.
+This object maps current environment to output dir.
+
+```JavaScript
+require('gulp-zkflow-angular').init(options, outputDirsMap);
+```
+
+#### Default output dirs map
+
+```
+{
+  prod: 'dist/',
+  test: 'test/',
+  dev: 'dev/'
+}
+```
+
 ### mode
 
-you can retrieve mode object from zkflow
+You can retrieve mode object from zkflow
 
 ```JavaScript
 var mode = require('gulp-zkflow-angular').mode;
