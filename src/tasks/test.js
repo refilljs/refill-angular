@@ -25,7 +25,7 @@ function getTestTask(options, gulp, mode) {
     function runTest() {
 
       var reporters = ['progress'];
-      var transform = [];
+      var transform = options.browserifyTransforms;
       var plugins = [
         require('karma-browserify'),
         require('karma-jasmine'),
@@ -147,6 +147,7 @@ module.exports = {
     }, {
       type: 'clover',
       subdir: 'coverageClover'
-    }]
+    }],
+    browserifyTransforms: []
   }
 };

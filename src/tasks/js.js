@@ -101,7 +101,9 @@ function getJsTask(options, gulp, mode, getOutputDir) {
         debug: mode.env === 'dev'
       });
 
-      bundler.transform(require('browserify-ngannotate'));
+      options.browserifyTransforms.forEach(function(transform) {
+        bundler.transform(transform);
+      });
 
       if (mode.watch) {
         watchify = require('watchify');
@@ -159,6 +161,9 @@ module.exports = {
   defaultOptions: {
     devEntries: 'src/dev/index.js',
     prodEntries: 'src/index.js',
-    testEntries: 'src/test/index.js'
+    testEntries: 'src/test/index.js',
+    browserifyTransforms: [
+      require('browserify-ngannotate')
+    ]
   }
 };

@@ -575,7 +575,10 @@ they set up some solid structure for your project.
     devEntries: 'src/dev/index.js',
     prodEntries: 'src/index.js',
     testEntries: 'src/test/index.js',
-    uglify: undefined
+    uglify: undefined,
+    browserifyTransforms: [
+      require('browserify-ngannotate')
+    ]
   },
   test: {
     task: require('gulp-zkflow-angular/src/tasks/test'),
@@ -600,7 +603,8 @@ they set up some solid structure for your project.
     }, {
       type: 'clover',
       subdir: 'coverageClover'
-    }]
+    }],
+    browserifyTransforms: []
   }
 }
 ```
