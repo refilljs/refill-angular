@@ -2,7 +2,8 @@
 
 exports.config = {
 
-  framework: 'cucumber',
+  framework: 'custom',
+  frameworkPath: require.resolve('protractor-cucumber-framework'),
 
   allScriptsTimeout: 60000,
   getPageTimeout: 60000,
@@ -20,7 +21,8 @@ exports.config = {
   baseUrl: 'http://localhost:8001',
 
   cucumberOpts: {
-    require: process.cwd() + '/e2e/stepDefinitions/**/*.js'
+    require: process.cwd() + '/e2e/stepDefinitions/**/*.js',
+    format: 'summary'
   }
 
 };
