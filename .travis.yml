@@ -5,6 +5,8 @@ addons:
     packages:
       - gcc-4.9
       - g++-4.9
+      - xpra
+      - dbus-x11
 
 language: node_js
 
@@ -13,6 +15,7 @@ node_js:
   - 0.12
   - iojs
   - 4
+  - 5
 
 os:
   - linux
@@ -31,6 +34,7 @@ env:
 #    - node_js: 4
 
 before_install:
+  - xpra start :99
   - npm update -g npm
   - cd $WORKING_DIR
 
