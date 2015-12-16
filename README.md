@@ -1,7 +1,7 @@
 Gulp Zkflow for AngularJS
 =========================
 
-Automation for AngularJS projects powered by [Gulp](http://gulpjs.com/) 
+Automation for AngularJS projects powered by [Gulp](http://gulpjs.com/)
 
 Made by Zaklinacze Kodu
 
@@ -34,18 +34,29 @@ Features
     * Unit tests with karma
     * jshint
     * jsbeautifier
-    
+
 * Production environment
     * js, css, jpg, png and svg minification
     * cache busting
-    
+
 * Continous integration
     * build + jshint + jsbeautifier + tests + e2e with guaranteed non-zero exit status on error
-        
+
+Why not just write tasks yourself?
+----------------------------------
+
+Usually simple gulp tasks have a lot of problems, which are resolved in Zkflow
+
+* tasks immune to errors resulting crashed watchers
+* tasks parametrized with tasks modes
+* tasks cannot run few times simultaneously after few quick changes
+* in develop mode if task detect some errors it will hold execution until all errors will be corrected and then it will let the rest of dependent tasks run
+* tasks in prod mode always returns non-zero exit status on error
+
 Requirements
 ------------
 
-You need: 
+You need:
 
 * [nodejs](http://nodejs.org/download/)
 * updated npm
@@ -296,6 +307,47 @@ You can pass options object to init function
 
 ```JavaScript
 require('gulp-zkflow-angular').init(options, outputDirsMap);
+```
+
+For every task options are merged only 1 level deep. Deeper they will be overwritten.
+
+For example if you have default options
+```JavaScript
+{
+  someTask: {
+      option1: 1
+      option2: 2
+      option3: {
+          subOption1: 3
+          subOption2: 4
+      }
+  }
+}
+```
+
+and you pass to init
+```JavaScript
+{
+  someTask: {
+      option1: 11
+      option3: {
+          subOption1: 5
+      }
+  }
+}
+```
+
+actual task options are
+```JavaScript
+{
+  someTask: {
+      option1: 11
+      option2: 2
+      option3: {
+          subOption1: 5
+      }
+  }
+}
 ```
 
 #### Default options
