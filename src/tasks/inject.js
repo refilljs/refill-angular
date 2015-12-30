@@ -1,23 +1,23 @@
 'use strict';
 
+var inject = require('gulp-inject');
+var minifyHtml = require('gulp-minify-html');
+var template = require('gulp-template');
+var gulpif = require('gulp-if');
+var zkutils = require('gulp-zkflow-utils');
+var q = require('q');
+var plumber = require('gulp-plumber');
+var _ = require('lodash');
+var zkflowWatcher = require('zkflow-watcher');
+
 function getInjectTask(options, gulp, mode, getOutputDir) {
 
   function injectTask(next) {
 
-    var inject = require('gulp-inject');
-    var minifyHtml = require('gulp-minify-html');
-    var template = require('gulp-template');
-    var gulpif = require('gulp-if');
-    var zkutils = require('gulp-zkflow-utils');
-    var q = require('q');
-    var plumber = require('gulp-plumber');
-    var watch = require('gulp-watch');
-    var _ = require('lodash');
     var outputDir = getOutputDir();
     var logger = zkutils.logger('inject');
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);
     var headInjectablesGlobs = prefixGlobs(options.headInjectablesGlobs);
-    var runInjectPromise;
     var nextHandler;
 
     var noInjectFilesMessage =
@@ -118,15 +118,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
       logger: logger
     });
 
-    runInjectPromise = runInject()
-      .finally(function() {
-        if (mode.watch) {
-          watch(options.globs, function(event) {
-            logger.changed(event);
-            runInjectPromise = runInjectPromise.finally(runInject);
-          });
-        }
-      });
+    zkflowWatcher.watch(runInject, mode.watch, options.globs, logger);
 
   }
 

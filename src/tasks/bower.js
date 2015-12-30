@@ -1,15 +1,15 @@
 'use strict';
 
+var zkutils = require('gulp-zkflow-utils');
+var bower = require('bower');
+var zkflowWatcher = require('zkflow-watcher');
+
 function getBowerTask(options, gulp, mode, getOutputDir) {
 
   function bowerTask(next) {
 
-    var zkutils = require('gulp-zkflow-utils');
-    var watch = require('gulp-watch');
-    var bower = require('bower');
     var logger = zkutils.logger('bower');
     var nextHandler;
-    var runBowerPromise;
 
     var noBowerMessage =
       '\nNo bower.json found.\n\n' +
@@ -42,15 +42,7 @@ function getBowerTask(options, gulp, mode, getOutputDir) {
       logger: logger
     });
 
-    runBowerPromise = runBower()
-      .finally(function() {
-        if (mode.watch) {
-          watch('bower.json', function(event) {
-            logger.changed(event);
-            runBowerPromise = runBowerPromise.finally(runBower);
-          });
-        }
-      });
+    zkflowWatcher.watch(runBower, mode.watch, 'bower.json', logger);
 
   }
 

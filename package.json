@@ -65,7 +65,8 @@
     "run-sequence": "1.1.5",
     "sassdoc": "2.1.18",
     "vinyl-source-stream": "1.1.0",
-    "watchify": "3.6.1"
+    "watchify": "3.6.1",
+    "zkflow-watcher": "0.1.0"
   },
   "devDependencies": {
     "gulp": "3.9.0",
