@@ -286,7 +286,7 @@ var angular = require('angular');
 angular.module('app', [
     require('../.tmp/templates.js').name
   ])
-  .controller('appController', /** @ngInject */ function() {
+  .controller('appNameController', /** @ngInject */ function() {
   });
 ```
 

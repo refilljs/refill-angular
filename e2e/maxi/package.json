@@ -5,6 +5,7 @@
   "author": "Piotr Baranowski <piotr.baranowski@zaklinaczekodu.com> (https://github.com/zaklinaczekodu)",
   "license": "MIT",
   "dependencies": {
+    "angular": "1.4.8",
     "gulp-zkflow-angular": "file:../../"
   },
   "devDependencies": {
