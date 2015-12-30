@@ -1,20 +1,19 @@
 'use strict';
 
+var gulpif = require('gulp-if');
+var templateCache = require('gulp-angular-templatecache');
+var minifyHtml = require('gulp-minify-html');
+var zkutils = require('gulp-zkflow-utils');
+var zkflowWatcher = require('zkflow-watcher');
+
 function getTemplatesTask(options, gulp, mode) {
 
   function templatesTask(next) {
 
-    var gulpif = require('gulp-if');
-    var templateCache = require('gulp-angular-templatecache');
-    var minifyHtml = require('gulp-minify-html');
-    var zkutils = require('gulp-zkflow-utils');
-    var watch = require('gulp-watch');
     var logger = zkutils.logger('templates');
     var nextHandler;
-    var runTemplatesPromise;
 
     function runTemplates() {
-
       return nextHandler.handle(
         zkutils.promisify(
           gulp
@@ -24,7 +23,6 @@ function getTemplatesTask(options, gulp, mode) {
           .pipe(gulp.dest(options.outputDir))
         )
       );
-
     }
 
     nextHandler = new zkutils.NextHandler({
@@ -33,15 +31,7 @@ function getTemplatesTask(options, gulp, mode) {
       logger: logger
     });
 
-    runTemplatesPromise = runTemplates()
-      .finally(function() {
-        if (mode.watch) {
-          watch(options.globs, function(path) {
-            logger.changed(path);
-            runTemplatesPromise = runTemplatesPromise.finally(runTemplates);
-          });
-        }
-      });
+    zkflowWatcher.watch(runTemplates, mode.watch, options.globs, logger);
 
   }
 

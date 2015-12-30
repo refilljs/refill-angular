@@ -1,26 +1,26 @@
 'use strict';
 
+var cssGlobbing = require('gulp-css-globbing');
+var sass = require('gulp-sass');
+var sassdoc = require('sassdoc');
+var csso = require('gulp-csso');
+var streamify = require('gulp-streamify');
+var rev = require('gulp-rev');
+var gulpif = require('gulp-if');
+var autoprefixer = require('gulp-autoprefixer');
+var plumber = require('gulp-plumber');
+var zkutils = require('gulp-zkflow-utils');
+var sourcemaps = require('gulp-sourcemaps');
+var q = require('q');
+var zkflowWatcher = require('zkflow-watcher');
+
 function getCssTask(options, gulp, mode, getOutputDir) {
 
   function cssTask(next) {
 
-    var cssGlobbing = require('gulp-css-globbing');
-    var sass = require('gulp-sass');
-    var sassdoc = require('sassdoc');
-    var csso = require('gulp-csso');
-    var streamify = require('gulp-streamify');
-    var rev = require('gulp-rev');
-    var gulpif = require('gulp-if');
-    var autoprefixer = require('gulp-autoprefixer');
-    var plumber = require('gulp-plumber');
-    var watch = require('gulp-watch');
-    var zkutils = require('gulp-zkflow-utils');
-    var sourcemaps = require('gulp-sourcemaps');
-    var q = require('q');
     var outputDir = getOutputDir();
     var logger = zkutils.logger('css');
     var nextHandler;
-    var runCssPromise;
 
     var noCssFilesMessage =
       '\nNo css files found.\n\n' +
@@ -71,15 +71,7 @@ function getCssTask(options, gulp, mode, getOutputDir) {
       logger: logger
     });
 
-    runCssPromise = runCss()
-      .finally(function() {
-        if (mode.watch) {
-          watch(options.globs, function(event) {
-            logger.changed(event);
-            runCssPromise = runCssPromise.finally(runCss);
-          });
-        }
-      });
+    zkflowWatcher.watch(runCss, mode.watch, options.globs, logger);
 
   }
 
