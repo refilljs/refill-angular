@@ -21,18 +21,17 @@ function getBowerTask(options, gulp, mode, getOutputDir) {
 
       var promise = zkutils.globby('bower.json', noBowerMessage);
 
-      promise = nextHandler.handle(promise, {
+      return nextHandler.handle(promise, {
         ignoreFailures: true,
         handleSuccess: false
       }).then(function() {
-        return zkutils.promisify(bower.commands.install());
-      }).then(function() {
-        return zkutils.promisify(gulp
-          .src(options.globs, options.globsOptions)
-          .pipe(gulp.dest(getOutputDir() + options.outputDirSuffix)));
+        return nextHandler.handle(zkutils.promisify(bower.commands.install())
+          .then(function() {
+            return zkutils.promisify(gulp
+              .src(options.globs, options.globsOptions)
+              .pipe(gulp.dest(getOutputDir() + options.outputDirSuffix)));
+          }));
       });
-
-      return nextHandler.handle(promise);
 
     }
 
