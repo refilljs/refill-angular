@@ -3,8 +3,8 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gcc-4.9
-      - g++-4.9
+      - gcc-5
+      - g++-5
       - xpra
       - dbus-x11
 
@@ -21,7 +21,7 @@ os:
 
 env:
   global:
-    - CC=gcc-4.9 CXX=g++-4.9
+    - CC=gcc-5 CXX=g++-5
   matrix:
     - WORKING_DIR=.
     - WORKING_DIR=e2e/mini/
@@ -29,7 +29,8 @@ env:
 
 before_install:
   - xpra start :99
-  - npm update -g npm
+  - npm config set progress false
+  - npm install -g npm@latest
   - cd $WORKING_DIR
 
 script:
