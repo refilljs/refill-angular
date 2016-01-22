@@ -43,4 +43,4 @@ deploy:
     node: 5
     condition: $WORKING_DIR=.
     tags: true
-    repo: zaklinaczekodu/gulp-zkflow-angular
+    repo: zaklinaczekodu/zkflow-angular

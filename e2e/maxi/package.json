@@ -6,7 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "angular": "1.4.8",
-    "gulp-zkflow-angular": "file:../../"
+    "zkflow-angular": "file:../../"
   },
   "devDependencies": {
     "gulp": "3.9.0"

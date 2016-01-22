@@ -4,7 +4,7 @@
  * @module gulp-zkflow-angular
  */
 
-var loadTasks = require('gulp-zkflow-load-tasks');
+var zkflow = require('zkflow');
 var mode = require('./mode');
 var _ = require('lodash');
 
@@ -195,7 +195,7 @@ function init(options, outputDirsMap, externalGulp) {
     computedOptions[taskName] = _.defaults({}, options[taskName], taskOptions);
   });
 
-  loadTasks(computedOptions, getGulp(externalGulp), mode, getOutputDir);
+  zkflow(computedOptions, getGulp(externalGulp), mode, getOutputDir);
 
   return getOutputDir;
 
