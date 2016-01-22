@@ -22,7 +22,7 @@ Shields
 Features
 --------
 
-* Sass + saasdoc + css globbing + autoprefixer
+* Sass + sassdoc + css globbing + autoprefixer
 * Browserify + ngannotate
 * Assets management
 * Bower
@@ -621,13 +621,8 @@ they set up some solid structure for your project.
     }
   },
   js: {
-    task: require('gulp-zkflow-angular/src/tasks/js'),
-    enabled: true,
+    task: require('zkflow-task-browserify'),
     dependencies: ['bower', 'templates'],
-    devEntries: 'src/dev/index.js',
-    prodEntries: 'src/index.js',
-    testEntries: 'src/test/index.js',
-    uglify: undefined,
     browserifyTransforms: [
       require('browserify-ngannotate')
     ]

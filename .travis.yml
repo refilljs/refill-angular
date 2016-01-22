@@ -38,6 +38,7 @@ script:
 
 deploy:
   provider: npm
+  email: piotr.baranowski@zaklinaczekodu.com
   api_key: $NPM_API_KEY
   on:
     node: 5

@@ -5,8 +5,9 @@
  */
 
 var zkflow = require('zkflow');
-var mode = require('./mode');
+var browserifyNgannotate = require('browserify-ngannotate');
 var _ = require('lodash');
+var mode = require('./mode');
 
 /**
  * get gulp object from external source if available or from require
@@ -161,9 +162,11 @@ function init(options, outputDirsMap, externalGulp) {
       dependencies: ['js', 'css']
     },
     js: {
-      task: require('./tasks/js'),
-      enabled: true,
-      dependencies: ['bower', 'templates']
+      task: require('zkflow-task-browserify'),
+      dependencies: ['bower', 'templates'],
+      browserifyTransforms: [
+        browserifyNgannotate
+      ]
     },
     test: {
       task: require('./tasks/test'),
