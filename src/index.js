@@ -4,9 +4,10 @@
  * @module gulp-zkflow-angular
  */
 
-var loadTasks = require('gulp-zkflow-load-tasks');
-var mode = require('./mode');
+var zkflow = require('zkflow');
+var browserifyNgannotate = require('browserify-ngannotate');
 var _ = require('lodash');
+var mode = require('./mode');
 
 /**
  * get gulp object from external source if available or from require
@@ -161,9 +162,11 @@ function init(options, outputDirsMap, externalGulp) {
       dependencies: ['js', 'css']
     },
     js: {
-      task: require('./tasks/js'),
-      enabled: true,
-      dependencies: ['bower', 'templates']
+      task: require('zkflow-task-browserify'),
+      dependencies: ['bower', 'templates'],
+      browserifyTransforms: [
+        browserifyNgannotate
+      ]
     },
     test: {
       task: require('./tasks/test'),
@@ -195,7 +198,7 @@ function init(options, outputDirsMap, externalGulp) {
     computedOptions[taskName] = _.defaults({}, options[taskName], taskOptions);
   });
 
-  loadTasks(computedOptions, getGulp(externalGulp), mode, getOutputDir);
+  zkflow(computedOptions, getGulp(externalGulp), mode, getOutputDir);
 
   return getOutputDir;
 

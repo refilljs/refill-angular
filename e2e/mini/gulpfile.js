@@ -1,5 +1,5 @@
 'use strict';
 
-var zkflow = require('gulp-zkflow-angular');
+var zkflowAngular = require('zkflow-angular');
 
-zkflow.init(undefined, undefined, require('gulp'));
+zkflowAngular.init(undefined, undefined, require('gulp'));

@@ -1,23 +1,23 @@
 {
-  "name": "gulp-zkflow-angular",
+  "name": "zkflow-angular",
   "version": "1.1.1",
-  "description": "Automation for AngularJS projects powered by Gulp",
+  "description": "Automation for AngularJS projects powered by ZKflow",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zaklinaczekodu/gulp-zkflow-angular.git"
+    "url": "https://github.com/zaklinaczekodu/zkflow-angular.git"
   },
   "keywords": [
-    "gulp",
+    "zkflow",
     "angular",
     "tasks"
   ],
   "author": "Piotr Baranowski <piotr.baranowski@zaklinaczekodu.com> (https://github.com/zaklinaczekodu)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zaklinaczekodu/gulp-zkflow-angular/issues"
+    "url": "https://github.com/zaklinaczekodu/zkflow-angular/issues"
   },
-  "homepage": "https://github.com/zaklinaczekodu/gulp-zkflow-angular",
+  "homepage": "https://github.com/zaklinaczekodu/zkflow-angular",
   "dependencies": {
     "bower": "1.7.1",
     "browserify": "12.0.1",
@@ -43,10 +43,8 @@
     "gulp-sourcemaps": "1.6.0",
     "gulp-streamify": "1.0.2",
     "gulp-template": "3.1.0",
-    "gulp-uglify": "1.5.1",
     "gulp-watch": "4.3.5",
     "gulp-webserver": "0.9.1",
-    "gulp-zkflow-load-tasks": "0.2.0",
     "gulp-zkflow-utils": "0.4.1",
     "jasmine-core": "2.4.1",
     "jshint": "2.8.0",
@@ -64,8 +62,8 @@
     "q": "1.4.1",
     "run-sequence": "1.1.5",
     "sassdoc": "2.1.18",
-    "vinyl-source-stream": "1.1.0",
-    "watchify": "3.6.1",
+    "zkflow": "1.0.0",
+    "zkflow-task-browserify": "1.0.0",
     "zkflow-watcher": "0.1.0"
   },
   "devDependencies": {
@@ -73,6 +71,6 @@
     "gulp-zkflow-nodemodule": "0.1.1"
   },
   "peerDependencies": {
-    "gulp": "3.9.0"
+    "gulp": "3.*"
   }
 }
