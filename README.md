@@ -94,13 +94,13 @@ Installation
 Gulp Zkflow for AngularJS is available through npm
 
 ```Shell
-npm install --save gulp gulp-zkflow-angular
+npm install --save gulp zkflow-angular
 ```
 
 Put this line in your gulpfile.js
 
 ```JavaScript
-require('gulp-zkflow-angular').init();
+require('zkflow-angular').init();
 ```
 
 This will create a set of tasks in gulp, which you will be able to use from console
@@ -297,7 +297,7 @@ API
 If you get 'task not found' error from gulp, you probably should pass gulp to init
 
 ```JavaScript
-require('gulp-zkflow-angular').init(undefined, undefined, require('gulp'));
+require('zkflow-angular').init(undefined, undefined, require('gulp'));
 ```
 
 ### options
@@ -306,7 +306,7 @@ require('gulp-zkflow-angular').init(undefined, undefined, require('gulp'));
 You can pass options object to init function
 
 ```JavaScript
-require('gulp-zkflow-angular').init(options, outputDirsMap);
+require('zkflow-angular').init(options, outputDirsMap);
 ```
 
 For every task options are merged only 1 level deep. Deeper they will be overwritten.
@@ -358,7 +358,7 @@ they set up some solid structure for your project.
 ```JavaScript
 {
   assets: {
-    task: require('gulp-zkflow-angular/src/tasks/assets'),
+    task: require('zkflow-angular/src/tasks/assets'),
     enabled: true,
     dependencies: [],
     globs: 'src/**/_assets/**',
@@ -368,7 +368,7 @@ they set up some solid structure for your project.
     imagemin: undefined //options for gulp-imagemin
   },
   beautify: {
-    task: require('gulp-zkflow-angular/src/tasks/beautify')
+    task: require('zkflow-angular/src/tasks/beautify')
     enabled: true,
     dependencies: [],
     globs: [
@@ -385,7 +385,7 @@ they set up some solid structure for your project.
     }
   },
   bower: {
-    task: require('gulp-zkflow-angular/src/tasks/bower')
+    task: require('zkflow-angular/src/tasks/bower')
     enabled: true,
     dependencies: [],
     globs: 'bower_components/**',
@@ -395,12 +395,12 @@ they set up some solid structure for your project.
     outputDirSuffix: ''
   },
   clean: {
-    task: require('gulp-zkflow-angular/src/tasks/clean')
+    task: require('zkflow-angular/src/tasks/clean')
     enabled: true,
     dependencies: []
   },  
   jshint: {
-    task: require('gulp-zkflow-angular/src/tasks/jshint')
+    task: require('zkflow-angular/src/tasks/jshint')
     enabled: true,
     dependencies: [],
     globs: [
@@ -414,7 +414,7 @@ they set up some solid structure for your project.
     jshintrc: false
   },
   templates: {
-    task: require('gulp-zkflow-angular/src/tasks/templates')
+    task: require('zkflow-angular/src/tasks/templates')
     enabled: true,
     dependencies: [],
     globs: [
@@ -438,13 +438,13 @@ they set up some solid structure for your project.
     outputDir: '.tmp/'
   },
   'webdriver-update': {
-    task: require('gulp-zkflow-angular/src/tasks/webdriverUpdate')
+    task: require('zkflow-angular/src/tasks/webdriverUpdate')
     enabled: true,
     dependencies: [],
     webdriverUpdate: undefined
   },  
   webserver: {
-    task: require('gulp-zkflow-angular/src/tasks/webserver')
+    task: require('zkflow-angular/src/tasks/webserver')
     enabled: true,
     dependencies: [],
     host: 'localhost',
@@ -463,7 +463,7 @@ they set up some solid structure for your project.
     }
   },
   assemble: {
-    task: require('gulp-zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -472,7 +472,7 @@ they set up some solid structure for your project.
     mode: undefined
   },
   build: {
-    task: require('gulp-zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -484,7 +484,7 @@ they set up some solid structure for your project.
      }
   },
   ci: {
-    task: require('gulp-zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -496,7 +496,7 @@ they set up some solid structure for your project.
     mode: undefined
   },
   'ci-build': {
-    task: require('gulp-zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -508,7 +508,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-e2e': {
-    task: require('gulp-zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -520,7 +520,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-static-analysis': {
-    task: require('gulp-zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -532,7 +532,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-test': {
-    task: require('gulp-zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -544,7 +544,7 @@ they set up some solid structure for your project.
     }
   },
   css: {
-    task: require('gulp-zkflow-angular/src/tasks/css'),
+    task: require('zkflow-angular/src/tasks/css'),
     enabled: true,
     dependencies: ['bower']
     globs: [
@@ -574,7 +574,7 @@ they set up some solid structure for your project.
     }
   },
   default: {
-    task: require('gulp-zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -584,7 +584,7 @@ they set up some solid structure for your project.
     mode: undefined
   },
   e2e: {
-    task: require('gulp-zkflow-angular/src/tasks/protractor'),
+    task: require('zkflow-angular/src/tasks/protractor'),
     enabled: true,
     dependencies: ['webdriver-update', 'assemble'],
     globs: [
@@ -597,7 +597,7 @@ they set up some solid structure for your project.
     watchConfigFile: 'protractor.watch.conf.js'
   },
   inject: {
-    task: require('gulp-zkflow-angular/src/tasks/inject'),
+    task: require('zkflow-angular/src/tasks/inject'),
     enabled: true,
     dependencies: ['js', 'css'],
     globs: 'src/index.html',
@@ -628,7 +628,7 @@ they set up some solid structure for your project.
     ]
   },
   test: {
-    task: require('gulp-zkflow-angular/src/tasks/test'),
+    task: require('zkflow-angular/src/tasks/test'),
     enabled: true,
     dependencies: ['bower', 'templates'],
     files: [
@@ -662,7 +662,7 @@ You can pass output dirs map object to init function.
 This object maps current environment to output dir.
 
 ```JavaScript
-require('gulp-zkflow-angular').init(options, outputDirsMap);
+require('zkflow-angular').init(options, outputDirsMap);
 ```
 
 #### Default output dirs map
@@ -680,7 +680,7 @@ require('gulp-zkflow-angular').init(options, outputDirsMap);
 You can retrieve mode object from zkflow
 
 ```JavaScript
-var mode = require('gulp-zkflow-angular').mode;
+var mode = require('zkflow-angular').mode;
 ```
 
 This object is shared across all tasks and it define mode of operation.
