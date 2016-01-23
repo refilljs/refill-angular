@@ -1,7 +1,7 @@
-Gulp Zkflow for AngularJS
-=========================
+ZKflow for AngularJS
+====================
 
-Automation for AngularJS projects powered by [Gulp](http://gulpjs.com/)
+Gulp tasks for AngularJS projects powered by [ZKflow](https://github.com/zaklinaczekodu/zkflow)
 
 Made by Zaklinacze Kodu
 
