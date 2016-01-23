@@ -91,7 +91,7 @@ Go to [node-gyp github page](https://github.com/TooTallNate/node-gyp) and follow
 Installation
 ------------
 
-Gulp Zkflow for AngularJS is available through npm
+ZKflow for AngularJS is available through npm
 
 ```Shell
 npm install --save gulp zkflow-angular
