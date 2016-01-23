@@ -8,16 +8,16 @@ Made by Zaklinacze Kodu
 Shields
 -------
 
-[![npm](https://img.shields.io/npm/v/gulp-zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/gulp-zkflow-angular)
-[![npm](https://img.shields.io/npm/l/gulp-zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/gulp-zkflow-angular)
-[![npm](https://img.shields.io/npm/dm/gulp-zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/gulp-zkflow-angular)<br>
-[![Travis](https://img.shields.io/travis/zaklinaczekodu/gulp-zkflow-angular/master.svg?style=flat-square)](https://travis-ci.org/zaklinaczekodu/gulp-zkflow-angular)
-[![Code Climate](https://img.shields.io/codeclimate/github/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://codeclimate.com/github/zaklinaczekodu/gulp-zkflow-angular)<br>
-[![David](https://img.shields.io/david/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://david-dm.org/zaklinaczekodu/gulp-zkflow-angular)
-[![David](https://img.shields.io/david/dev/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://david-dm.org/zaklinaczekodu/gulp-zkflow-angular)<br>
-[![GitHub forks](https://img.shields.io/github/forks/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/gulp-zkflow-angular)
-[![GitHub stars](https://img.shields.io/github/stars/zaklinaczekodu/gulp-zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/gulp-zkflow-angular)
-[![GitHub followers](https://img.shields.io/github/followers/zaklinaczekodu.svg?style=flat-square)](https://github.com/zaklinaczekodu/gulp-zkflow-angular)
+[![npm](https://img.shields.io/npm/v/zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/zkflow-angular)
+[![npm](https://img.shields.io/npm/l/zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/zkflow-angular)
+[![npm](https://img.shields.io/npm/dm/zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/zkflow-angular)<br>
+[![Travis](https://img.shields.io/travis/zaklinaczekodu/zkflow-angular/master.svg?style=flat-square)](https://travis-ci.org/zaklinaczekodu/zkflow-angular)
+[![Code Climate](https://img.shields.io/codeclimate/github/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://codeclimate.com/github/zaklinaczekodu/zkflow-angular)<br>
+[![David](https://img.shields.io/david/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://david-dm.org/zaklinaczekodu/zkflow-angular)
+[![David](https://img.shields.io/david/dev/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://david-dm.org/zaklinaczekodu/zkflow-angular)<br>
+[![GitHub forks](https://img.shields.io/github/forks/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/zkflow-angular)
+[![GitHub stars](https://img.shields.io/github/stars/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/zkflow-angular)
+[![GitHub followers](https://img.shields.io/github/followers/zaklinaczekodu.svg?style=flat-square)](https://github.com/zaklinaczekodu/zkflow-angular)
 
 Features
 --------
@@ -45,7 +45,7 @@ Features
 Why not just write tasks yourself?
 ----------------------------------
 
-Usually simple gulp tasks have a lot of problems, which are resolved in Zkflow
+Usually simple gulp tasks have a lot of problems, which are resolved in ZKflow
 
 * tasks immune to errors resulting crashed watchers
 * tasks parametrized with tasks modes
