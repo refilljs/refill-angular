@@ -42,6 +42,6 @@ deploy:
   api_key: $NPM_API_KEY
   on:
     node: 5
-    condition: $WORKING_DIR=.
+    condition: $WORKING_DIR == .
     tags: true
     repo: zaklinaczekodu/zkflow-angular
