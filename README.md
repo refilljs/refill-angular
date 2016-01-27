@@ -3,7 +3,7 @@ ZKflow for AngularJS
 
 Gulp tasks for AngularJS projects powered by [ZKflow](https://github.com/zaklinaczekodu/zkflow)
 
-Made by Zaklinacze Kodu
+[<img alt="Made by Zaklinacze Kodu" src="http://zaklinaczekodu.com/_assets/madeBy.svg" width="200">](http://zaklinaczekodu.com)
 
 Shields
 -------
@@ -708,3 +708,10 @@ bamboo_ZKFLOW_ENV=prod bamboo_ZKFLOW_WATCH=false ./node_modules/.bin/gulp css
 ```
 
 Some tasks overwrites mode
+
+Sponsors
+--------
+
+[<img alt="Street Team" src="http://zaklinaczekodu.com/_assets/streetteam.svg" width="200">](http://getstreetteam.com)
+
+[<img alt="Zaklinacze Kodu" src="http://zaklinaczekodu.com/_assets/logo.svg" width="200">](http://zaklinaczekodu.com)
