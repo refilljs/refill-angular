@@ -169,8 +169,10 @@ function init(options, outputDirsMap, externalGulp) {
       ]
     },
     test: {
-      task: require('./tasks/test'),
-      dependencies: ['bower', 'templates']
+      task: require('zkflow-task-karma'),
+      dependencies: ['bower', 'templates'],
+      browsers: ['PhantomJS'],
+      plugins: [require('karma-phantomjs-launcher')]
     }
   };
 

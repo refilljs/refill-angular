@@ -628,30 +628,10 @@ they set up some solid structure for your project.
     ]
   },
   test: {
-    task: require('zkflow-angular/src/tasks/test'),
-    enabled: true,
+    task: require('zkflow-task-karma'),
     dependencies: ['bower', 'templates'],
-    files: [
-      'src/*Spec.js',
-      'src/**/*Spec.js'
-    ],
-    reportsBaseDir: 'reports/test/',
-    junitReporterOutputDir: 'junit/',
-    htmlReporterOutputDir: 'html/',
-    istanbulIgnore: [
-      '**/node_modules/**',
-      '**/bower_components/**',
-      '*Spec.js',
-      '**/*Spec.js'
-    ],
-    istanbulReporters: [{
-      type: 'html',
-      subdir: 'coverageHtml'
-    }, {
-      type: 'clover',
-      subdir: 'coverageClover'
-    }],
-    browserifyTransforms: []
+    browsers: ['PhantomJS'],
+    plugins: [require('karma-phantomjs-launcher')]
   }
 }
 ```
