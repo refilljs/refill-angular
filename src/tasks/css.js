@@ -83,7 +83,7 @@ module.exports = {
   getTask: getCssTask,
   defaultOptions: {
     globs: [
-      'src/index.scss',
+      'src/index.{scss,sass}',
       'src/**/_styles/*.{scss,sass}',
       'src/**/_styles/**/*.{scss,sass}'
     ],
