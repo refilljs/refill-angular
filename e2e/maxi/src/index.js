@@ -2,5 +2,6 @@
 
 var angular = require('angular');
 
-angular.module('app', [])
-  .controller('appNameController', /** @ngInject */ function() {});
+module.exports = angular.module('app', [])
+  .controller('appNameController', /** @ngInject */ function() {})
+  .name;
