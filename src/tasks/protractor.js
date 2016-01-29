@@ -74,7 +74,9 @@ function getProtractorTask(options, gulp, mode) {
 
         if (!mode.watch) {
           runProtractor().finally(function() {
-            webserverStream.emit('kill');
+            setTimeout(function() {
+              webserverStream.emit('kill');
+            }, 100);
           });
           return;
         }

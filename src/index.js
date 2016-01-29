@@ -47,8 +47,6 @@ function getGulp(externalGulp) {
  */
 function init(options, outputDirsMap, externalGulp) {
 
-  var zkutils = require('gulp-zkflow-utils');
-  var chalk = require('chalk');
   var computedOptions;
   var computedOutputDirsMap;
 
@@ -169,8 +167,10 @@ function init(options, outputDirsMap, externalGulp) {
       ]
     },
     test: {
-      task: require('./tasks/test'),
-      dependencies: ['bower', 'templates']
+      task: require('zkflow-task-karma'),
+      dependencies: ['bower', 'templates'],
+      browsers: ['PhantomJS'],
+      plugins: [require('karma-phantomjs-launcher')]
     }
   };
 
@@ -183,10 +183,6 @@ function init(options, outputDirsMap, externalGulp) {
   function getOutputDir() {
     return computedOutputDirsMap[mode.env];
   }
-
-  console.log('');
-  console.log(' %s %s for AngularJS  %s', zkutils.logger.prefix, chalk.green.bold('ZKFlow'), chalk.grey('made by Zaklinacze Kodu'));
-  console.log('');
 
   outputDirsMap = outputDirsMap || {};
   computedOutputDirsMap = _.defaults({}, defaultOutputDirsMap, outputDirsMap);

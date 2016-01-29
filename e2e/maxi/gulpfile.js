@@ -2,4 +2,9 @@
 
 var zkflowAngular = require('zkflow-angular');
 
-zkflowAngular.init(undefined, undefined, require('gulp'));
+zkflowAngular.init({
+  e2e: {
+    customConfigFiles: true,
+    watchConfigFile: 'protractor.conf.js'
+  }
+}, undefined, require('gulp'));

@@ -6,22 +6,19 @@ addons:
       - gcc-5
       - g++-5
       - xpra
-      - dbus-x11
 
 language: node_js
 
 node_js:
   - 5
   - 4
-  - 0.12
-  - 0.10
 
 os:
   - linux
 
 env:
   global:
-    - CC=gcc-5 CXX=g++-5
+    - CC=gcc-5 CXX=g++-5 DISPLAY=:99
   matrix:
     - WORKING_DIR=.
     - WORKING_DIR=e2e/mini/
@@ -42,6 +39,6 @@ deploy:
   api_key: $NPM_API_KEY
   on:
     node: 5
-    condition: $WORKING_DIR=.
+    condition: $WORKING_DIR == .
     tags: true
     repo: zaklinaczekodu/zkflow-angular
