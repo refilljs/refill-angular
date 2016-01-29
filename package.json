@@ -66,5 +66,9 @@
   },
   "peerDependencies": {
     "gulp": "3.*"
+  },
+  "engines": {
+    "node" : ">=4.2",
+    "npm": ">=3.3.3"
   }
 }
