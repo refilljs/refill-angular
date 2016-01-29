@@ -22,7 +22,6 @@
   "dependencies": {
     "bower": "1.7.1",
     "browserify-ngannotate": "2.0.0",
-    "chalk": "1.1.1",
     "cucumber": "0.9.2",
     "gulp-angular-templatecache": "1.8.0",
     "gulp-autoprefixer": "3.1.0",
@@ -55,7 +54,7 @@
     "q": "1.4.1",
     "run-sequence": "1.1.5",
     "sassdoc": "2.1.18",
-    "zkflow": "1.0.0",
+    "zkflow": "1.1.0",
     "zkflow-task-browserify": "1.0.0",
     "zkflow-task-karma": "1.0.0",
     "zkflow-watcher": "0.1.0"
@@ -68,7 +67,7 @@
     "gulp": "3.*"
   },
   "engines": {
-    "node" : ">=4.2",
+    "node": ">=4.2",
     "npm": ">=3.3.3"
   }
 }
