@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * @module gulp-zkflow-angular
+ * @module zkflow-angular
  */
 
 var zkflow = require('zkflow');
@@ -76,13 +76,13 @@ function init(options, outputDirsMap, externalGulp) {
       task: require('./tasks/webserver')
     },
     assemble: {
-      task: require('./tasks/sequence'),
+      task: require('zkflow-task-sequence'),
       sequence: [
         'clean', ['inject', 'assets']
       ]
     },
     build: {
-      task: require('./tasks/sequence'),
+      task: require('zkflow-task-sequence'),
       sequence: [
         'assemble'
       ],
@@ -92,7 +92,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     ci: {
-      task: require('./tasks/sequence'),
+      task: require('zkflow-task-sequence'),
       sequence: [
         'ci-static-analysis',
         'ci-test',
@@ -101,7 +101,7 @@ function init(options, outputDirsMap, externalGulp) {
       ]
     },
     'ci-build': {
-      task: require('./tasks/sequence'),
+      task: require('zkflow-task-sequence'),
       sequence: [
         ['assemble']
       ],
@@ -111,7 +111,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     'ci-e2e': {
-      task: require('./tasks/sequence'),
+      task: require('zkflow-task-sequence'),
       sequence: [
         ['e2e']
       ],
@@ -121,7 +121,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     'ci-static-analysis': {
-      task: require('./tasks/sequence'),
+      task: require('zkflow-task-sequence'),
       sequence: [
         ['beautify', 'jshint']
       ],
@@ -131,7 +131,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     'ci-test': {
-      task: require('./tasks/sequence'),
+      task: require('zkflow-task-sequence'),
       sequence: [
         ['test']
       ],
@@ -145,7 +145,7 @@ function init(options, outputDirsMap, externalGulp) {
       dependencies: ['bower']
     },
     default: {
-      task: require('./tasks/sequence'),
+      task: require('zkflow-task-sequence'),
       sequence: [
         'clean', ['inject', 'assets', 'jshint', 'test'],
         'webserver'
