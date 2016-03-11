@@ -32,15 +32,14 @@ Features
     * Webserver with livereload
     * Watching files for changes and full, fast, incremental rebuilds
     * Unit tests with karma
-    * jshint
-    * jsbeautifier
+    * Eslint
 
 * Production environment
     * js, css, jpg, png and svg minification
     * cache busting
 
 * Continous integration
-    * build + jshint + jsbeautifier + tests + e2e with guaranteed non-zero exit status on error
+    * build + eslint + tests + e2e with guaranteed non-zero exit status on error
 
 Why not just write tasks yourself?
 ----------------------------------
@@ -130,7 +129,7 @@ This task will
 * bundle all your js with browserify and watch file changes with watchify
 * bundle all your styles with sass, css globbing and autoprefix
 * generate documentation with sassdoc if enabled
-* run jshint and rerun on any js file change
+* run eslint and rerun on any js file change
 * run tests with karma and browserify and watch file changes with watchify
 * run bower install
 * bundle your angular templates into angular module (.tmp/templates.js) and rebundle on any template file change
@@ -157,15 +156,15 @@ This task will
 
 Write some tests
 
-### beautify your code
+### autofix your code
 
 Run in project root directory
 
 ```Shell
-./node_modules/.bin/gulp beautify
+./node_modules/.bin/gulp lint-js
 ```
 
-all your code will be automatically beatified with jsbeautifier
+all your code will be automatically fixed according to eslint rules
 
 ### check everything
 
@@ -177,13 +176,12 @@ Run in project root directory
 
 This task will fail if
 
-* code isn't beautified
-* code isn't jshinted
+* code isn't eslinted
 * any of karma tests will fail
 * any of protractor e2e tests will fail
 * build fail (sass, browserify)
 
-You definitly should add this task to your CI server. This task can be splitted into stages.
+You definitely should add this task to your CI server. This task can be splitted into stages.
 `./node_modules/.bin/gulp ci` is an equivalent for
 
 ```Shell
@@ -367,23 +365,6 @@ they set up some solid structure for your project.
     },
     imagemin: undefined //options for gulp-imagemin
   },
-  beautify: {
-    task: require('zkflow-angular/src/tasks/beautify')
-    enabled: true,
-    dependencies: [],
-    globs: [
-      'src/*.js',
-      'src/**/*.js',
-      'src/*.html',
-      'src/**/*.html',
-      'gulp/*.js',
-      'gulp/**/*.js',
-      'gulpfile.js'
-    ],
-    globsOptions: {
-      base: './'
-    }
-  },
   bower: {
     task: require('zkflow-angular/src/tasks/bower')
     enabled: true,
@@ -398,20 +379,6 @@ they set up some solid structure for your project.
     task: require('zkflow-angular/src/tasks/clean')
     enabled: true,
     dependencies: []
-  },  
-  jshint: {
-    task: require('zkflow-angular/src/tasks/jshint')
-    enabled: true,
-    dependencies: [],
-    globs: [
-      'gulpfile.js',
-      'gulp/*.js',
-      'gulp/**/*.js',
-      'src/*.js',
-      'src/**/*.js'
-    ],
-    globsOptions: undefined,
-    jshintrc: false
   },
   templates: {
     task: require('zkflow-angular/src/tasks/templates')
@@ -524,7 +491,7 @@ they set up some solid structure for your project.
     enabled: true,
     dependencies: [],
     sequence: [
-      ['beautify', 'jshint']
+      ['lint-js']
     ],
     mode: {
       env: 'prod',
@@ -578,7 +545,7 @@ they set up some solid structure for your project.
     enabled: true,
     dependencies: [],
     sequence: [
-      'clean', ['inject', 'assets', 'jshint', 'test'],
+      'clean', ['inject', 'assets', 'lint-js', 'test'],
       'webserver'
     ],
     mode: undefined
@@ -626,6 +593,34 @@ they set up some solid structure for your project.
     browserifyTransforms: [
       require('browserify-ngannotate')
     ]
+  },
+  'lint-js': {
+    task: require('zkflow-task-eslint'),
+    eslint: {
+      rules: {
+        quotes: [2, 'single'],
+        semi: [2, 'always'],
+        eqeqeq: 2,
+        strict: 2,
+        'vars-on-top': 2,
+        'comma-style': 2,
+        indent: [2, 2],
+        'linebreak-style': [2, 'unix'],
+        'one-var': [2, 'never'],
+        'no-trailing-spaces': 2,
+        'no-multiple-empty-lines': [2, { 'max': 2, 'maxBOF': 0, 'maxEOF': 0 }],
+        camelcase: [2, { properties: 'never' }],
+        'comma-spacing': 2,
+        'key-spacing': 2,
+        'object-curly-spacing': [2, 'always']
+      },
+      env: {
+        'commonjs': true,
+        'browser': true,
+        'jasmine': true
+      },
+      extends: 'eslint:recommended'
+    }
   },
   test: {
     task: require('zkflow-task-karma'),
