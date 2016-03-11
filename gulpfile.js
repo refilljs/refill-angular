@@ -1,5 +1,5 @@
 'use strict';
 
-var zkflowNodemodule = require('gulp-zkflow-nodemodule');
+var zkflowNode = require('zkflow-node');
 
-zkflowNodemodule(undefined, require('gulp'));
+zkflowNode.init(undefined, require('gulp'));
