@@ -7,7 +7,7 @@ var gulpif = require('gulp-if');
 var zkutils = require('gulp-zkflow-utils');
 var q = require('q');
 var plumber = require('gulp-plumber');
-var _ = require('lodash');
+var isArray = require('lodash.isarray');
 var zkflowWatcher = require('zkflow-watcher');
 
 function getInjectTask(options, gulp, mode, getOutputDir) {
@@ -42,7 +42,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
         return;
       }
 
-      if (_.isArray(globs)) {
+      if (isArray(globs)) {
         prefixedGlobs = [];
         globs.forEach(function(glob) {
           prefixedGlobs.push(addBaseDir(glob));

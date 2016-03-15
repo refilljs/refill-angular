@@ -6,7 +6,8 @@
 
 var zkflow = require('zkflow');
 var browserifyNgannotate = require('browserify-ngannotate');
-var _ = require('lodash');
+var defaults = require('lodash.defaults');
+var forEach = require('lodash.foreach');
 var mode = require('./mode');
 
 /**
@@ -191,13 +192,13 @@ function init(options, outputDirsMap, externalGulp) {
   }
 
   outputDirsMap = outputDirsMap || {};
-  computedOutputDirsMap = _.defaults({}, defaultOutputDirsMap, outputDirsMap);
+  computedOutputDirsMap = defaults({}, defaultOutputDirsMap, outputDirsMap);
 
   options = options || {};
-  computedOptions = _.defaults({}, defaultOptions, options);
+  computedOptions = defaults({}, defaultOptions, options);
 
-  _.forEach(computedOptions, function(taskOptions, taskName) {
-    computedOptions[taskName] = _.defaults({}, options[taskName], taskOptions);
+  forEach(computedOptions, function(taskOptions, taskName) {
+    computedOptions[taskName] = defaults({}, options[taskName], taskOptions);
   });
 
   zkflow(computedOptions, getGulp(externalGulp), mode, getOutputDir);
