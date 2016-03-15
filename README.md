@@ -25,7 +25,6 @@ Features
 * Sass + sassdoc + css globbing + autoprefixer
 * Browserify + ngannotate
 * Assets management
-* Bower
 * AngularJS templates embedded in js
 * E2E tests with protractor and cucumber
 * Development environment
@@ -131,7 +130,6 @@ This task will
 * generate documentation with sassdoc if enabled
 * run eslint and rerun on any js file change
 * run tests with karma and browserify and watch file changes with watchify
-* run bower install
 * bundle your angular templates into angular module (.tmp/templates.js) and rebundle on any template file change
 * copy your assets and copy any newly created asset since then
 * copy Your index.html and inject styles, scripts, angular main module name into it. Redo on index.html change.
@@ -218,7 +216,6 @@ This task will
 * bundle all your js with browserify and minify with uglifyjs
 * bundle all your styles with sass, css globbing, autoprefix and minify with csso
 * generate documentation with sassdoc if enabled
-* run bower install
 * bundle your angular templates into angular module (.tmp/templates.js) and minify with htmlminify
 * copy your assets and minify all .png/.jpg/.gif/.svg
 * copy Your index.html, htmlminify and inject styles, scripts, angular main module name into it.
@@ -243,7 +240,6 @@ Files
 You should probably add this entries in .gitignore file
 
 ```
-bower_components/
 npm-debug.log
 node_modules/
 .tmp/
@@ -361,19 +357,9 @@ they set up some solid structure for your project.
     dependencies: [],
     globs: 'src/**/_assets/**',
     globsOptions: {
-      base: 'src/'
-    },
-    imagemin: undefined //options for gulp-imagemin
-  },
-  bower: {
-    task: require('zkflow-angular/src/tasks/bower')
-    enabled: true,
-    dependencies: [],
-    globs: 'bower_components/**',
-    globsOptions: {
       base: './'
     },
-    outputDirSuffix: ''
+    imagemin: undefined //options for gulp-imagemin
   },
   clean: {
     task: require('zkflow-angular/src/tasks/clean')
@@ -513,7 +499,7 @@ they set up some solid structure for your project.
   css: {
     task: require('zkflow-angular/src/tasks/css'),
     enabled: true,
-    dependencies: ['bower']
+    dependencies: [],
     globs: [
       'src/index.scss',
       'src/**/_styles/*.{scss,sass}',
@@ -589,13 +575,16 @@ they set up some solid structure for your project.
   },
   js: {
     task: require('zkflow-task-browserify'),
-    dependencies: ['bower', 'templates'],
+    enabled: true,
+    dependencies: ['templates'],
     browserifyTransforms: [
       require('browserify-ngannotate')
     ]
   },
   'lint-js': {
     task: require('zkflow-task-eslint'),
+    enabled: true,
+    dependencies: [],
     eslint: {
       rules: {
         quotes: [2, 'single'],
@@ -624,7 +613,8 @@ they set up some solid structure for your project.
   },
   test: {
     task: require('zkflow-task-karma'),
-    dependencies: ['bower', 'templates'],
+    enabled: true,
+    dependencies: ['templates'],
     browsers: ['PhantomJS'],
     plugins: [require('karma-phantomjs-launcher')]
   }

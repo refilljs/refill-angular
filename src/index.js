@@ -38,9 +38,6 @@ function init(options, outputDirsMap, externalGulp) {
     assets: {
       task: require('./tasks/assets')
     },
-    bower: {
-      task: require('./tasks/bower')
-    },
     clean: {
       task: require('./tasks/clean')
     },
@@ -120,8 +117,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     css: {
-      task: require('./tasks/css'),
-      dependencies: ['bower']
+      task: require('./tasks/css')
     },
     default: {
       task: require('zkflow-task-sequence'),
@@ -143,14 +139,14 @@ function init(options, outputDirsMap, externalGulp) {
     },
     js: {
       task: require('zkflow-task-browserify'),
-      dependencies: ['bower', 'templates'],
+      dependencies: ['templates'],
       browserifyTransforms: [
         browserifyNgannotate
       ]
     },
     test: {
       task: require('zkflow-task-karma'),
-      dependencies: ['bower', 'templates'],
+      dependencies: ['templates'],
       browsers: ['PhantomJS'],
       plugins: [require('karma-phantomjs-launcher')]
     },

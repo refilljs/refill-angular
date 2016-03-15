@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/zaklinaczekodu/zkflow-angular",
   "dependencies": {
-    "bower": "1.7.7",
     "browserify-ngannotate": "2.0.0",
     "cucumber": "0.9.5",
     "gulp-angular-templatecache": "1.8.0",

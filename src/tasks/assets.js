@@ -47,7 +47,7 @@ module.exports = {
   defaultOptions: {
     globs: 'src/**/_assets/**',
     globsOptions: {
-      base: 'src/'
+      base: './'
     }
   }
 };

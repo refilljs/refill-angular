@@ -4,7 +4,6 @@
 
 /e2e/mini/docs/
 /e2e/mini/node_modules/
-/e2e/mini/bower_components/
 /e2e/mini/npm-debug.log
 /e2e/mini/dist/
 /e2e/mini/test/
@@ -12,7 +11,6 @@
 
 /e2e/maxi/docs/
 /e2e/maxi/node_modules/
-/e2e/maxi/bower_components/
 /e2e/maxi/npm-debug.log
 /e2e/maxi/dist/
 /e2e/maxi/test/
