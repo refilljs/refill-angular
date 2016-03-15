@@ -2,7 +2,7 @@
 
 var gulpif = require('gulp-if');
 var templateCache = require('gulp-angular-templatecache');
-var minifyHtml = require('gulp-minify-html');
+var htmlmin = require('gulp-htmlmin');
 var zkutils = require('gulp-zkflow-utils');
 var zkflowWatcher = require('zkflow-watcher');
 
@@ -18,7 +18,7 @@ function getTemplatesTask(options, gulp, mode) {
         zkutils.promisify(
           gulp
           .src(options.globs, options.globsOptions)
-          .pipe(gulpif(mode.env !== 'dev' && !mode.watch, minifyHtml(options.minifyHtml)))
+          .pipe(gulpif(mode.env !== 'dev' && !mode.watch, htmlmin(options.htmlmin)))
           .pipe(templateCache(options.templateModuleFileName, options.templateCache))
           .pipe(gulp.dest(options.outputDir))
         )
@@ -46,11 +46,6 @@ module.exports = {
       'src/**/_templates/*.html',
       'src/**/_templates/**/*.html'
     ],
-    minifyHtml: {
-      empty: true,
-      spare: true,
-      quotes: true
-    },
     templateCache: {
       standalone: true,
       module: 'zk.templates',

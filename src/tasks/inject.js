@@ -1,7 +1,7 @@
 'use strict';
 
 var inject = require('gulp-inject');
-var minifyHtml = require('gulp-minify-html');
+var htmlmin = require('gulp-htmlmin');
 var template = require('gulp-template');
 var gulpif = require('gulp-if');
 var zkutils = require('gulp-zkflow-utils');
@@ -102,7 +102,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
             .pipe(template({
               angularMainModuleName: mode.angularMainModuleProdFallback ? options.prodAngularMainModuleName : getAngularMainModuleName()
             }))
-            .pipe(gulpif(mode.env !== 'dev', minifyHtml(options.minifyHtml)))
+            .pipe(gulpif(mode.env !== 'dev', htmlmin(options.htmlmin)))
             .pipe(gulp.dest(outputDir))
             .on('end', deferred.resolve);
 
@@ -140,11 +140,6 @@ module.exports = {
     absolute: true,
     prodAngularMainModuleName: 'app',
     devAngularMainModuleName: 'appDev',
-    testAngularMainModuleName: 'appTest',
-    minifyHtml: {
-      empty: true,
-      spare: true,
-      quotes: true
-    }
+    testAngularMainModuleName: 'appTest'
   }
 };

@@ -214,9 +214,9 @@ This task will
 * clean whole output dir (dist/)
 * bundle all your js with browserify and minify with uglifyjs
 * bundle all your styles with sass, css globbing, autoprefix and minify with csso
-* bundle your angular templates into angular module (.tmp/templates.js) and minify with htmlminify
+* bundle your angular templates into angular module (.tmp/templates.js) and minify html
 * copy your assets and minify all .png/.jpg/.gif/.svg
-* copy Your index.html, htmlminify and inject styles, scripts, angular main module name into it.
+* copy Your index.html, minify html and inject styles, scripts, angular main module name into it.
 * Do cache busting
 
 ### Apache/Nginx
@@ -372,11 +372,7 @@ they set up some solid structure for your project.
       'src/**/_templates/**/*.html'
     ],
     globsOptions: undefined,
-    minifyHtml: {
-      empty: true,
-      spare: true,
-      quotes: true
-    },
+    htmlmin: undefined,
     templateCache: {
       standalone: true,
       module: 'zk.templates',
@@ -548,11 +544,7 @@ they set up some solid structure for your project.
     prodAngularMainModuleName: 'app',
     devAngularMainModuleName: 'appDev',
     testAngularMainModuleName: 'appTest',
-    minifyHtml: {
-      empty: true,
-      spare: true,
-      quotes: true
-    }
+    htmlmin: undefined
   },
   js: {
     task: require('zkflow-task-browserify'),
