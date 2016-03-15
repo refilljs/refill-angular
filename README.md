@@ -22,7 +22,7 @@ Shields
 Features
 --------
 
-* Sass + sassdoc + css globbing + autoprefixer
+* Sass + css globbing + autoprefixer
 * Browserify + ngannotate
 * Assets management
 * AngularJS templates embedded in js
@@ -127,7 +127,6 @@ This task will
 * clean whole output dir (dev/)
 * bundle all your js with browserify and watch file changes with watchify
 * bundle all your styles with sass, css globbing and autoprefix
-* generate documentation with sassdoc if enabled
 * run eslint and rerun on any js file change
 * run tests with karma and browserify and watch file changes with watchify
 * bundle your angular templates into angular module (.tmp/templates.js) and rebundle on any template file change
@@ -215,7 +214,6 @@ This task will
 * clean whole output dir (dist/)
 * bundle all your js with browserify and minify with uglifyjs
 * bundle all your styles with sass, css globbing, autoprefix and minify with csso
-* generate documentation with sassdoc if enabled
 * bundle your angular templates into angular module (.tmp/templates.js) and minify with htmlminify
 * copy your assets and minify all .png/.jpg/.gif/.svg
 * copy Your index.html, htmlminify and inject styles, scripts, angular main module name into it.
@@ -247,7 +245,6 @@ dist/
 dev/
 test/
 reports/
-docs/
 ```
 
 ### src/index.html
@@ -400,20 +397,7 @@ they set up some solid structure for your project.
     task: require('zkflow-angular/src/tasks/webserver')
     enabled: true,
     dependencies: [],
-    host: 'localhost',
-    docsGlobs: 'docs/',
-    docsWebserver: {
-      livereload: {
-        enable: true,
-        port: 35730
-      },
-      directoryListing: {
-        enable: true,
-        path: 'docs/'
-      },
-      open: true,
-      port: 8010
-    }
+    host: 'localhost'
   },
   assemble: {
     task: require('zkflow-angular/src/tasks/sequence'),
@@ -521,10 +505,7 @@ they set up some solid structure for your project.
     sass: undefined,
     sourcemapsInit: undefined,
     sourcemapsWrite: undefined,
-    cssoStructureMinimization: undefined,
-    sassdoc: {
-      dest: 'docs/sass/'
-    }
+    cssoStructureMinimization: undefined
   },
   default: {
     task: require('zkflow-angular/src/tasks/sequence'),

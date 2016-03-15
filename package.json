@@ -46,7 +46,6 @@
     "phantomjs-prebuilt": "2.1.5",
     "protractor-cucumber-framework": "0.3.4",
     "q": "1.4.1",
-    "sassdoc": "2.1.18",
     "zkflow": "1.1.0",
     "zkflow-task-browserify": "1.0.0",
     "zkflow-task-eslint": "0.1.1",
