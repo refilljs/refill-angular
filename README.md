@@ -22,25 +22,23 @@ Shields
 Features
 --------
 
-* Sass + sassdoc + css globbing + autoprefixer
+* Sass + css globbing + autoprefixer
 * Browserify + ngannotate
 * Assets management
-* Bower
 * AngularJS templates embedded in js
 * E2E tests with protractor and cucumber
 * Development environment
     * Webserver with livereload
     * Watching files for changes and full, fast, incremental rebuilds
     * Unit tests with karma
-    * jshint
-    * jsbeautifier
+    * Eslint
 
 * Production environment
     * js, css, jpg, png and svg minification
     * cache busting
 
 * Continous integration
-    * build + jshint + jsbeautifier + tests + e2e with guaranteed non-zero exit status on error
+    * build + eslint + tests + e2e with guaranteed non-zero exit status on error
 
 Why not just write tasks yourself?
 ----------------------------------
@@ -129,10 +127,8 @@ This task will
 * clean whole output dir (dev/)
 * bundle all your js with browserify and watch file changes with watchify
 * bundle all your styles with sass, css globbing and autoprefix
-* generate documentation with sassdoc if enabled
-* run jshint and rerun on any js file change
+* run eslint and rerun on any js file change
 * run tests with karma and browserify and watch file changes with watchify
-* run bower install
 * bundle your angular templates into angular module (.tmp/templates.js) and rebundle on any template file change
 * copy your assets and copy any newly created asset since then
 * copy Your index.html and inject styles, scripts, angular main module name into it. Redo on index.html change.
@@ -157,15 +153,15 @@ This task will
 
 Write some tests
 
-### beautify your code
+### autofix your code
 
 Run in project root directory
 
 ```Shell
-./node_modules/.bin/gulp beautify
+./node_modules/.bin/gulp lint-js
 ```
 
-all your code will be automatically beatified with jsbeautifier
+all your code will be automatically fixed according to eslint rules
 
 ### check everything
 
@@ -177,13 +173,12 @@ Run in project root directory
 
 This task will fail if
 
-* code isn't beautified
-* code isn't jshinted
+* code isn't eslinted
 * any of karma tests will fail
 * any of protractor e2e tests will fail
 * build fail (sass, browserify)
 
-You definitly should add this task to your CI server. This task can be splitted into stages.
+You definitely should add this task to your CI server. This task can be splitted into stages.
 `./node_modules/.bin/gulp ci` is an equivalent for
 
 ```Shell
@@ -219,11 +214,9 @@ This task will
 * clean whole output dir (dist/)
 * bundle all your js with browserify and minify with uglifyjs
 * bundle all your styles with sass, css globbing, autoprefix and minify with csso
-* generate documentation with sassdoc if enabled
-* run bower install
-* bundle your angular templates into angular module (.tmp/templates.js) and minify with htmlminify
+* bundle your angular templates into angular module (.tmp/templates.js) and minify html
 * copy your assets and minify all .png/.jpg/.gif/.svg
-* copy Your index.html, htmlminify and inject styles, scripts, angular main module name into it.
+* copy Your index.html, minify html and inject styles, scripts, angular main module name into it.
 * Do cache busting
 
 ### Apache/Nginx
@@ -245,7 +238,6 @@ Files
 You should probably add this entries in .gitignore file
 
 ```
-bower_components/
 npm-debug.log
 node_modules/
 .tmp/
@@ -253,7 +245,6 @@ dist/
 dev/
 test/
 reports/
-docs/
 ```
 
 ### src/index.html
@@ -363,55 +354,14 @@ they set up some solid structure for your project.
     dependencies: [],
     globs: 'src/**/_assets/**',
     globsOptions: {
-      base: 'src/'
+      base: './'
     },
     imagemin: undefined //options for gulp-imagemin
-  },
-  beautify: {
-    task: require('zkflow-angular/src/tasks/beautify')
-    enabled: true,
-    dependencies: [],
-    globs: [
-      'src/*.js',
-      'src/**/*.js',
-      'src/*.html',
-      'src/**/*.html',
-      'gulp/*.js',
-      'gulp/**/*.js',
-      'gulpfile.js'
-    ],
-    globsOptions: {
-      base: './'
-    }
-  },
-  bower: {
-    task: require('zkflow-angular/src/tasks/bower')
-    enabled: true,
-    dependencies: [],
-    globs: 'bower_components/**',
-    globsOptions: {
-      base: './'
-    },
-    outputDirSuffix: ''
   },
   clean: {
     task: require('zkflow-angular/src/tasks/clean')
     enabled: true,
     dependencies: []
-  },  
-  jshint: {
-    task: require('zkflow-angular/src/tasks/jshint')
-    enabled: true,
-    dependencies: [],
-    globs: [
-      'gulpfile.js',
-      'gulp/*.js',
-      'gulp/**/*.js',
-      'src/*.js',
-      'src/**/*.js'
-    ],
-    globsOptions: undefined,
-    jshintrc: false
   },
   templates: {
     task: require('zkflow-angular/src/tasks/templates')
@@ -422,11 +372,7 @@ they set up some solid structure for your project.
       'src/**/_templates/**/*.html'
     ],
     globsOptions: undefined,
-    minifyHtml: {
-      empty: true,
-      spare: true,
-      quotes: true
-    },
+    htmlmin: undefined,
     templateCache: {
       standalone: true,
       module: 'zk.templates',
@@ -447,20 +393,7 @@ they set up some solid structure for your project.
     task: require('zkflow-angular/src/tasks/webserver')
     enabled: true,
     dependencies: [],
-    host: 'localhost',
-    docsGlobs: 'docs/',
-    docsWebserver: {
-      livereload: {
-        enable: true,
-        port: 35730
-      },
-      directoryListing: {
-        enable: true,
-        path: 'docs/'
-      },
-      open: true,
-      port: 8010
-    }
+    host: 'localhost'
   },
   assemble: {
     task: require('zkflow-angular/src/tasks/sequence'),
@@ -524,7 +457,7 @@ they set up some solid structure for your project.
     enabled: true,
     dependencies: [],
     sequence: [
-      ['beautify', 'jshint']
+      ['lint-js']
     ],
     mode: {
       env: 'prod',
@@ -546,7 +479,7 @@ they set up some solid structure for your project.
   css: {
     task: require('zkflow-angular/src/tasks/css'),
     enabled: true,
-    dependencies: ['bower']
+    dependencies: [],
     globs: [
       'src/index.scss',
       'src/**/_styles/*.{scss,sass}',
@@ -568,17 +501,14 @@ they set up some solid structure for your project.
     sass: undefined,
     sourcemapsInit: undefined,
     sourcemapsWrite: undefined,
-    cssoStructureMinimization: undefined,
-    sassdoc: {
-      dest: 'docs/sass/'
-    }
+    cssoStructureMinimization: undefined
   },
   default: {
     task: require('zkflow-angular/src/tasks/sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
-      'clean', ['inject', 'assets', 'jshint', 'test'],
+      'clean', ['inject', 'assets', 'lint-js', 'test'],
       'webserver'
     ],
     mode: undefined
@@ -614,22 +544,50 @@ they set up some solid structure for your project.
     prodAngularMainModuleName: 'app',
     devAngularMainModuleName: 'appDev',
     testAngularMainModuleName: 'appTest',
-    minifyHtml: {
-      empty: true,
-      spare: true,
-      quotes: true
-    }
+    htmlmin: undefined
   },
   js: {
     task: require('zkflow-task-browserify'),
-    dependencies: ['bower', 'templates'],
+    enabled: true,
+    dependencies: ['templates'],
     browserifyTransforms: [
       require('browserify-ngannotate')
     ]
   },
+  'lint-js': {
+    task: require('zkflow-task-eslint'),
+    enabled: true,
+    dependencies: [],
+    eslint: {
+      rules: {
+        quotes: [2, 'single'],
+        semi: [2, 'always'],
+        eqeqeq: 2,
+        strict: 2,
+        'vars-on-top': 2,
+        'comma-style': 2,
+        indent: [2, 2],
+        'linebreak-style': [2, 'unix'],
+        'one-var': [2, 'never'],
+        'no-trailing-spaces': 2,
+        'no-multiple-empty-lines': [2, { 'max': 2, 'maxBOF': 0, 'maxEOF': 0 }],
+        camelcase: [2, { properties: 'never' }],
+        'comma-spacing': 2,
+        'key-spacing': 2,
+        'object-curly-spacing': [2, 'always']
+      },
+      env: {
+        'commonjs': true,
+        'browser': true,
+        'jasmine': true
+      },
+      extends: 'eslint:recommended'
+    }
+  },
   test: {
     task: require('zkflow-task-karma'),
-    dependencies: ['bower', 'templates'],
+    enabled: true,
+    dependencies: ['templates'],
     browsers: ['PhantomJS'],
     plugins: [require('karma-phantomjs-launcher')]
   }

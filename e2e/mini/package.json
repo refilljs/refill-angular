@@ -4,6 +4,7 @@
   "description": "",
   "author": "Piotr Baranowski <piotr.baranowski@zaklinaczekodu.com> (https://github.com/zaklinaczekodu)",
   "license": "MIT",
+  "private": true,
   "dependencies": {
     "zkflow-angular": "file:../../"
   },
