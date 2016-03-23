@@ -1,9 +1,13 @@
 ZKflow for AngularJS
 ====================
 
-Gulp tasks for AngularJS projects powered by [ZKflow](https://github.com/zaklinaczekodu/zkflow)
+Module based on [ZKflow](https://github.com/zaklinaczekodu/zkflow) with a set of gulp tasks specially designed to setup
+quickly and develop easily your Angular app without need to generate a lot of code. It is highly configurable.
+Just load it in your gulpfile.js and you are ready to go.
 
 [<img alt="Made by Zaklinacze Kodu" src="http://zaklinaczekodu.com/_assets/madeBy.svg" width="200">](http://zaklinaczekodu.com)
+
+[Facebook](https://www.facebook.com/zaklinaczekodu)
 
 Shields
 -------
