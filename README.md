@@ -14,11 +14,12 @@ Shields
 
 [![npm](https://img.shields.io/npm/v/zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/zkflow-angular)
 [![npm](https://img.shields.io/npm/l/zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/zkflow-angular)
-[![npm](https://img.shields.io/npm/dm/zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/zkflow-angular)<br>
-[![Travis](https://img.shields.io/travis/zaklinaczekodu/zkflow-angular/master.svg?style=flat-square)](https://travis-ci.org/zaklinaczekodu/zkflow-angular)
-[![Code Climate](https://img.shields.io/codeclimate/github/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://codeclimate.com/github/zaklinaczekodu/zkflow-angular)<br>
-[![David](https://img.shields.io/david/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://david-dm.org/zaklinaczekodu/zkflow-angular)
-[![David](https://img.shields.io/david/dev/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://david-dm.org/zaklinaczekodu/zkflow-angular)<br>
+[![npm](https://img.shields.io/npm/dm/zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/zkflow-angular)
+[![Travis](https://img.shields.io/travis/zaklinaczekodu/zkflow-angular/master.svg?style=flat-square)](https://travis-ci.org/zaklinaczekodu/zkflow-angular)<br>
+[![bitHound Overall Score](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/badges/score.svg)](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular)
+[![bitHound Dependencies](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/badges/dependencies.svg)](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/master/dependencies/npm)
+[![bitHound Dev Dependencies](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/badges/devDependencies.svg)](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/master/dependencies/npm)
+[![bitHound Code](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/badges/code.svg)](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular)<br>
 [![GitHub forks](https://img.shields.io/github/forks/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/zkflow-angular)
 [![GitHub stars](https://img.shields.io/github/stars/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/zkflow-angular)
 [![GitHub followers](https://img.shields.io/github/followers/zaklinaczekodu.svg?style=flat-square)](https://github.com/zaklinaczekodu/zkflow-angular)
