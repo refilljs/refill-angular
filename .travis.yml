@@ -6,6 +6,7 @@ addons:
       - gcc-5
       - g++-5
       - xpra
+      - dbus-x11
 
 language: node_js
 
@@ -35,7 +36,7 @@ before_install:
   - cd $WORKING_DIR
 
 script:
-  - ./node_modules/.bin/gulp ci
+  - dbus-launch --exit-with-session ./node_modules/.bin/gulp ci
 
 deploy:
   provider: npm
