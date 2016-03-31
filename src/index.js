@@ -147,9 +147,7 @@ function init(options, outputDirsMap, externalGulp) {
     },
     test: {
       task: require('zkflow-task-karma'),
-      dependencies: ['templates'],
-      browsers: ['PhantomJS'],
-      plugins: [require('karma-phantomjs-launcher')]
+      dependencies: ['templates']
     },
     'lint-js': {
       task: require('zkflow-task-eslint'),

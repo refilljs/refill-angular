@@ -591,9 +591,7 @@ they set up some solid structure for your project.
   test: {
     task: require('zkflow-task-karma'),
     enabled: true,
-    dependencies: ['templates'],
-    browsers: ['PhantomJS'],
-    plugins: [require('karma-phantomjs-launcher')]
+    dependencies: ['templates']
   }
 }
 ```
