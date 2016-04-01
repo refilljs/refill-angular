@@ -6,6 +6,7 @@
 
 var zkflow = require('zkflow');
 var browserifyNgannotate = require('browserify-ngannotate');
+var babelify = require('babelify');
 var defaults = require('lodash.defaults');
 var forEach = require('lodash.foreach');
 var mode = require('./mode');
@@ -34,6 +35,7 @@ function init(options, outputDirsMap, externalGulp) {
 
   var computedOptions;
   var computedOutputDirsMap;
+  var babelifyTransform = [babelify, { presets: [require('babel-preset-es2015')] }];
 
   var defaultOptions = {
     assets: {
@@ -142,12 +144,16 @@ function init(options, outputDirsMap, externalGulp) {
       task: require('zkflow-task-browserify'),
       dependencies: ['templates'],
       browserifyTransforms: [
-        browserifyNgannotate
+        browserifyNgannotate,
+        babelifyTransform
       ]
     },
     test: {
       task: require('zkflow-task-karma'),
-      dependencies: ['templates']
+      dependencies: ['templates'],
+      browserifyTransforms: [
+        babelifyTransform
+      ]
     },
     'lint-js': {
       task: require('zkflow-task-eslint'),
@@ -173,6 +179,9 @@ function init(options, outputDirsMap, externalGulp) {
           'commonjs': true,
           'browser': true,
           'jasmine': true
+        },
+        parserOptions: {
+          'ecmaVersion': 6
         },
         extends: 'eslint:recommended'
       }

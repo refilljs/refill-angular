@@ -556,7 +556,8 @@ they set up some solid structure for your project.
     enabled: true,
     dependencies: ['templates'],
     browserifyTransforms: [
-      require('browserify-ngannotate')
+      require('browserify-ngannotate'),
+      [require('babelify'), { presets: [require('babel-preset-es2015')] }]
     ]
   },
   'lint-js': {
@@ -586,13 +587,19 @@ they set up some solid structure for your project.
         'browser': true,
         'jasmine': true
       },
+      parserOptions: {
+        'ecmaVersion': 6
+      },
       extends: 'eslint:recommended'
     }
   },
   test: {
     task: require('zkflow-task-karma'),
     enabled: true,
-    dependencies: ['templates']
+    dependencies: ['templates'],
+    browserifyTransforms: [
+      [require('babelify'), { presets: [require('babel-preset-es2015')] }]
+    ]
   }
 }
 ```
