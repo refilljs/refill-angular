@@ -557,7 +557,7 @@ they set up some solid structure for your project.
     dependencies: ['templates'],
     browserifyTransforms: [
       require('browserify-ngannotate'),
-      [require('babelify'), { presets: [require('babel-preset-es2015')] }]
+      [require('babelify'), { presets: [require('babel-preset-es2015')], sourceMaps: false }]
     ]
   },
   'lint-js': {
@@ -585,7 +585,8 @@ they set up some solid structure for your project.
       env: {
         'commonjs': true,
         'browser': true,
-        'jasmine': true
+        'jasmine': true,
+        'es6': true
       },
       parserOptions: {
         'ecmaVersion': 6
@@ -598,7 +599,7 @@ they set up some solid structure for your project.
     enabled: true,
     dependencies: ['templates'],
     browserifyTransforms: [
-      [require('babelify'), { presets: [require('babel-preset-es2015')] }]
+      [require('babelify'), { presets: [require('babel-preset-es2015')], sourceMaps: false }]
     ]
   }
 }
