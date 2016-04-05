@@ -35,7 +35,7 @@ function init(options, outputDirsMap, externalGulp) {
 
   var computedOptions;
   var computedOutputDirsMap;
-  var babelifyTransform = [babelify, { presets: [require('babel-preset-es2015')] }];
+  var babelifyTransform = [babelify, { presets: [require('babel-preset-es2015')], sourceMaps: false }];
 
   var defaultOptions = {
     assets: {
@@ -178,7 +178,8 @@ function init(options, outputDirsMap, externalGulp) {
         env: {
           'commonjs': true,
           'browser': true,
-          'jasmine': true
+          'jasmine': true,
+          'es6': true
         },
         parserOptions: {
           'ecmaVersion': 6
