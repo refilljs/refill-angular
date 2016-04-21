@@ -7,6 +7,7 @@
 var zkflow = require('zkflow');
 var browserifyNgannotate = require('browserify-ngannotate');
 var babelify = require('babelify');
+var babelPresetEs2015 = require('babel-preset-es2015');
 var defaults = require('lodash.defaults');
 var forEach = require('lodash.foreach');
 var mode = require('./mode');
@@ -35,7 +36,13 @@ function init(options, outputDirsMap, externalGulp) {
 
   var computedOptions;
   var computedOutputDirsMap;
-  var babelifyTransform = [babelify, { presets: [require('babel-preset-es2015')], sourceMaps: false }];
+  var babelifyTransform = [
+    babelify,
+    {
+      presets: [babelPresetEs2015],
+      sourceMaps: false
+    }
+  ];
 
   var defaultOptions = {
     assets: {
@@ -144,8 +151,8 @@ function init(options, outputDirsMap, externalGulp) {
       task: require('zkflow-task-browserify'),
       dependencies: ['templates'],
       browserifyTransforms: [
-        browserifyNgannotate,
-        babelifyTransform
+        babelifyTransform,
+        browserifyNgannotate
       ]
     },
     test: {
@@ -176,13 +183,14 @@ function init(options, outputDirsMap, externalGulp) {
           'object-curly-spacing': [2, 'always']
         },
         env: {
-          'commonjs': true,
-          'browser': true,
-          'jasmine': true,
-          'es6': true
+          commonjs: true,
+          browser: true,
+          jasmine: true,
+          es6: true
         },
         parserOptions: {
-          'ecmaVersion': 6
+          ecmaVersion: 6,
+          sourceType: 'module'
         },
         extends: 'eslint:recommended'
       }
