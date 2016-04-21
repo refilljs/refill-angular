@@ -49,7 +49,7 @@ function init(options, outputDirsMap, externalGulp) {
       task: require('./tasks/assets')
     },
     clean: {
-      task: require('./tasks/clean')
+      task: require('zkflow-task-clean')
     },
     templates: {
       task: require('./tasks/templates')

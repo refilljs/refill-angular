@@ -364,7 +364,7 @@ they set up some solid structure for your project.
     imagemin: undefined //options for gulp-imagemin
   },
   clean: {
-    task: require('zkflow-angular/src/tasks/clean')
+    task: require('zkflow-task-clean')
     enabled: true,
     dependencies: []
   },
