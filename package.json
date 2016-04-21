@@ -53,6 +53,7 @@
     "q": "1.4.1",
     "zkflow": "1.1.0",
     "zkflow-task-browserify": "1.0.0",
+    "zkflow-task-clean": "1.0.0",
     "zkflow-task-eslint": "0.1.1",
     "zkflow-task-karma": "1.0.1",
     "zkflow-task-sequence": "1.0.1",

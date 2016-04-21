@@ -1,5 +1,3 @@
-'use strict';
-
 require('./');
 
 describe('index', function() {

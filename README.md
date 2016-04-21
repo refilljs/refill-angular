@@ -364,7 +364,7 @@ they set up some solid structure for your project.
     imagemin: undefined //options for gulp-imagemin
   },
   clean: {
-    task: require('zkflow-angular/src/tasks/clean')
+    task: require('zkflow-task-clean')
     enabled: true,
     dependencies: []
   },
@@ -556,8 +556,8 @@ they set up some solid structure for your project.
     enabled: true,
     dependencies: ['templates'],
     browserifyTransforms: [
+      [require('babelify'), { presets: [require('babel-preset-es2015')], sourceMaps: false }],
       require('browserify-ngannotate'),
-      [require('babelify'), { presets: [require('babel-preset-es2015')], sourceMaps: false }]
     ]
   },
   'lint-js': {
@@ -583,13 +583,14 @@ they set up some solid structure for your project.
         'object-curly-spacing': [2, 'always']
       },
       env: {
-        'commonjs': true,
-        'browser': true,
-        'jasmine': true,
-        'es6': true
+        commonjs: true,
+        browser: true,
+        jasmine: true,
+        es6: true
       },
       parserOptions: {
-        'ecmaVersion': 6
+        ecmaVersion: 6,
+        sourceType: 'module'
       },
       extends: 'eslint:recommended'
     }
