@@ -354,7 +354,7 @@ they set up some solid structure for your project.
 ```JavaScript
 {
   assets: {
-    task: require('zkflow-angular/src/tasks/assets'),
+    task: require('zkflow-task-assets'),
     enabled: true,
     dependencies: [],
     globs: 'src/**/_assets/**',
@@ -401,7 +401,7 @@ they set up some solid structure for your project.
     host: 'localhost'
   },
   assemble: {
-    task: require('zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -410,7 +410,7 @@ they set up some solid structure for your project.
     mode: undefined
   },
   build: {
-    task: require('zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -422,7 +422,7 @@ they set up some solid structure for your project.
      }
   },
   ci: {
-    task: require('zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -434,7 +434,7 @@ they set up some solid structure for your project.
     mode: undefined
   },
   'ci-build': {
-    task: require('zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -446,7 +446,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-e2e': {
-    task: require('zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -458,7 +458,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-static-analysis': {
-    task: require('zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -470,7 +470,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-test': {
-    task: require('zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -509,11 +509,11 @@ they set up some solid structure for your project.
     cssoStructureMinimization: undefined
   },
   default: {
-    task: require('zkflow-angular/src/tasks/sequence'),
+    task: require('zkflow-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
-      'clean', ['inject', 'assets', 'lint-js', 'test'],
+      ['clean', 'lint-js', 'test'], ['inject', 'assets'],
       'webserver'
     ],
     mode: undefined
