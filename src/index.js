@@ -46,7 +46,7 @@ function init(options, outputDirsMap, externalGulp) {
 
   var defaultOptions = {
     assets: {
-      task: require('./tasks/assets')
+      task: require('zkflow-task-assets')
     },
     clean: {
       task: require('zkflow-task-clean')
@@ -132,7 +132,7 @@ function init(options, outputDirsMap, externalGulp) {
     default: {
       task: require('zkflow-task-sequence'),
       sequence: [
-        'clean', ['inject', 'assets', 'lint-js', 'test'],
+        ['clean', 'lint-js', 'test'], ['inject', 'assets'],
         'webserver'
       ],
       mode: {
