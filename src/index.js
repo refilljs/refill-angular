@@ -40,7 +40,8 @@ function init(options, outputDirsMap, externalGulp) {
     babelify,
     {
       presets: [babelPresetEs2015],
-      sourceMaps: false
+      sourceMaps: false,
+      ignore: options.js.ignore
     }
   ];
 
