@@ -36,13 +36,16 @@ function init(options, outputDirsMap, externalGulp) {
 
   var computedOptions;
   var computedOutputDirsMap;
-  var babelifyTransform = [
-    babelify,
-    {
-      presets: [babelPresetEs2015],
-      sourceMaps: false
-    }
-  ];
+  var getBabelifyTransform = function() {
+    return [
+      babelify,
+      {
+        presets: [babelPresetEs2015],
+        sourceMaps: false,
+        ignore: options.js.ignore
+      }
+    ];
+  }
 
   var defaultOptions = {
     assets: {
@@ -151,7 +154,7 @@ function init(options, outputDirsMap, externalGulp) {
       task: require('zkflow-task-browserify'),
       dependencies: ['templates'],
       browserifyTransforms: [
-        babelifyTransform,
+        getBabelifyTransform(),
         browserifyNgannotate
       ]
     },
@@ -159,7 +162,7 @@ function init(options, outputDirsMap, externalGulp) {
       task: require('zkflow-task-karma'),
       dependencies: ['templates'],
       browserifyTransforms: [
-        babelifyTransform
+        getBabelifyTransform()
       ]
     },
     'lint-js': {
