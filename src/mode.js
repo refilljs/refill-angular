@@ -17,7 +17,8 @@
 var mode = {
   env: getEnv('ENV', 'dev'),
   watch: getEnv('WATCH', 'true') === 'true' ? true : false,
-  angularMainModuleProdFallback: false
+  angularMainModuleProdFallback: false,
+  eslintFix: true
 };
 
 function getEnv(name, defaultValue) {

@@ -2,7 +2,6 @@
 
 var cssGlobbing = require('gulp-css-globbing');
 var sass = require('gulp-sass');
-var sassdoc = require('sassdoc');
 var csso = require('gulp-csso');
 var streamify = require('gulp-streamify');
 var rev = require('gulp-rev');
@@ -30,7 +29,6 @@ function getCssTask(options, gulp, mode, getOutputDir) {
       'Learn more about ZKFlow css toolstack:\n' +
       'https://github.com/jsahlen/gulp-css-globbing\n' +
       'http://sass-lang.com/\n' +
-      'http://sassdoc.com/\n' +
       'https://github.com/postcss/autoprefixer\n' +
       'http://css.github.io/csso/\n';
 
@@ -49,7 +47,6 @@ function getCssTask(options, gulp, mode, getOutputDir) {
             .src(options.globs, options.globsOptions)
             .pipe(plumber(deferred.reject))
             .pipe(cssGlobbing(options.cssGlobbing))
-            .pipe(gulpif(options.sassdocEnabled, sassdoc(options.sassdoc)))
             .pipe(gulpif(mode.env === 'dev', sourcemaps.init(options.sourcemapsInit)))
             .pipe(sass(options.sass))
             .pipe(autoprefixer(options.autoprefixer))
@@ -98,10 +95,6 @@ module.exports = {
     autoprefixer: {
       browsers: ['last 2 versions', 'ie 9'],
       cascade: false
-    },
-    sassdocEnabled: true,
-    sassdoc: {
-      dest: 'docs/sass/'
     }
   }
 };

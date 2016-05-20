@@ -6,7 +6,10 @@
 
 var zkflow = require('zkflow');
 var browserifyNgannotate = require('browserify-ngannotate');
-var _ = require('lodash');
+var babelify = require('babelify');
+var babelPresetEs2015 = require('babel-preset-es2015');
+var defaults = require('lodash.defaults');
+var forEach = require('lodash.foreach');
 var mode = require('./mode');
 
 /**
@@ -27,44 +30,27 @@ function getGulp(externalGulp) {
 
 /**
  * Set up zkflow angular tasks.
- *
- * Available tasks:
- * Basic: default, build, ci, beautify
- *
- * @param {object} [options] Contains configuration of all zkflow angular tasks
- *
- * @param {object} [options.assets] Configuration of assets task
- * @param {boolean} [options.assets.enabled=true]
- * If task is enabled you will be able to use it by gulp assets command.
- * Disabling it won't delete it from other tasks dependencies.
- * @param {array|undefined|null} [options.assets.dependencies]
- * Dependencies for this task in form of array of strings e.g. ['someTask', 'someOtherTask'].
- * @param {string|array} [options.assets.globs='src\/**\/_assets\/**']
- *
- * @param {gulp} [externalGulp=require('gulp')]
- *
  * @alias module:gulp-zkflow-angular.init
  */
 function init(options, outputDirsMap, externalGulp) {
 
   var computedOptions;
   var computedOutputDirsMap;
+  var babelifyTransform = [
+    babelify,
+    {
+      presets: [babelPresetEs2015],
+      sourceMaps: false,
+      ignore: options.js.ignore
+    }
+  ];
 
   var defaultOptions = {
     assets: {
-      task: require('./tasks/assets')
-    },
-    beautify: {
-      task: require('./tasks/beautify')
-    },
-    bower: {
-      task: require('./tasks/bower')
+      task: require('zkflow-task-assets')
     },
     clean: {
-      task: require('./tasks/clean')
-    },
-    jshint: {
-      task: require('./tasks/jshint')
+      task: require('zkflow-task-clean')
     },
     templates: {
       task: require('./tasks/templates')
@@ -123,11 +109,12 @@ function init(options, outputDirsMap, externalGulp) {
     'ci-static-analysis': {
       task: require('zkflow-task-sequence'),
       sequence: [
-        ['beautify', 'jshint']
+        ['lint-js']
       ],
       mode: {
         env: 'prod',
-        watch: false
+        watch: false,
+        eslintFix: false
       }
     },
     'ci-test': {
@@ -141,15 +128,17 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     css: {
-      task: require('./tasks/css'),
-      dependencies: ['bower']
+      task: require('./tasks/css')
     },
     default: {
       task: require('zkflow-task-sequence'),
       sequence: [
-        'clean', ['inject', 'assets', 'jshint', 'test'],
+        ['clean', 'lint-js', 'test'], ['inject', 'assets'],
         'webserver'
-      ]
+      ],
+      mode: {
+        eslintFix: false
+      }
     },
     e2e: {
       task: require('./tasks/protractor'),
@@ -161,16 +150,51 @@ function init(options, outputDirsMap, externalGulp) {
     },
     js: {
       task: require('zkflow-task-browserify'),
-      dependencies: ['bower', 'templates'],
+      dependencies: ['templates'],
       browserifyTransforms: [
+        babelifyTransform,
         browserifyNgannotate
       ]
     },
     test: {
       task: require('zkflow-task-karma'),
-      dependencies: ['bower', 'templates'],
-      browsers: ['PhantomJS'],
-      plugins: [require('karma-phantomjs-launcher')]
+      dependencies: ['templates'],
+      browserifyTransforms: [
+        babelifyTransform
+      ]
+    },
+    'lint-js': {
+      task: require('zkflow-task-eslint'),
+      eslint: {
+        rules: {
+          quotes: [2, 'single'],
+          semi: [2, 'always'],
+          eqeqeq: 2,
+          strict: 2,
+          'vars-on-top': 2,
+          'comma-style': 2,
+          indent: [2, 2],
+          'linebreak-style': [2, 'unix'],
+          'one-var': [2, 'never'],
+          'no-trailing-spaces': 2,
+          'no-multiple-empty-lines': [2, { 'max': 2, 'maxBOF': 0, 'maxEOF': 0 }],
+          camelcase: [2, { properties: 'never' }],
+          'comma-spacing': 2,
+          'key-spacing': 2,
+          'object-curly-spacing': [2, 'always']
+        },
+        env: {
+          commonjs: true,
+          browser: true,
+          jasmine: true,
+          es6: true
+        },
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module'
+        },
+        extends: 'eslint:recommended'
+      }
     }
   };
 
@@ -185,13 +209,13 @@ function init(options, outputDirsMap, externalGulp) {
   }
 
   outputDirsMap = outputDirsMap || {};
-  computedOutputDirsMap = _.defaults({}, defaultOutputDirsMap, outputDirsMap);
+  computedOutputDirsMap = defaults({}, defaultOutputDirsMap, outputDirsMap);
 
   options = options || {};
-  computedOptions = _.defaults({}, defaultOptions, options);
+  computedOptions = defaults({}, defaultOptions, options);
 
-  _.forEach(computedOptions, function(taskOptions, taskName) {
-    computedOptions[taskName] = _.defaults({}, options[taskName], taskOptions);
+  forEach(computedOptions, function(taskOptions, taskName) {
+    computedOptions[taskName] = defaults({}, options[taskName], taskOptions);
   });
 
   zkflow(computedOptions, getGulp(externalGulp), mode, getOutputDir);
