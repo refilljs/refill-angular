@@ -46,7 +46,7 @@ function init(options, outputDirsMap, externalGulp) {
 
   var defaultOptions = {
     assets: {
-      task: require('zkflow-task-assets')
+      task: require('refill-task-assets')
     },
     clean: {
       task: require('zkflow-task-clean')

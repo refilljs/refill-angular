@@ -42,7 +42,7 @@ deploy:
   email: piotr.baranowski@zaklinaczekodu.com
   api_key: $NPM_API_KEY
   on:
-    node: 5
+    node: 6
     condition: $WORKING_DIR == .
     tags: true
     repo: refilljs/refill-angular

@@ -55,14 +55,13 @@
     "refill-logger": "^1.0.3",
     "refill-next-handler": "^1.1.1",
     "refill-promisify-stream": "^1.0.1",
+    "refill-task-assets": "^2.0.0",
     "refill-task-eslint": "^2.0.2",
     "refill-task-sequence": "^1.1.1",
     "refill-watcher": "^1.0.1",
-    "zkflow-task-assets": "1.0.0",
     "zkflow-task-browserify": "1.0.0",
     "zkflow-task-clean": "1.0.0",
-    "zkflow-task-karma": "2.0.0",
-    "zkflow-watcher": "0.1.0"
+    "zkflow-task-karma": "2.0.0"
   },
   "devDependencies": {
     "gulp": "3.9.1",
