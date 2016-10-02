@@ -163,7 +163,7 @@ function init(options, outputDirsMap, externalGulp) {
       ]
     },
     'lint-js': {
-      task: require('zkflow-task-eslint'),
+      task: require('refill-task-eslint'),
       eslint: {
         rules: {
           quotes: [2, 'single'],
