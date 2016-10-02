@@ -1,5 +1,3 @@
 'use strict';
 
-var zkflowNode = require('zkflow-node');
-
-zkflowNode.init(null, require('gulp'));
+require('refill-node').init(null, require('gulp'));

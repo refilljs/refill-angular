@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "gulp": "3.9.1",
-    "zkflow-node": "1.0.0"
+    "refill-node": "2.0.0"
   },
   "peerDependencies": {
     "gulp": "^3"
