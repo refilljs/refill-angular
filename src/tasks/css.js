@@ -51,7 +51,7 @@ function getCssTask(options, gulp, mode, getOutputDir) {
             .pipe(sass(options.sass))
             .pipe(autoprefixer(options.autoprefixer))
             .pipe(gulpif(mode.env === 'dev', sourcemaps.write(options.sourcemapsWrite)))
-            .pipe(gulpif(mode.env !== 'dev' && !mode.watch, csso(options.cssoStructureMinimization)))
+            .pipe(gulpif(mode.env !== 'dev' && !mode.watch, csso(options.csso)))
             .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
             .pipe(gulp.dest(outputDir + options.outputDirSuffix))
             .on('end', deferred.resolve);
