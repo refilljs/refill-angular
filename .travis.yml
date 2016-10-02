@@ -3,11 +3,7 @@ dist: trusty
 
 addons:
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
-      - gcc-5
-      - g++-5
       - dbus-x11
 
 language: node_js
@@ -22,7 +18,7 @@ os:
 
 env:
   global:
-    - CC=gcc-5 CXX=g++-5 DISPLAY=:99
+    - DISPLAY=:99
   matrix:
     - WORKING_DIR=.
     - WORKING_DIR=e2e/mini/
