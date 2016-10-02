@@ -53,7 +53,7 @@
     "minimist": "1.2.0",
     "protractor-cucumber-framework": "0.6.0",
     "q": "1.4.1",
-    "zkflow": "1.1.0",
+    "refill": "^1.2.2",
     "zkflow-task-assets": "1.0.0",
     "zkflow-task-browserify": "1.0.0",
     "zkflow-task-clean": "1.0.0",
@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "gulp": "3.9.1",
-    "refill-node": "2.0.0"
+    "refill-node": "^2.0.0"
   },
   "peerDependencies": {
     "gulp": "^3"

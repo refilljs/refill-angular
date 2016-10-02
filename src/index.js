@@ -4,7 +4,7 @@
  * @module zkflow-angular
  */
 
-var zkflow = require('zkflow');
+var refill = require('refill');
 var browserifyNgannotate = require('browserify-ngannotate');
 var babelify = require('babelify');
 var babelPresetEs2015 = require('babel-preset-es2015');
@@ -217,7 +217,7 @@ function init(options, outputDirsMap, externalGulp) {
     computedOptions[taskName] = defaults({}, options[taskName], taskOptions);
   });
 
-  zkflow(computedOptions, getGulp(externalGulp), mode, getOutputDir);
+  refill(computedOptions, getGulp(externalGulp), mode, getOutputDir);
 
   return getOutputDir;
 
