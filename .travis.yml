@@ -14,6 +14,7 @@ addons:
 language: node_js
 
 node_js:
+  - 6
   - 5
   - 4
 
@@ -27,6 +28,10 @@ env:
     - WORKING_DIR=.
     - WORKING_DIR=e2e/mini/
     - WORKING_DIR=e2e/maxi/
+
+matrix:
+  allow_failures:
+   - node_js: 6
 
 before_install:
   - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
