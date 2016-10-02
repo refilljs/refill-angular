@@ -5,6 +5,7 @@ var templateCache = require('gulp-angular-templatecache');
 var htmlmin = require('gulp-htmlmin');
 var zkutils = require('gulp-zkflow-utils');
 var zkflowWatcher = require('zkflow-watcher');
+var RefillNextHandler = require('refill-next-handler');
 
 function getTemplatesTask(options, gulp, mode) {
 
@@ -25,7 +26,7 @@ function getTemplatesTask(options, gulp, mode) {
       );
     }
 
-    nextHandler = new zkutils.NextHandler({
+    nextHandler = new RefillNextHandler({
       next: next,
       watch: mode.watch,
       logger: logger

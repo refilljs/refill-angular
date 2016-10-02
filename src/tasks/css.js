@@ -11,6 +11,7 @@ var plumber = require('gulp-plumber');
 var zkutils = require('gulp-zkflow-utils');
 var sourcemaps = require('gulp-sourcemaps');
 var zkflowWatcher = require('zkflow-watcher');
+var RefillNextHandler = require('refill-next-handler');
 
 function getCssTask(options, gulp, mode, getOutputDir) {
 
@@ -61,7 +62,7 @@ function getCssTask(options, gulp, mode, getOutputDir) {
 
     }
 
-    nextHandler = new zkutils.NextHandler({
+    nextHandler = new RefillNextHandler({
       next: next,
       watch: mode.watch,
       logger: logger

@@ -15,6 +15,7 @@ function getProtractorTask(options, gulp, mode) {
     var protractor = require('gulp-protractor').protractor;
     var webserver = require('gulp-webserver');
     var path = require('path');
+    var RefillNextHandler = require('refill-next-handler');
     var nextHandler;
 
     var noE2eFilesMessage =
@@ -63,7 +64,7 @@ function getProtractorTask(options, gulp, mode) {
 
     }
 
-    nextHandler = new zkutils.NextHandler({
+    nextHandler = new RefillNextHandler({
       next: next,
       watch: mode.watch,
       logger: logger
