@@ -61,13 +61,13 @@ function init(options, outputDirsMap, externalGulp) {
       task: require('./tasks/webserver')
     },
     assemble: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         'clean', ['inject', 'assets']
       ]
     },
     build: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         'assemble'
       ],
@@ -77,7 +77,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     ci: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         'ci-static-analysis',
         'ci-test',
@@ -86,7 +86,7 @@ function init(options, outputDirsMap, externalGulp) {
       ]
     },
     'ci-build': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['assemble']
       ],
@@ -96,7 +96,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     'ci-e2e': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['e2e']
       ],
@@ -106,7 +106,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     'ci-static-analysis': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['lint-js']
       ],
@@ -117,7 +117,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     'ci-test': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['test']
       ],
@@ -130,7 +130,7 @@ function init(options, outputDirsMap, externalGulp) {
       task: require('./tasks/css')
     },
     default: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['clean', 'lint-js', 'test'], ['inject', 'assets'],
         'webserver'

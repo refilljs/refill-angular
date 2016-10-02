@@ -55,11 +55,11 @@
     "q": "1.4.1",
     "refill": "^1.2.2",
     "refill-task-eslint": "^2.0.2",
+    "refill-task-sequence": "^1.1.1",
     "zkflow-task-assets": "1.0.0",
     "zkflow-task-browserify": "1.0.0",
     "zkflow-task-clean": "1.0.0",
     "zkflow-task-karma": "2.0.0",
-    "zkflow-task-sequence": "1.0.1",
     "zkflow-watcher": "0.1.0"
   },
   "devDependencies": {
