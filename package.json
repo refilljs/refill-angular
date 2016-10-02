@@ -1,14 +1,14 @@
 {
-  "name": "zkflow-angular",
+  "name": "refill-angular",
   "version": "2.0.0-5",
-  "description": "Gulp tasks for AngularJS projects powered by ZKflow",
+  "description": "Gulp tasks for AngularJS projects powered by Refill",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zaklinaczekodu/zkflow-angular.git"
+    "url": "https://github.com/refilljs/refill-angular.git"
   },
   "keywords": [
-    "zkflow",
+    "refill",
     "angular",
     "tasks",
     "gulp"
@@ -19,9 +19,13 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zaklinaczekodu/zkflow-angular/issues"
+    "url": "https://github.com/refilljs/refill-angular/issues"
   },
-  "homepage": "https://github.com/zaklinaczekodu/zkflow-angular",
+  "homepage": "https://github.com/refilljs/refill-angular",
+  "engines": {
+    "node": ">=4.2",
+    "npm": ">=3.3.3"
+  },
   "dependencies": {
     "babel-preset-es2015": "6.6.0",
     "babelify": "7.2.0",
@@ -63,11 +67,7 @@
     "zkflow-node": "1.0.0"
   },
   "peerDependencies": {
-    "gulp": "^3.9.1"
-  },
-  "engines": {
-    "node": ">=4.2",
-    "npm": ">=3.3.3"
+    "gulp": "^3"
   },
   "publishConfig": {
     "tag": "next"

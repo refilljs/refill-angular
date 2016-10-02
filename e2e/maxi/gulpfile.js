@@ -1,3 +1,3 @@
-var zkflowAngular = require('zkflow-angular');
+'use strict';
 
-zkflowAngular.init(undefined, undefined, require('gulp'));
+require('refill-angular').init(undefined, undefined, require('gulp'));
