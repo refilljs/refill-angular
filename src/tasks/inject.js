@@ -4,11 +4,11 @@ var inject = require('gulp-inject');
 var htmlmin = require('gulp-htmlmin');
 var template = require('gulp-template');
 var gulpif = require('gulp-if');
-var zkutils = require('gulp-zkflow-utils');
 var plumber = require('gulp-plumber');
 var refillWatcher = require('refill-watcher');
-var RefillNextHandler = require('refill-next-handler');
 var refillLogger = require('refill-logger');
+var refillGlobby = require('refill-globby');
+var RefillNextHandler = require('refill-next-handler');
 
 function getInjectTask(options, gulp, mode, getOutputDir) {
 
@@ -81,10 +81,10 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
     function runInject() {
 
       return nextHandler.handle(
-          zkutils.globby(options.globs, noInjectFilesMessage), {
-            ignoreFailures: true,
-            handleSuccess: false
-          })
+        refillGlobby(options.globs, noInjectFilesMessage), {
+          ignoreFailures: true,
+          handleSuccess: false
+        })
         .then(function() {
 
           return nextHandler.handle(new Promise(function (resolve, reject) {

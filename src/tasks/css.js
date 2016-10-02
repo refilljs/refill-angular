@@ -8,10 +8,10 @@ var rev = require('gulp-rev');
 var gulpif = require('gulp-if');
 var autoprefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
-var zkutils = require('gulp-zkflow-utils');
 var sourcemaps = require('gulp-sourcemaps');
 var refillWatcher = require('refill-watcher');
 var refillLogger = require('refill-logger');
+var refillGlobby = require('refill-globby');
 var RefillNextHandler = require('refill-next-handler');
 
 function getCssTask(options, gulp, mode, getOutputDir) {
@@ -36,7 +36,7 @@ function getCssTask(options, gulp, mode, getOutputDir) {
     function runCss() {
 
       return nextHandler
-        .handle(zkutils.globby(options.globs, noCssFilesMessage), {
+        .handle(refillGlobby(options.globs, noCssFilesMessage), {
           ignoreFailures: true,
           handleSuccess: false
         })

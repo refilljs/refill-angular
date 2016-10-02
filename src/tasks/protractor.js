@@ -10,12 +10,13 @@ function getProtractorTask(options, gulp, mode) {
 
   function protractorTask(next) {
 
-    var zkutils = require('gulp-zkflow-utils');
+    var refillPromisifyStream = require('refill-promisify-stream');
     var protractor = require('gulp-protractor').protractor;
     var webserver = require('gulp-webserver');
     var path = require('path');
     var RefillNextHandler = require('refill-next-handler');
     var refillLogger = require('refill-logger');
+    var refillGlobby = require('refill-globby');
     var logger = refillLogger('e2e');
     var nextHandler;
 
@@ -43,22 +44,21 @@ function getProtractorTask(options, gulp, mode) {
     function runProtractor() {
 
       var protractorPromise = nextHandler.handle(
-          zkutils.globby(options.globs, noE2eFilesMessage), {
-            ignoreFailures: true,
-            handleSuccess: false
-          })
-        .then(function() {
+        refillGlobby(options.globs, noE2eFilesMessage), {
+          ignoreFailures: true,
+          handleSuccess: false
+        })
+        .then(function () {
 
-          return nextHandler.handle(zkutils
-            .promisify(gulp.src(options.globs, options.globsOptions)
-              .pipe(protractor({
-                configFile: getConfigPath()
-              }))));
+          return nextHandler.handle(refillPromisifyStream(gulp.src(options.globs, options.globsOptions)
+            .pipe(protractor({
+              configFile: getConfigPath()
+            }))));
 
         });
 
       if (mode.watch) {
-        protractorPromise.finally(help);
+        protractorPromise.then(help, help);
       }
 
       return protractorPromise;
@@ -71,15 +71,17 @@ function getProtractorTask(options, gulp, mode) {
       logger: logger
     });
 
-    zkutils.promisify(gulp.src('test/').pipe(webserver(options.webserver)))
-      .then(function(webserverStream) {
+    refillPromisifyStream(gulp.src('test/').pipe(webserver(options.webserver)))
+      .then(function (webserverStream) {
+
+        function killWebserver() {
+          setTimeout(function () {
+            webserverStream.emit('kill');
+          }, 100);
+        }
 
         if (!mode.watch) {
-          runProtractor().finally(function() {
-            setTimeout(function() {
-              webserverStream.emit('kill');
-            }, 100);
-          });
+          runProtractor().then(killWebserver, killWebserver);
           return;
         }
 
@@ -88,7 +90,7 @@ function getProtractorTask(options, gulp, mode) {
         // this will start simple interactive mode. If you press "r" e2e tests will run, "^C" will stop execution
         process.stdin.setRawMode(true);
         process.stdin.setEncoding('utf8');
-        process.stdin.on('data', function(chunk) {
+        process.stdin.on('data', function (chunk) {
 
           var ctrlCCode = 3;
 

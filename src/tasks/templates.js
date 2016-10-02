@@ -3,7 +3,7 @@
 var gulpif = require('gulp-if');
 var templateCache = require('gulp-angular-templatecache');
 var htmlmin = require('gulp-htmlmin');
-var zkutils = require('gulp-zkflow-utils');
+var refillPromisifyStream = require('refill-promisify-stream');
 var refillWatcher = require('refill-watcher');
 var refillLogger = require('refill-logger');
 var RefillNextHandler = require('refill-next-handler');
@@ -17,7 +17,7 @@ function getTemplatesTask(options, gulp, mode) {
 
     function runTemplates() {
       return nextHandler.handle(
-        zkutils.promisify(
+        refillPromisifyStream(
           gulp
           .src(options.globs, options.globsOptions)
           .pipe(gulpif(mode.env !== 'dev' && !mode.watch, htmlmin(options.htmlmin)))
