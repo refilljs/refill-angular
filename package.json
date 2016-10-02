@@ -52,6 +52,7 @@
     "minimist": "1.2.0",
     "protractor-cucumber-framework": "0.6.0",
     "refill": "^1.2.2",
+    "refill-logger": "^1.0.3",
     "refill-next-handler": "^1.1.1",
     "refill-task-eslint": "^2.0.2",
     "refill-task-sequence": "^1.1.1",

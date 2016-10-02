@@ -5,13 +5,14 @@ var templateCache = require('gulp-angular-templatecache');
 var htmlmin = require('gulp-htmlmin');
 var zkutils = require('gulp-zkflow-utils');
 var refillWatcher = require('refill-watcher');
+var refillLogger = require('refill-logger');
 var RefillNextHandler = require('refill-next-handler');
 
 function getTemplatesTask(options, gulp, mode) {
 
   function templatesTask(next) {
 
-    var logger = zkutils.logger('templates');
+    var logger = refillLogger('templates');
     var nextHandler;
 
     function runTemplates() {

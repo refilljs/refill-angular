@@ -11,6 +11,7 @@ var plumber = require('gulp-plumber');
 var zkutils = require('gulp-zkflow-utils');
 var sourcemaps = require('gulp-sourcemaps');
 var refillWatcher = require('refill-watcher');
+var refillLogger = require('refill-logger');
 var RefillNextHandler = require('refill-next-handler');
 
 function getCssTask(options, gulp, mode, getOutputDir) {
@@ -18,7 +19,7 @@ function getCssTask(options, gulp, mode, getOutputDir) {
   function cssTask(next) {
 
     var outputDir = getOutputDir();
-    var logger = zkutils.logger('css');
+    var logger = refillLogger('css');
     var nextHandler;
 
     var noCssFilesMessage =

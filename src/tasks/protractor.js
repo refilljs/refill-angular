@@ -11,11 +11,12 @@ function getProtractorTask(options, gulp, mode) {
   function protractorTask(next) {
 
     var zkutils = require('gulp-zkflow-utils');
-    var logger = zkutils.logger('e2e');
     var protractor = require('gulp-protractor').protractor;
     var webserver = require('gulp-webserver');
     var path = require('path');
     var RefillNextHandler = require('refill-next-handler');
+    var refillLogger = require('refill-logger');
+    var logger = refillLogger('e2e');
     var nextHandler;
 
     var noE2eFilesMessage =

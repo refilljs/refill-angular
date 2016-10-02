@@ -8,13 +8,14 @@ var zkutils = require('gulp-zkflow-utils');
 var plumber = require('gulp-plumber');
 var refillWatcher = require('refill-watcher');
 var RefillNextHandler = require('refill-next-handler');
+var refillLogger = require('refill-logger');
 
 function getInjectTask(options, gulp, mode, getOutputDir) {
 
   function injectTask(next) {
 
     var outputDir = getOutputDir();
-    var logger = zkutils.logger('inject');
+    var logger = refillLogger('inject');
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);
     var headInjectablesGlobs = prefixGlobs(options.headInjectablesGlobs);
     var nextHandler;
