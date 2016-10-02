@@ -29,10 +29,6 @@ env:
     - WORKING_DIR=e2e/mini/
     - WORKING_DIR=e2e/maxi/
 
-matrix:
-  allow_failures:
-   - node_js: 6
-
 before_install:
   - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
   - sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
