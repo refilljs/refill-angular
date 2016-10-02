@@ -45,4 +45,4 @@ deploy:
     node: 5
     condition: $WORKING_DIR == .
     tags: true
-    repo: zaklinaczekodu/zkflow-angular
+    repo: refilljs/refill-angular
