@@ -6,7 +6,7 @@ var template = require('gulp-template');
 var gulpif = require('gulp-if');
 var zkutils = require('gulp-zkflow-utils');
 var plumber = require('gulp-plumber');
-var zkflowWatcher = require('zkflow-watcher');
+var refillWatcher = require('refill-watcher');
 var RefillNextHandler = require('refill-next-handler');
 
 function getInjectTask(options, gulp, mode, getOutputDir) {
@@ -118,7 +118,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
       logger: logger
     });
 
-    zkflowWatcher.watch(runInject, mode.watch, options.globs, logger);
+    refillWatcher.watch(runInject, mode.watch, options.globs, logger);
 
   }
 

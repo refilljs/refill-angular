@@ -4,7 +4,7 @@ var gulpif = require('gulp-if');
 var templateCache = require('gulp-angular-templatecache');
 var htmlmin = require('gulp-htmlmin');
 var zkutils = require('gulp-zkflow-utils');
-var zkflowWatcher = require('zkflow-watcher');
+var refillWatcher = require('refill-watcher');
 var RefillNextHandler = require('refill-next-handler');
 
 function getTemplatesTask(options, gulp, mode) {
@@ -32,7 +32,7 @@ function getTemplatesTask(options, gulp, mode) {
       logger: logger
     });
 
-    zkflowWatcher.watch(runTemplates, mode.watch, options.globs, logger);
+    refillWatcher.watch(runTemplates, mode.watch, options.globs, logger);
 
   }
 

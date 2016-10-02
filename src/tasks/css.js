@@ -10,7 +10,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
 var zkutils = require('gulp-zkflow-utils');
 var sourcemaps = require('gulp-sourcemaps');
-var zkflowWatcher = require('zkflow-watcher');
+var refillWatcher = require('refill-watcher');
 var RefillNextHandler = require('refill-next-handler');
 
 function getCssTask(options, gulp, mode, getOutputDir) {
@@ -68,7 +68,7 @@ function getCssTask(options, gulp, mode, getOutputDir) {
       logger: logger
     });
 
-    zkflowWatcher.watch(runCss, mode.watch, options.globs, logger);
+    refillWatcher.watch(runCss, mode.watch, options.globs, logger);
 
   }
 
