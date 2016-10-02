@@ -148,7 +148,7 @@ function init(options, outputDirsMap, externalGulp) {
       dependencies: ['js', 'css']
     },
     js: {
-      task: require('zkflow-task-browserify'),
+      task: require('refill-task-browserify'),
       dependencies: ['templates'],
       browserifyTransforms: [
         babelifyTransform,
