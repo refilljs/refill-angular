@@ -10,7 +10,6 @@ var autoprefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
 var zkutils = require('gulp-zkflow-utils');
 var sourcemaps = require('gulp-sourcemaps');
-var q = require('q');
 var zkflowWatcher = require('zkflow-watcher');
 
 function getCssTask(options, gulp, mode, getOutputDir) {
@@ -41,22 +40,22 @@ function getCssTask(options, gulp, mode, getOutputDir) {
         })
         .then(function() {
 
-          var deferred = q.defer();
+          return nextHandler.handle(new Promise(function (resolve, reject) {
 
-          gulp
-            .src(options.globs, options.globsOptions)
-            .pipe(plumber(deferred.reject))
-            .pipe(cssGlobbing(options.cssGlobbing))
-            .pipe(gulpif(mode.env === 'dev', sourcemaps.init(options.sourcemapsInit)))
-            .pipe(sass(options.sass))
-            .pipe(autoprefixer(options.autoprefixer))
-            .pipe(gulpif(mode.env === 'dev', sourcemaps.write(options.sourcemapsWrite)))
-            .pipe(gulpif(mode.env !== 'dev' && !mode.watch, csso(options.csso)))
-            .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
-            .pipe(gulp.dest(outputDir + options.outputDirSuffix))
-            .on('end', deferred.resolve);
+            gulp
+              .src(options.globs, options.globsOptions)
+              .pipe(plumber(reject))
+              .pipe(cssGlobbing(options.cssGlobbing))
+              .pipe(gulpif(mode.env === 'dev', sourcemaps.init(options.sourcemapsInit)))
+              .pipe(sass(options.sass))
+              .pipe(autoprefixer(options.autoprefixer))
+              .pipe(gulpif(mode.env === 'dev', sourcemaps.write(options.sourcemapsWrite)))
+              .pipe(gulpif(mode.env !== 'dev' && !mode.watch, csso(options.csso)))
+              .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
+              .pipe(gulp.dest(outputDir + options.outputDirSuffix))
+              .on('end', resolve);
 
-          return nextHandler.handle(deferred.promise);
+          }));
 
         });
 

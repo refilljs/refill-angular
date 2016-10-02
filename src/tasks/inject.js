@@ -5,9 +5,7 @@ var htmlmin = require('gulp-htmlmin');
 var template = require('gulp-template');
 var gulpif = require('gulp-if');
 var zkutils = require('gulp-zkflow-utils');
-var q = require('q');
 var plumber = require('gulp-plumber');
-var isArray = require('lodash.isarray');
 var zkflowWatcher = require('zkflow-watcher');
 
 function getInjectTask(options, gulp, mode, getOutputDir) {
@@ -42,7 +40,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
         return;
       }
 
-      if (isArray(globs)) {
+      if (Array.isArray(globs)) {
         prefixedGlobs = [];
         globs.forEach(function(glob) {
           prefixedGlobs.push(addBaseDir(glob));
@@ -87,26 +85,27 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
           })
         .then(function() {
 
-          var deferred = q.defer();
-          var stream;
+          return nextHandler.handle(new Promise(function (resolve, reject) {
 
-          stream = gulp.src(options.globs, options.globsOptions)
-            .pipe(plumber(deferred.reject))
-            .pipe(getInject(injectablesGlobs));
+            var stream;
 
-          if (typeof headInjectablesGlobs !== 'undefined') {
-            stream = stream.pipe(getInject(headInjectablesGlobs, 'head'));
-          }
+            stream = gulp.src(options.globs, options.globsOptions)
+              .pipe(plumber(reject))
+              .pipe(getInject(injectablesGlobs));
 
-          stream
-            .pipe(template({
-              angularMainModuleName: mode.angularMainModuleProdFallback ? options.prodAngularMainModuleName : getAngularMainModuleName()
-            }))
-            .pipe(gulpif(mode.env !== 'dev', htmlmin(options.htmlmin)))
-            .pipe(gulp.dest(outputDir))
-            .on('end', deferred.resolve);
+            if (typeof headInjectablesGlobs !== 'undefined') {
+              stream = stream.pipe(getInject(headInjectablesGlobs, 'head'));
+            }
 
-          return nextHandler.handle(deferred.promise);
+            stream
+              .pipe(template({
+                angularMainModuleName: mode.angularMainModuleProdFallback ? options.prodAngularMainModuleName : getAngularMainModuleName()
+              }))
+              .pipe(gulpif(mode.env !== 'dev', htmlmin(options.htmlmin)))
+              .pipe(gulp.dest(outputDir))
+              .on('end', resolve);
+
+          }));
 
         });
 
