@@ -156,7 +156,7 @@ function init(options, outputDirsMap, externalGulp) {
       ]
     },
     test: {
-      task: require('zkflow-task-karma'),
+      task: require('refill-task-karma'),
       dependencies: ['templates'],
       browserifyTransforms: [
         babelifyTransform
@@ -182,14 +182,12 @@ function init(options, outputDirsMap, externalGulp) {
           'key-spacing': 2,
           'object-curly-spacing': [2, 'always']
         },
-        env: {
-          commonjs: true,
-          browser: true,
-          jasmine: true,
-          es6: true
-        },
+        envs: [
+          'browser',
+          'jasmine',
+          'es6'
+        ],
         parserOptions: {
-          ecmaVersion: 6,
           sourceType: 'module'
         },
         extends: 'eslint:recommended'

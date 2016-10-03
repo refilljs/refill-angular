@@ -58,10 +58,10 @@
     "refill-task-assets": "^2.0.0",
     "refill-task-browserify": "2.0.0",
     "refill-task-eslint": "^2.0.2",
+    "refill-task-karma": "3.0.1",
     "refill-task-sequence": "^1.1.1",
     "refill-watcher": "^1.0.1",
-    "zkflow-task-clean": "1.0.0",
-    "zkflow-task-karma": "2.0.0"
+    "zkflow-task-clean": "1.0.0"
   },
   "devDependencies": {
     "gulp": "3.9.1",
