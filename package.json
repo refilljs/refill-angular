@@ -56,10 +56,10 @@
     "refill-next-handler": "^1.1.1",
     "refill-promisify-stream": "^1.0.1",
     "refill-task-assets": "^2.0.0",
-    "refill-task-browserify": "2.0.0",
-    "refill-task-clean": "1.1.0",
+    "refill-task-browserify": "^2.0.0",
+    "refill-task-clean": "^1.1.0",
     "refill-task-eslint": "^2.0.2",
-    "refill-task-karma": "3.0.1",
+    "refill-task-karma": "^3.0.1",
     "refill-task-sequence": "^1.1.1",
     "refill-watcher": "^1.0.1"
   },
