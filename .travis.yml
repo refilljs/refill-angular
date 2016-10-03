@@ -3,17 +3,13 @@ dist: trusty
 
 addons:
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
-      - gcc-5
-      - g++-5
-      - xpra
       - dbus-x11
 
 language: node_js
 
 node_js:
+  - 6
   - 5
   - 4
 
@@ -22,21 +18,21 @@ os:
 
 env:
   global:
-    - CC=gcc-5 CXX=g++-5 DISPLAY=:99
+    - DISPLAY=:99
   matrix:
     - WORKING_DIR=.
     - WORKING_DIR=e2e/mini/
     - WORKING_DIR=e2e/maxi/
 
 before_install:
-  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-  - sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-  - sudo apt-get update
-  - sudo apt-get install -y google-chrome-stable
-  - xpra start :99
-  - npm config set progress false
-  - npm install -g npm@latest
-  - cd $WORKING_DIR
+  - |
+    npm install -g npm@latest
+    cd $WORKING_DIR
+    if [ $WORKING_DIR != . ]; then
+      sudo apt-get update
+      sudo apt-get install -yq --no-install-suggests --no-install-recommends --force-yes xpra
+      xpra start :99
+    fi
 
 script:
   - dbus-launch --exit-with-session ./node_modules/.bin/gulp ci
@@ -46,7 +42,7 @@ deploy:
   email: piotr.baranowski@zaklinaczekodu.com
   api_key: $NPM_API_KEY
   on:
-    node: 5
+    node: 6
     condition: $WORKING_DIR == .
     tags: true
-    repo: zaklinaczekodu/zkflow-angular
+    repo: refilljs/refill-angular

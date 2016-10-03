@@ -4,18 +4,18 @@ var inject = require('gulp-inject');
 var htmlmin = require('gulp-htmlmin');
 var template = require('gulp-template');
 var gulpif = require('gulp-if');
-var zkutils = require('gulp-zkflow-utils');
-var q = require('q');
 var plumber = require('gulp-plumber');
-var isArray = require('lodash.isarray');
-var zkflowWatcher = require('zkflow-watcher');
+var refillWatcher = require('refill-watcher');
+var refillLogger = require('refill-logger');
+var refillGlobby = require('refill-globby');
+var RefillNextHandler = require('refill-next-handler');
 
 function getInjectTask(options, gulp, mode, getOutputDir) {
 
   function injectTask(next) {
 
     var outputDir = getOutputDir();
-    var logger = zkutils.logger('inject');
+    var logger = refillLogger('inject');
     var injectablesGlobs = prefixGlobs(options.injectablesGlobs);
     var headInjectablesGlobs = prefixGlobs(options.headInjectablesGlobs);
     var nextHandler;
@@ -42,7 +42,7 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
         return;
       }
 
-      if (isArray(globs)) {
+      if (Array.isArray(globs)) {
         prefixedGlobs = [];
         globs.forEach(function(glob) {
           prefixedGlobs.push(addBaseDir(glob));
@@ -81,44 +81,45 @@ function getInjectTask(options, gulp, mode, getOutputDir) {
     function runInject() {
 
       return nextHandler.handle(
-          zkutils.globby(options.globs, noInjectFilesMessage), {
-            ignoreFailures: true,
-            handleSuccess: false
-          })
+        refillGlobby(options.globs, noInjectFilesMessage), {
+          ignoreFailures: true,
+          handleSuccess: false
+        })
         .then(function() {
 
-          var deferred = q.defer();
-          var stream;
+          return nextHandler.handle(new Promise(function (resolve, reject) {
 
-          stream = gulp.src(options.globs, options.globsOptions)
-            .pipe(plumber(deferred.reject))
-            .pipe(getInject(injectablesGlobs));
+            var stream;
 
-          if (typeof headInjectablesGlobs !== 'undefined') {
-            stream = stream.pipe(getInject(headInjectablesGlobs, 'head'));
-          }
+            stream = gulp.src(options.globs, options.globsOptions)
+              .pipe(plumber(reject))
+              .pipe(getInject(injectablesGlobs));
 
-          stream
-            .pipe(template({
-              angularMainModuleName: mode.angularMainModuleProdFallback ? options.prodAngularMainModuleName : getAngularMainModuleName()
-            }))
-            .pipe(gulpif(mode.env !== 'dev', htmlmin(options.htmlmin)))
-            .pipe(gulp.dest(outputDir))
-            .on('end', deferred.resolve);
+            if (typeof headInjectablesGlobs !== 'undefined') {
+              stream = stream.pipe(getInject(headInjectablesGlobs, 'head'));
+            }
 
-          return nextHandler.handle(deferred.promise);
+            stream
+              .pipe(template({
+                angularMainModuleName: mode.angularMainModuleProdFallback ? options.prodAngularMainModuleName : getAngularMainModuleName()
+              }))
+              .pipe(gulpif(mode.env !== 'dev', htmlmin(options.htmlmin)))
+              .pipe(gulp.dest(outputDir))
+              .on('end', resolve);
+
+          }));
 
         });
 
     }
 
-    nextHandler = new zkutils.NextHandler({
+    nextHandler = new RefillNextHandler({
       next: next,
       watch: mode.watch,
       logger: logger
     });
 
-    zkflowWatcher.watch(runInject, mode.watch, options.globs, logger);
+    refillWatcher.watch(runInject, mode.watch, options.globs, logger);
 
   }
 

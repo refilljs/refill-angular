@@ -4,7 +4,7 @@
  * @module zkflow-angular
  */
 
-var zkflow = require('zkflow');
+var refill = require('refill');
 var browserifyNgannotate = require('browserify-ngannotate');
 var babelify = require('babelify');
 var babelPresetEs2015 = require('babel-preset-es2015');
@@ -46,10 +46,10 @@ function init(options, outputDirsMap, externalGulp) {
 
   var defaultOptions = {
     assets: {
-      task: require('zkflow-task-assets')
+      task: require('refill-task-assets')
     },
     clean: {
-      task: require('zkflow-task-clean')
+      task: require('refill-task-clean')
     },
     templates: {
       task: require('./tasks/templates')
@@ -61,13 +61,13 @@ function init(options, outputDirsMap, externalGulp) {
       task: require('./tasks/webserver')
     },
     assemble: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         'clean', ['inject', 'assets']
       ]
     },
     build: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         'assemble'
       ],
@@ -77,7 +77,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     ci: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         'ci-static-analysis',
         'ci-test',
@@ -86,7 +86,7 @@ function init(options, outputDirsMap, externalGulp) {
       ]
     },
     'ci-build': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['assemble']
       ],
@@ -96,7 +96,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     'ci-e2e': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['e2e']
       ],
@@ -106,7 +106,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     'ci-static-analysis': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['lint-js']
       ],
@@ -117,7 +117,7 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     'ci-test': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['test']
       ],
@@ -130,7 +130,7 @@ function init(options, outputDirsMap, externalGulp) {
       task: require('./tasks/css')
     },
     default: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['clean', 'lint-js', 'test'], ['inject', 'assets'],
         'webserver'
@@ -148,7 +148,7 @@ function init(options, outputDirsMap, externalGulp) {
       dependencies: ['js', 'css']
     },
     js: {
-      task: require('zkflow-task-browserify'),
+      task: require('refill-task-browserify'),
       dependencies: ['templates'],
       browserifyTransforms: [
         babelifyTransform,
@@ -156,14 +156,14 @@ function init(options, outputDirsMap, externalGulp) {
       ]
     },
     test: {
-      task: require('zkflow-task-karma'),
+      task: require('refill-task-karma'),
       dependencies: ['templates'],
       browserifyTransforms: [
         babelifyTransform
       ]
     },
     'lint-js': {
-      task: require('zkflow-task-eslint'),
+      task: require('refill-task-eslint'),
       eslint: {
         rules: {
           quotes: [2, 'single'],
@@ -182,14 +182,12 @@ function init(options, outputDirsMap, externalGulp) {
           'key-spacing': 2,
           'object-curly-spacing': [2, 'always']
         },
-        env: {
-          commonjs: true,
-          browser: true,
-          jasmine: true,
-          es6: true
-        },
+        envs: [
+          'browser',
+          'jasmine',
+          'es6'
+        ],
         parserOptions: {
-          ecmaVersion: 6,
           sourceType: 'module'
         },
         extends: 'eslint:recommended'
@@ -217,7 +215,7 @@ function init(options, outputDirsMap, externalGulp) {
     computedOptions[taskName] = defaults({}, options[taskName], taskOptions);
   });
 
-  zkflow(computedOptions, getGulp(externalGulp), mode, getOutputDir);
+  refill(computedOptions, getGulp(externalGulp), mode, getOutputDir);
 
   return getOutputDir;
 

@@ -8,17 +8,18 @@ var rev = require('gulp-rev');
 var gulpif = require('gulp-if');
 var autoprefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
-var zkutils = require('gulp-zkflow-utils');
 var sourcemaps = require('gulp-sourcemaps');
-var q = require('q');
-var zkflowWatcher = require('zkflow-watcher');
+var refillWatcher = require('refill-watcher');
+var refillLogger = require('refill-logger');
+var refillGlobby = require('refill-globby');
+var RefillNextHandler = require('refill-next-handler');
 
 function getCssTask(options, gulp, mode, getOutputDir) {
 
   function cssTask(next) {
 
     var outputDir = getOutputDir();
-    var logger = zkutils.logger('css');
+    var logger = refillLogger('css');
     var nextHandler;
 
     var noCssFilesMessage =
@@ -35,40 +36,40 @@ function getCssTask(options, gulp, mode, getOutputDir) {
     function runCss() {
 
       return nextHandler
-        .handle(zkutils.globby(options.globs, noCssFilesMessage), {
+        .handle(refillGlobby(options.globs, noCssFilesMessage), {
           ignoreFailures: true,
           handleSuccess: false
         })
         .then(function() {
 
-          var deferred = q.defer();
+          return nextHandler.handle(new Promise(function (resolve, reject) {
 
-          gulp
-            .src(options.globs, options.globsOptions)
-            .pipe(plumber(deferred.reject))
-            .pipe(cssGlobbing(options.cssGlobbing))
-            .pipe(gulpif(mode.env === 'dev', sourcemaps.init(options.sourcemapsInit)))
-            .pipe(sass(options.sass))
-            .pipe(autoprefixer(options.autoprefixer))
-            .pipe(gulpif(mode.env === 'dev', sourcemaps.write(options.sourcemapsWrite)))
-            .pipe(gulpif(mode.env !== 'dev' && !mode.watch, csso(options.cssoStructureMinimization)))
-            .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
-            .pipe(gulp.dest(outputDir + options.outputDirSuffix))
-            .on('end', deferred.resolve);
+            gulp
+              .src(options.globs, options.globsOptions)
+              .pipe(plumber(reject))
+              .pipe(cssGlobbing(options.cssGlobbing))
+              .pipe(gulpif(mode.env === 'dev', sourcemaps.init(options.sourcemapsInit)))
+              .pipe(sass(options.sass))
+              .pipe(autoprefixer(options.autoprefixer))
+              .pipe(gulpif(mode.env === 'dev', sourcemaps.write(options.sourcemapsWrite)))
+              .pipe(gulpif(mode.env !== 'dev' && !mode.watch, csso(options.csso)))
+              .pipe(gulpif(mode.env !== 'dev' && !mode.watch, streamify(rev())))
+              .pipe(gulp.dest(outputDir + options.outputDirSuffix))
+              .on('end', resolve);
 
-          return nextHandler.handle(deferred.promise);
+          }));
 
         });
 
     }
 
-    nextHandler = new zkutils.NextHandler({
+    nextHandler = new RefillNextHandler({
       next: next,
       watch: mode.watch,
       logger: logger
     });
 
-    zkflowWatcher.watch(runCss, mode.watch, options.globs, logger);
+    refillWatcher.watch(runCss, mode.watch, options.globs, logger);
 
   }
 

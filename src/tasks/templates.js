@@ -3,19 +3,21 @@
 var gulpif = require('gulp-if');
 var templateCache = require('gulp-angular-templatecache');
 var htmlmin = require('gulp-htmlmin');
-var zkutils = require('gulp-zkflow-utils');
-var zkflowWatcher = require('zkflow-watcher');
+var refillPromisifyStream = require('refill-promisify-stream');
+var refillWatcher = require('refill-watcher');
+var refillLogger = require('refill-logger');
+var RefillNextHandler = require('refill-next-handler');
 
 function getTemplatesTask(options, gulp, mode) {
 
   function templatesTask(next) {
 
-    var logger = zkutils.logger('templates');
+    var logger = refillLogger('templates');
     var nextHandler;
 
     function runTemplates() {
       return nextHandler.handle(
-        zkutils.promisify(
+        refillPromisifyStream(
           gulp
           .src(options.globs, options.globsOptions)
           .pipe(gulpif(mode.env !== 'dev' && !mode.watch, htmlmin(options.htmlmin)))
@@ -25,13 +27,13 @@ function getTemplatesTask(options, gulp, mode) {
       );
     }
 
-    nextHandler = new zkutils.NextHandler({
+    nextHandler = new RefillNextHandler({
       next: next,
       watch: mode.watch,
       logger: logger
     });
 
-    zkflowWatcher.watch(runTemplates, mode.watch, options.globs, logger);
+    refillWatcher.watch(runTemplates, mode.watch, options.globs, logger);
 
   }
 

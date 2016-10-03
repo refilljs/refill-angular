@@ -506,7 +506,7 @@ they set up some solid structure for your project.
     sass: undefined,
     sourcemapsInit: undefined,
     sourcemapsWrite: undefined,
-    cssoStructureMinimization: undefined
+    csso: undefined
   },
   default: {
     task: require('zkflow-task-sequence'),

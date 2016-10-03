@@ -8,15 +8,11 @@ exports.config = {
   allScriptsTimeout: 60000,
   getPageTimeout: 60000,
 
-  multiCapabilities: [{
+  capabilities: {
     browserName: 'chrome',
     shardTestFiles: true,
     maxInstances: 2
-  }, {
-    browserName: 'firefox',
-    shardTestFiles: true,
-    maxInstances: 2
-  }],
+  },
 
   baseUrl: 'http://localhost:8001',
 

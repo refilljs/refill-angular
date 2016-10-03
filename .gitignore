@@ -1,6 +1,7 @@
 /node_modules/
 /npm-debug.log
 /.idea
+/.DS_Store
 
 /e2e/mini/docs/
 /e2e/mini/node_modules/
