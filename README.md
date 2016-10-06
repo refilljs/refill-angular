@@ -132,7 +132,6 @@ This task will
 * bundle all your styles with sass, css globbing and autoprefix
 * run eslint and rerun on any js file change
 * run tests with karma and browserify and watch file changes with watchify
-* bundle your angular templates into angular module (.tmp/templates.js) and rebundle on any template file change
 * copy your assets and copy any newly created asset since then
 * copy Your index.html and inject styles, scripts, angular main module name into it. Redo on index.html change.
 * start gulp-webserver with livereload
@@ -224,7 +223,6 @@ You should probably add this entries in .gitignore file
 ```
 npm-debug.log
 node_modules/
-.tmp/
 dist/
 dev/
 test/
@@ -258,9 +256,7 @@ reports/
 
 var angular = require('angular');
 
-angular.module('app', [
-    require('../.tmp/templates.js').name
-  ])
+angular.module('app', [])
   .controller('appNameController', /** @ngInject */ function() {
   });
 ```
@@ -306,26 +302,6 @@ they set up some solid structure for your project.
     task: require('refill-task-clean')
     enabled: true,
     dependencies: []
-  },
-  templates: {
-    task: require('refill-angular/src/tasks/templates')
-    enabled: true,
-    dependencies: [],
-    globs: [
-      'src/**/_templates/*.html',
-      'src/**/_templates/**/*.html'
-    ],
-    globsOptions: undefined,
-    htmlmin: undefined,
-    templateCache: {
-      standalone: true,
-      module: 'zk.templates',
-      root: '/',
-      moduleSystem: 'browserify',
-      templateFooter: '}]).name;'
-    },
-    templateModuleFileName: 'templates.js',
-    outputDir: '.tmp/'
   },
   'webdriver-update': {
     task: require('refill-angular/src/tasks/webdriverUpdate')
@@ -493,7 +469,7 @@ they set up some solid structure for your project.
   js: {
     task: require('refill-task-browserify'),
     enabled: true,
-    dependencies: ['templates'],
+    dependencies: [],
     browserifyTransforms: [
       [require('babelify'), { presets: [require('babel-preset-es2015')], sourceMaps: false }],
       require('browserify-ngannotate'),
@@ -537,7 +513,7 @@ they set up some solid structure for your project.
   test: {
     task: require('refill-task-karma'),
     enabled: true,
-    dependencies: ['templates'],
+    dependencies: [],
     browserifyTransforms: [
       [require('babelify'), { presets: [require('babel-preset-es2015')], sourceMaps: false }]
     ]
