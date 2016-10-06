@@ -51,9 +51,6 @@ function init(options, outputDirsMap, externalGulp) {
     clean: {
       task: require('refill-task-clean')
     },
-    templates: {
-      task: require('./tasks/templates')
-    },
     'webdriver-update': {
       task: require('./tasks/webdriverUpdate')
     },
@@ -149,7 +146,6 @@ function init(options, outputDirsMap, externalGulp) {
     },
     js: {
       task: require('refill-task-browserify'),
-      dependencies: ['templates'],
       browserifyTransforms: [
         babelifyTransform,
         browserifyNgannotate
@@ -157,7 +153,6 @@ function init(options, outputDirsMap, externalGulp) {
     },
     test: {
       task: require('refill-task-karma'),
-      dependencies: ['templates'],
       browserifyTransforms: [
         babelifyTransform
       ]

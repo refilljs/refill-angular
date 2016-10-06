@@ -1,7 +1,7 @@
-ZKflow for AngularJS
+Refill for AngularJS
 ====================
 
-Module based on [ZKflow](https://github.com/zaklinaczekodu/zkflow) with a set of gulp tasks specially designed to setup
+Module based on [Refill](https://github.com/refilljs/refill) with a set of gulp tasks specially designed to setup
 quickly and develop easily your Angular app without need to generate a lot of code. It is highly configurable.
 Just load it in your gulpfile.js and you are ready to go.
 
@@ -12,26 +12,24 @@ Just load it in your gulpfile.js and you are ready to go.
 Shields
 -------
 
-[![npm](https://img.shields.io/npm/v/zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/zkflow-angular)
-[![npm](https://img.shields.io/npm/l/zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/zkflow-angular)
-[![npm](https://img.shields.io/npm/dm/zkflow-angular.svg?style=flat-square)](https://www.npmjs.com/package/zkflow-angular)
-[![Travis](https://img.shields.io/travis/zaklinaczekodu/zkflow-angular/master.svg?style=flat-square)](https://travis-ci.org/zaklinaczekodu/zkflow-angular)<br>
-[![bitHound Overall Score](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/badges/score.svg)](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular)
-[![bitHound Dependencies](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/badges/dependencies.svg)](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/master/dependencies/npm)
-[![bitHound Dev Dependencies](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/badges/devDependencies.svg)](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/master/dependencies/npm)
-[![bitHound Code](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular/badges/code.svg)](https://www.bithound.io/github/zaklinaczekodu/zkflow-angular)<br>
-[![GitHub forks](https://img.shields.io/github/forks/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/zkflow-angular)
-[![GitHub stars](https://img.shields.io/github/stars/zaklinaczekodu/zkflow-angular.svg?style=flat-square)](https://github.com/zaklinaczekodu/zkflow-angular)
-[![GitHub followers](https://img.shields.io/github/followers/zaklinaczekodu.svg?style=flat-square)](https://github.com/zaklinaczekodu/zkflow-angular)
+[![npm](https://img.shields.io/npm/v/refill-angular.svg?style=flat-square)](https://www.npmjs.com/package/refill-angular)
+[![npm](https://img.shields.io/npm/l/refill-angular.svg?style=flat-square)](https://www.npmjs.com/package/refill-angular)
+[![npm](https://img.shields.io/npm/dm/refill-angular.svg?style=flat-square)](https://www.npmjs.com/package/refill-angular)
+[![Travis](https://img.shields.io/travis/refilljs/refill-angular/master.svg?style=flat-square)](https://travis-ci.org/refilljs/refill-angular)<br>
+[![bitHound Overall Score](https://www.bithound.io/github/refilljs/refill-angular/badges/score.svg)](https://www.bithound.io/github/refilljs/refill-angular)
+[![bitHound Dependencies](https://www.bithound.io/github/refilljs/refill-angular/badges/dependencies.svg)](https://www.bithound.io/github/refilljs/refill-angular/master/dependencies/npm)
+[![bitHound Dev Dependencies](https://www.bithound.io/github/refilljs/refill-angular/badges/devDependencies.svg)](https://www.bithound.io/github/refilljs/refill-angular/master/dependencies/npm)
+[![bitHound Code](https://www.bithound.io/github/refilljs/refill-angular/badges/code.svg)](https://www.bithound.io/github/refilljs/refill-angular)<br>
+[![GitHub forks](https://img.shields.io/github/forks/refilljs/refill-angular.svg?style=flat-square)](https://github.com/refilljs/refill-angular)
+[![GitHub stars](https://img.shields.io/github/stars/refilljs/refill-angular.svg?style=flat-square)](https://github.com/refilljs/refill-angular)
+[![GitHub followers](https://img.shields.io/github/followers/refilljs.svg?style=flat-square)](https://github.com/refilljs/refill-angular)
 
 Features
 --------
 
 * Sass + css globbing + autoprefixer
-* Browserify + ngannotate
+* Browserify + babel+ ngannotate
 * Assets management
-* AngularJS templates embedded in js
-* E2E tests with protractor and cucumber
 * Development environment
     * Webserver with livereload
     * Watching files for changes and full, fast, incremental rebuilds
@@ -43,12 +41,12 @@ Features
     * cache busting
 
 * Continous integration
-    * build + eslint + tests + e2e with guaranteed non-zero exit status on error
+    * build + eslint + tests with guaranteed non-zero exit status on error
 
 Why not just write tasks yourself?
 ----------------------------------
 
-Usually simple gulp tasks have a lot of problems, which are resolved in ZKflow
+To not repeat yourself, and to get rid of some nasty edge cases:
 
 * tasks immune to errors resulting crashed watchers
 * tasks parametrized with tasks modes
@@ -87,23 +85,23 @@ npm update npm -g
 
 ### node-gyp dependencies
 
-Node-gyp is used to compile native extensions to node. Zkflow does not require node-gyp directly, but it is installed
+Node-gyp is used to compile native extensions to node. Refill for angular does not require node-gyp directly, but it is installed
 by its dependencies. To install this dependencies properly you need to satisfy node-gyp requirements.
 Go to [node-gyp github page](https://github.com/TooTallNate/node-gyp) and follow instructions in "You will also need to install" paragraph in README file (python etc.)
 
 Installation
 ------------
 
-ZKflow for AngularJS is available through npm
+Refill for AngularJS is available through npm
 
 ```Shell
-npm install --save gulp zkflow-angular
+npm install --save gulp refill-angular
 ```
 
 Put this line in your gulpfile.js
 
 ```JavaScript
-require('zkflow-angular').init();
+require('refill-angular').init();
 ```
 
 This will create a set of tasks in gulp, which you will be able to use from console
@@ -111,7 +109,7 @@ This will create a set of tasks in gulp, which you will be able to use from cons
 Development flow
 ----------------
 
-How you can use ZKflow gulp tasks to work with Your AngularJS project
+How you can use Refill gulp tasks to work with Your AngularJS project
 
 ### write code and test
 
@@ -134,7 +132,6 @@ This task will
 * bundle all your styles with sass, css globbing and autoprefix
 * run eslint and rerun on any js file change
 * run tests with karma and browserify and watch file changes with watchify
-* bundle your angular templates into angular module (.tmp/templates.js) and rebundle on any template file change
 * copy your assets and copy any newly created asset since then
 * copy Your index.html and inject styles, scripts, angular main module name into it. Redo on index.html change.
 * start gulp-webserver with livereload
@@ -142,23 +139,7 @@ This task will
 
 Write some code, enjoy the results
 
-### write e2e tests
-
-Run in project root directory
-
-```Shell
-./node_modules/.bin/gulp e2e
-```
-
-This task will
-
-* clean whole output dir (test/)
-* same as in default task, but will try to start from test module (where you can put Your e2e mocks)
-* run protractor and rerun every time you press 'r'
-
-Write some tests
-
-### autofix your code
+### lint your code
 
 Run in project root directory
 
@@ -166,7 +147,7 @@ Run in project root directory
 ./node_modules/.bin/gulp lint-js
 ```
 
-all your code will be automatically fixed according to eslint rules
+eslint will try to fix all found errors
 
 ### check everything
 
@@ -180,7 +161,6 @@ This task will fail if
 
 * code isn't eslinted
 * any of karma tests will fail
-* any of protractor e2e tests will fail
 * build fail (sass, browserify)
 
 You definitely should add this task to your CI server. This task can be splitted into stages.
@@ -190,7 +170,6 @@ You definitely should add this task to your CI server. This task can be splitted
 ./node_modules/.bin/gulp ci-static-analysis
 ./node_modules/.bin/gulp ci-test
 ./node_modules/.bin/gulp ci-build
-./node_modules/.bin/gulp ci-e2e
 ```
 
 ### commit :D
@@ -219,7 +198,6 @@ This task will
 * clean whole output dir (dist/)
 * bundle all your js with browserify and minify with uglifyjs
 * bundle all your styles with sass, css globbing, autoprefix and minify with csso
-* bundle your angular templates into angular module (.tmp/templates.js) and minify html
 * copy your assets and minify all .png/.jpg/.gif/.svg
 * copy Your index.html, minify html and inject styles, scripts, angular main module name into it.
 * Do cache busting
@@ -245,7 +223,6 @@ You should probably add this entries in .gitignore file
 ```
 npm-debug.log
 node_modules/
-.tmp/
 dist/
 dev/
 test/
@@ -279,9 +256,7 @@ reports/
 
 var angular = require('angular');
 
-angular.module('app', [
-    require('../.tmp/templates.js').name
-  ])
+angular.module('app', [])
   .controller('appNameController', /** @ngInject */ function() {
   });
 ```
@@ -293,58 +268,18 @@ API
 If you get 'task not found' error from gulp, you probably should pass gulp to init
 
 ```JavaScript
-require('zkflow-angular').init(undefined, undefined, require('gulp'));
+require('refill-angular').init(undefined, undefined, require('gulp'));
 ```
 
 ### options
 
-
 You can pass options object to init function
 
 ```JavaScript
-require('zkflow-angular').init(options, outputDirsMap);
+require('refill-angular').init(options, outputDirsMap);
 ```
 
-For every task options are merged only 1 level deep. Deeper they will be overwritten.
-
-For example if you have default options
-```JavaScript
-{
-  someTask: {
-      option1: 1
-      option2: 2
-      option3: {
-          subOption1: 3
-          subOption2: 4
-      }
-  }
-}
-```
-
-and you pass to init
-```JavaScript
-{
-  someTask: {
-      option1: 11
-      option3: {
-          subOption1: 5
-      }
-  }
-}
-```
-
-actual task options are
-```JavaScript
-{
-  someTask: {
-      option1: 11
-      option2: 2
-      option3: {
-          subOption1: 5
-      }
-  }
-}
-```
+Make sure you understand [how Refill works](https://github.com/refilljs/refill)
 
 #### Default options
 
@@ -354,7 +289,7 @@ they set up some solid structure for your project.
 ```JavaScript
 {
   assets: {
-    task: require('zkflow-task-assets'),
+    task: require('refill-task-assets'),
     enabled: true,
     dependencies: [],
     globs: 'src/**/_assets/**',
@@ -364,44 +299,24 @@ they set up some solid structure for your project.
     imagemin: undefined //options for gulp-imagemin
   },
   clean: {
-    task: require('zkflow-task-clean')
+    task: require('refill-task-clean')
     enabled: true,
     dependencies: []
   },
-  templates: {
-    task: require('zkflow-angular/src/tasks/templates')
-    enabled: true,
-    dependencies: [],
-    globs: [
-      'src/**/_templates/*.html',
-      'src/**/_templates/**/*.html'
-    ],
-    globsOptions: undefined,
-    htmlmin: undefined,
-    templateCache: {
-      standalone: true,
-      module: 'zk.templates',
-      root: '/',
-      moduleSystem: 'browserify',
-      templateFooter: '}]).name;'
-    },
-    templateModuleFileName: 'templates.js',
-    outputDir: '.tmp/'
-  },
   'webdriver-update': {
-    task: require('zkflow-angular/src/tasks/webdriverUpdate')
+    task: require('refill-angular/src/tasks/webdriverUpdate')
     enabled: true,
     dependencies: [],
     webdriverUpdate: undefined
   },  
   webserver: {
-    task: require('zkflow-angular/src/tasks/webserver')
+    task: require('refill-angular/src/tasks/webserver')
     enabled: true,
     dependencies: [],
     host: 'localhost'
   },
   assemble: {
-    task: require('zkflow-task-sequence'),
+    task: require('refill-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -410,7 +325,7 @@ they set up some solid structure for your project.
     mode: undefined
   },
   build: {
-    task: require('zkflow-task-sequence'),
+    task: require('refill-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -422,7 +337,7 @@ they set up some solid structure for your project.
      }
   },
   ci: {
-    task: require('zkflow-task-sequence'),
+    task: require('refill-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -434,7 +349,7 @@ they set up some solid structure for your project.
     mode: undefined
   },
   'ci-build': {
-    task: require('zkflow-task-sequence'),
+    task: require('refill-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -446,7 +361,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-e2e': {
-    task: require('zkflow-task-sequence'),
+    task: require('refill-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -458,7 +373,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-static-analysis': {
-    task: require('zkflow-task-sequence'),
+    task: require('refill-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -470,7 +385,7 @@ they set up some solid structure for your project.
     }
   },
   'ci-test': {
-    task: require('zkflow-task-sequence'),
+    task: require('refill-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -482,7 +397,7 @@ they set up some solid structure for your project.
     }
   },
   css: {
-    task: require('zkflow-angular/src/tasks/css'),
+    task: require('refill-angular/src/tasks/css'),
     enabled: true,
     dependencies: [],
     globs: [
@@ -509,7 +424,7 @@ they set up some solid structure for your project.
     csso: undefined
   },
   default: {
-    task: require('zkflow-task-sequence'),
+    task: require('refill-task-sequence'),
     enabled: true,
     dependencies: [],
     sequence: [
@@ -519,7 +434,7 @@ they set up some solid structure for your project.
     mode: undefined
   },
   e2e: {
-    task: require('zkflow-angular/src/tasks/protractor'),
+    task: require('refill-angular/src/tasks/protractor'),
     enabled: true,
     dependencies: ['webdriver-update', 'assemble'],
     globs: [
@@ -532,7 +447,7 @@ they set up some solid structure for your project.
     watchConfigFile: 'protractor.watch.conf.js'
   },
   inject: {
-    task: require('zkflow-angular/src/tasks/inject'),
+    task: require('refill-angular/src/tasks/inject'),
     enabled: true,
     dependencies: ['js', 'css'],
     globs: 'src/index.html',
@@ -552,16 +467,16 @@ they set up some solid structure for your project.
     htmlmin: undefined
   },
   js: {
-    task: require('zkflow-task-browserify'),
+    task: require('refill-task-browserify'),
     enabled: true,
-    dependencies: ['templates'],
+    dependencies: [],
     browserifyTransforms: [
       [require('babelify'), { presets: [require('babel-preset-es2015')], sourceMaps: false }],
       require('browserify-ngannotate'),
     ]
   },
   'lint-js': {
-    task: require('zkflow-task-eslint'),
+    task: require('refill-task-eslint'),
     enabled: true,
     dependencies: [],
     eslint: {
@@ -596,9 +511,9 @@ they set up some solid structure for your project.
     }
   },
   test: {
-    task: require('zkflow-task-karma'),
+    task: require('refill-task-karma'),
     enabled: true,
-    dependencies: ['templates'],
+    dependencies: [],
     browserifyTransforms: [
       [require('babelify'), { presets: [require('babel-preset-es2015')], sourceMaps: false }]
     ]
@@ -612,7 +527,7 @@ You can pass output dirs map object to init function.
 This object maps current environment to output dir.
 
 ```JavaScript
-require('zkflow-angular').init(options, outputDirsMap);
+require('refill-angular').init(options, outputDirsMap);
 ```
 
 #### Default output dirs map
@@ -627,10 +542,10 @@ require('zkflow-angular').init(options, outputDirsMap);
 
 ### mode
 
-You can retrieve mode object from zkflow
+You can retrieve mode object from refill
 
 ```JavaScript
-var mode = require('zkflow-angular').mode;
+var mode = require('refill-angular').mode;
 ```
 
 This object is shared across all tasks and it define mode of operation.
@@ -648,20 +563,18 @@ Default mode
 Some of the mode properties can be changed on run by environment variables
 
 ```Shell
-ZKFLOW_ENV=prod ZKFLOW_WATCH=false ./node_modules/.bin/gulp css
+REFILL_ENV=prod REFILL_WATCH=false ./node_modules/.bin/gulp css
 ```
 
 which is equivalent to
 
 ```Shell
-bamboo_ZKFLOW_ENV=prod bamboo_ZKFLOW_WATCH=false ./node_modules/.bin/gulp css
+bamboo_REFILL_ENV=prod bamboo_REFILL_WATCH=false ./node_modules/.bin/gulp css
 ```
 
 Some tasks overwrites mode
 
 Sponsors
 --------
-
-[<img alt="Street Team" src="http://zaklinaczekodu.com/_assets/streetteam.svg" width="200">](http://getstreetteam.com)
 
 [<img alt="Zaklinacze Kodu" src="http://zaklinaczekodu.com/_assets/logo.svg" width="200">](http://zaklinaczekodu.com)
