@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require('path');
 var refill = require('refill');
 var defaults = require('lodash.defaults');
 var forEach = require('lodash.foreach');
@@ -129,32 +130,7 @@ function init(options, outputDirsMap, externalGulp) {
     'lint-js': {
       task: require('refill-task-eslint'),
       eslint: {
-        rules: {
-          quotes: [2, 'single'],
-          semi: [2, 'always'],
-          eqeqeq: 2,
-          strict: 2,
-          'vars-on-top': 2,
-          'comma-style': 2,
-          indent: [2, 2],
-          'linebreak-style': [2, 'unix'],
-          'one-var': [2, 'never'],
-          'no-trailing-spaces': 2,
-          'no-multiple-empty-lines': [2, { 'max': 2, 'maxBOF': 0, 'maxEOF': 0 }],
-          camelcase: [2, { properties: 'never' }],
-          'comma-spacing': 2,
-          'key-spacing': 2,
-          'object-curly-spacing': [2, 'always']
-        },
-        envs: [
-          'browser',
-          'jasmine',
-          'es6'
-        ],
-        parserOptions: {
-          sourceType: 'module'
-        },
-        extends: 'eslint:recommended'
+        configFile: path.join(__dirname, '.eslintrc.dist.json')
       }
     }
   };

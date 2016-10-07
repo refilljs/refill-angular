@@ -1,5 +1,9 @@
-var angular = require('angular');
+import angular from 'angular';
 
-module.exports = angular.module('app', [])
-  .controller('appNameController', /** @ngInject */ function() {})
+const appModule = angular.module('app', [])
+  .controller('appNameController', function() {
+    'ngInject';
+  })
   .name;
+
+export default appModule;

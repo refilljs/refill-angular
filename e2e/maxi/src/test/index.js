@@ -1,3 +1,4 @@
-var angular = require('angular');
+import angular from 'angular';
+import appModule from '../';
 
-angular.module('appTest', [require('../')]);
+angular.module('appTest', [appModule]);

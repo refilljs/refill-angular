@@ -54,14 +54,14 @@
     "refill-task-assets": "^2.0.0",
     "refill-task-browserify": "^3.0.0",
     "refill-task-clean": "^1.1.0",
-    "refill-task-eslint": "^2.0.2",
+    "refill-task-eslint": "^3.0.0",
     "refill-task-karma": "^4.0.1",
     "refill-task-sequence": "^1.1.1",
     "refill-watcher": "^1.0.1"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "refill-node": "^2.0.0"
+    "refill-node": "^2.0.1"
   },
   "peerDependencies": {
     "gulp": "^3"
