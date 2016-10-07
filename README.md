@@ -469,11 +469,7 @@ they set up some solid structure for your project.
   js: {
     task: require('refill-task-browserify'),
     enabled: true,
-    dependencies: [],
-    browserifyTransforms: [
-      [require('babelify'), { presets: [require('babel-preset-es2015')], sourceMaps: false }],
-      require('browserify-ngannotate'),
-    ]
+    dependencies: []
   },
   'lint-js': {
     task: require('refill-task-eslint'),
@@ -513,10 +509,7 @@ they set up some solid structure for your project.
   test: {
     task: require('refill-task-karma'),
     enabled: true,
-    dependencies: [],
-    browserifyTransforms: [
-      [require('babelify'), { presets: [require('babel-preset-es2015')], sourceMaps: false }]
-    ]
+    dependencies: []
   }
 }
 ```

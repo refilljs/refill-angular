@@ -1,23 +1,10 @@
 'use strict';
 
-/**
- * @module zkflow-angular
- */
-
 var refill = require('refill');
-var browserifyNgannotate = require('browserify-ngannotate');
-var babelify = require('babelify');
-var babelPresetEs2015 = require('babel-preset-es2015');
 var defaults = require('lodash.defaults');
 var forEach = require('lodash.foreach');
 var mode = require('./mode');
 
-/**
- * get gulp object from external source if available or from require
- * @private
- * @param externalGulp
- * @return {*} - gulp object
- */
 function getGulp(externalGulp) {
 
   if (typeof externalGulp === 'undefined') {
@@ -28,21 +15,10 @@ function getGulp(externalGulp) {
 
 }
 
-/**
- * Set up zkflow angular tasks.
- * @alias module:gulp-zkflow-angular.init
- */
 function init(options, outputDirsMap, externalGulp) {
 
   var computedOptions;
   var computedOutputDirsMap;
-  var babelifyTransform = [
-    babelify,
-    {
-      presets: [babelPresetEs2015],
-      sourceMaps: false
-    }
-  ];
 
   var defaultOptions = {
     assets: {
@@ -145,17 +121,10 @@ function init(options, outputDirsMap, externalGulp) {
       dependencies: ['js', 'css']
     },
     js: {
-      task: require('refill-task-browserify'),
-      browserifyTransforms: [
-        babelifyTransform,
-        browserifyNgannotate
-      ]
+      task: require('refill-task-browserify')
     },
     test: {
-      task: require('refill-task-karma'),
-      browserifyTransforms: [
-        babelifyTransform
-      ]
+      task: require('refill-task-karma')
     },
     'lint-js': {
       task: require('refill-task-eslint'),
@@ -206,7 +175,7 @@ function init(options, outputDirsMap, externalGulp) {
   options = options || {};
   computedOptions = defaults({}, defaultOptions, options);
 
-  forEach(computedOptions, function(taskOptions, taskName) {
+  forEach(computedOptions, function (taskOptions, taskName) {
     computedOptions[taskName] = defaults({}, options[taskName], taskOptions);
   });
 
