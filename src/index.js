@@ -28,9 +28,6 @@ function init(options, outputDirsMap, externalGulp) {
     clean: {
       task: require('refill-task-clean')
     },
-    'webdriver-update': {
-      task: require('./tasks/webdriverUpdate')
-    },
     webserver: {
       task: require('./tasks/webserver')
     },
@@ -55,8 +52,7 @@ function init(options, outputDirsMap, externalGulp) {
       sequence: [
         'ci-static-analysis',
         'ci-test',
-        'ci-build',
-        'ci-e2e'
+        'ci-build'
       ]
     },
     'ci-build': {
@@ -66,16 +62,6 @@ function init(options, outputDirsMap, externalGulp) {
       ],
       mode: {
         env: 'prod',
-        watch: false
-      }
-    },
-    'ci-e2e': {
-      task: require('refill-task-sequence'),
-      sequence: [
-        ['e2e']
-      ],
-      mode: {
-        env: 'test',
         watch: false
       }
     },
@@ -112,10 +98,6 @@ function init(options, outputDirsMap, externalGulp) {
       mode: {
         eslintFix: false
       }
-    },
-    e2e: {
-      task: require('./tasks/protractor'),
-      dependencies: ['webdriver-update', 'assemble']
     },
     inject: {
       task: require('./tasks/inject'),

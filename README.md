@@ -211,7 +211,6 @@ Directory structure
 
 * dist/ - build output
 * dev/ - dev output
-* test/ - e2e output
 
 Files
 -----
@@ -225,7 +224,6 @@ npm-debug.log
 node_modules/
 dist/
 dev/
-test/
 reports/
 ```
 
@@ -303,12 +301,6 @@ they set up some solid structure for your project.
     enabled: true,
     dependencies: []
   },
-  'webdriver-update': {
-    task: require('refill-angular/src/tasks/webdriverUpdate')
-    enabled: true,
-    dependencies: [],
-    webdriverUpdate: undefined
-  },  
   webserver: {
     task: require('refill-angular/src/tasks/webserver')
     enabled: true,
@@ -343,8 +335,7 @@ they set up some solid structure for your project.
     sequence: [
       'ci-static-analysis',
       'ci-test',
-      'ci-build',
-      'ci-e2e'
+      'ci-build'
     ],
     mode: undefined
   },
@@ -357,18 +348,6 @@ they set up some solid structure for your project.
     ],
     mode: {
       env: 'prod',
-      watch: false
-    }
-  },
-  'ci-e2e': {
-    task: require('refill-task-sequence'),
-    enabled: true,
-    dependencies: [],
-    sequence: [
-      ['e2e']
-    ],
-    mode: {
-      env: 'test',
       watch: false
     }
   },
@@ -433,19 +412,6 @@ they set up some solid structure for your project.
     ],
     mode: undefined
   },
-  e2e: {
-    task: require('refill-angular/src/tasks/protractor'),
-    enabled: true,
-    dependencies: ['webdriver-update', 'assemble'],
-    globs: [
-      'e2e/features/*.feature',
-      'e2e/features/**/*.feature'
-    ],
-    globsOptions: undefined
-    customConfigFiles: false,
-    configFile: 'protractor.conf.js',
-    watchConfigFile: 'protractor.watch.conf.js'
-  },
   inject: {
     task: require('refill-angular/src/tasks/inject'),
     enabled: true,
@@ -501,8 +467,7 @@ require('refill-angular').init(options, outputDirsMap);
 ```
 {
   prod: 'dist/',
-  test: 'test/',
-  dev: 'dev/'
+  test: 'test/'
 }
 ```
 
