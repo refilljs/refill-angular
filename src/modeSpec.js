@@ -3,7 +3,7 @@
 describe('mode', function() {
 
   function expectEnv(env, envVar) {
-    envVar = envVar || 'ZKFLOW_ENV';
+    envVar = envVar || 'REFILL_ENV';
     process.env[envVar] = env;
     expect(require('./mode').env).toEqual(env);
   }
@@ -16,33 +16,33 @@ describe('mode', function() {
     expect(require('./mode').env).toEqual('dev');
   });
 
-  it('when ZKFLOW_ENV=prod should have prod env', function() {
+  it('when REFILL_ENV=prod should have prod env', function() {
     expectEnv('prod');
   });
 
-  it('when ZKFLOW_ENV=dev should have dev env', function() {
+  it('when REFILL_ENV=dev should have dev env', function() {
     expectEnv('dev');
   });
 
-  it('when ZKFLOW_ENV=test should have test env', function() {
+  it('when REFILL_ENV=test should have test env', function() {
     expectEnv('test');
   });
 
-  it('when bamboo_ZKFLOW_ENV=prod should have prod env', function() {
-    expectEnv('prod', 'bamboo_ZKFLOW_ENV');
+  it('when bamboo_REFILL_ENV=prod should have prod env', function() {
+    expectEnv('prod', 'bamboo_REFILL_ENV');
   });
 
-  it('when bamboo_ZKFLOW_ENV=dev should have dev env', function() {
-    expectEnv('dev', 'bamboo_ZKFLOW_ENV');
+  it('when bamboo_REFILL_ENV=dev should have dev env', function() {
+    expectEnv('dev', 'bamboo_REFILL_ENV');
   });
 
-  it('when bamboo_ZKFLOW_ENV=test should have test env', function() {
-    expectEnv('test', 'bamboo_ZKFLOW_ENV');
+  it('when bamboo_REFILL_ENV=test should have test env', function() {
+    expectEnv('test', 'bamboo_REFILL_ENV');
   });
 
   afterEach(function() {
-    delete process.env.ZKFLOW_ENV;
-    delete process.env.bamboo_ZKFLOW_ENV;
+    delete process.env.REFILL_ENV;
+    delete process.env.bamboo_REFILL_ENV;
   });
 
 });

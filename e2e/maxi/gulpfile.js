@@ -1,10 +1,3 @@
-'use strict';
+/* eslint-env node */
 
-var zkflowAngular = require('zkflow-angular');
-
-zkflowAngular.init({
-  e2e: {
-    customConfigFiles: true,
-    watchConfigFile: 'protractor.conf.js'
-  }
-}, undefined, require('gulp'));
+require('refill-angular').init(undefined, undefined, require('gulp'));

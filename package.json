@@ -1,73 +1,67 @@
 {
-  "name": "zkflow-angular",
-  "version": "1.4.0",
-  "description": "Gulp tasks for AngularJS projects powered by ZKflow",
+  "name": "refill-angular",
+  "version": "2.0.0-9",
+  "description": "Gulp tasks for AngularJS projects powered by Refill",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zaklinaczekodu/zkflow-angular.git"
+    "url": "https://github.com/refilljs/refill-angular.git"
   },
   "keywords": [
-    "zkflow",
+    "refill",
     "angular",
     "tasks",
     "gulp"
   ],
   "author": "Piotr Baranowski <piotr.baranowski@zaklinaczekodu.com> (https://github.com/zaklinaczekodu)",
+  "contributors": [
+    "Roman Pylypets <roman.pylypets@hotmail.com> (https://github.com/RomeroDiver)"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zaklinaczekodu/zkflow-angular/issues"
+    "url": "https://github.com/refilljs/refill-angular/issues"
   },
-  "homepage": "https://github.com/zaklinaczekodu/zkflow-angular",
-  "dependencies": {
-    "bower": "1.7.7",
-    "browserify-ngannotate": "2.0.0",
-    "cucumber": "0.9.5",
-    "gulp-angular-templatecache": "1.8.0",
-    "gulp-autoprefixer": "3.1.0",
-    "gulp-changed": "1.3.0",
-    "gulp-css-globbing": "0.1.8",
-    "gulp-csso": "1.1.0",
-    "gulp-if": "2.0.0",
-    "gulp-imagemin": "2.4.0",
-    "gulp-inject": "3.0.0",
-    "gulp-jsbeautifier": "0.0.3",
-    "gulp-jshint": "2.0.0",
-    "gulp-minify-html": "1.0.4",
-    "gulp-plumber": "1.1.0",
-    "gulp-protractor": "2.1.0",
-    "gulp-rev": "7.0.0",
-    "gulp-sass": "2.2.0",
-    "gulp-sourcemaps": "1.6.0",
-    "gulp-streamify": "1.0.2",
-    "gulp-template": "3.1.0",
-    "gulp-watch": "4.3.5",
-    "gulp-webserver": "0.9.1",
-    "gulp-zkflow-utils": "0.4.1",
-    "jshint": "2.8.0",
-    "jshint-stylish": "2.1.0",
-    "karma-phantomjs-launcher": "1.0.0",
-    "lodash": "3.10.1",
-    "minimist": "1.2.0",
-    "phantomjs-prebuilt": "2.1.5",
-    "protractor-cucumber-framework": "0.3.4",
-    "q": "1.4.1",
-    "sassdoc": "2.1.18",
-    "zkflow": "1.1.0",
-    "zkflow-task-browserify": "1.0.0",
-    "zkflow-task-karma": "1.0.1",
-    "zkflow-task-sequence": "1.0.1",
-    "zkflow-watcher": "0.1.0"
-  },
-  "devDependencies": {
-    "gulp": "3.9.1",
-    "zkflow-node": "1.0.0"
-  },
-  "peerDependencies": {
-    "gulp": "^3.9.1"
-  },
+  "homepage": "https://github.com/refilljs/refill-angular",
   "engines": {
     "node": ">=4.2",
     "npm": ">=3.3.3"
+  },
+  "dependencies": {
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-css-globbing": "^0.1.8",
+    "gulp-csso": "^2.0.0",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-if": "^2.0.1",
+    "gulp-inject": "^4.1.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rev": "^7.1.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-streamify": "^1.0.2",
+    "gulp-template": "^4.0.0",
+    "gulp-webserver": "0.9.1",
+    "lodash.defaults": "^4.2.0",
+    "lodash.foreach": "^4.5.0",
+    "refill": "^1.2.2",
+    "refill-globby": "^1.0.1",
+    "refill-logger": "^1.0.3",
+    "refill-next-handler": "^1.1.1",
+    "refill-task-assets": "^2.0.0",
+    "refill-task-browserify": "^3.0.0",
+    "refill-task-clean": "^1.1.0",
+    "refill-task-eslint": "^3.0.0",
+    "refill-task-karma": "^4.0.1",
+    "refill-task-sequence": "^1.1.1",
+    "refill-watcher": "^1.0.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "refill-node": "^2.0.1"
+  },
+  "peerDependencies": {
+    "gulp": "^3"
+  },
+  "publishConfig": {
+    "tag": "next"
   }
 }

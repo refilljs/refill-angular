@@ -1,7 +1,9 @@
-'use strict';
+import angular from 'angular';
 
-var angular = require('angular');
-
-module.exports = angular.module('app', [])
-  .controller('appNameController', /** @ngInject */ function() {})
+const appModule = angular.module('app', [])
+  .controller('appNameController', function() {
+    'ngInject';
+  })
   .name;
+
+export default appModule;

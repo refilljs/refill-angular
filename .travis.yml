@@ -1,44 +1,48 @@
+sudo: required
+dist: trusty
+
 addons:
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
-      - gcc-5
-      - g++-5
-      - xpra
+      - dbus-x11
 
 language: node_js
 
 node_js:
-  - 5
+  - 6
   - 4
+  - 7
 
 os:
   - linux
 
 env:
   global:
-    - CC=gcc-5 CXX=g++-5 DISPLAY=:99
+    - DISPLAY=:99
   matrix:
     - WORKING_DIR=.
     - WORKING_DIR=e2e/mini/
     - WORKING_DIR=e2e/maxi/
 
 before_install:
-  - xpra start :99
-  - npm config set progress false
-  - npm install -g npm@latest
-  - cd $WORKING_DIR
+  - |
+    npm install -g npm@latest
+    cd $WORKING_DIR
+    if [ $WORKING_DIR != . ]; then
+      sudo apt-get update
+      sudo apt-get install -yq --no-install-suggests --no-install-recommends --force-yes xpra
+      xpra start :99
+    fi
 
 script:
-  - ./node_modules/.bin/gulp ci
+  - dbus-launch --exit-with-session ./node_modules/.bin/gulp ci
 
 deploy:
   provider: npm
   email: piotr.baranowski@zaklinaczekodu.com
   api_key: $NPM_API_KEY
   on:
-    node: 5
+    node: 6
     condition: $WORKING_DIR == .
     tags: true
-    repo: zaklinaczekodu/zkflow-angular
+    repo: refilljs/refill-angular

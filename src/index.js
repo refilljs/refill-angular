@@ -1,20 +1,11 @@
 'use strict';
 
-/**
- * @module zkflow-angular
- */
-
-var zkflow = require('zkflow');
-var browserifyNgannotate = require('browserify-ngannotate');
-var _ = require('lodash');
+var path = require('path');
+var refill = require('refill');
+var defaults = require('lodash.defaults');
+var forEach = require('lodash.foreach');
 var mode = require('./mode');
 
-/**
- * get gulp object from external source if available or from require
- * @private
- * @param externalGulp
- * @return {*} - gulp object
- */
 function getGulp(externalGulp) {
 
   if (typeof externalGulp === 'undefined') {
@@ -25,26 +16,6 @@ function getGulp(externalGulp) {
 
 }
 
-/**
- * Set up zkflow angular tasks.
- *
- * Available tasks:
- * Basic: default, build, ci, beautify
- *
- * @param {object} [options] Contains configuration of all zkflow angular tasks
- *
- * @param {object} [options.assets] Configuration of assets task
- * @param {boolean} [options.assets.enabled=true]
- * If task is enabled you will be able to use it by gulp assets command.
- * Disabling it won't delete it from other tasks dependencies.
- * @param {array|undefined|null} [options.assets.dependencies]
- * Dependencies for this task in form of array of strings e.g. ['someTask', 'someOtherTask'].
- * @param {string|array} [options.assets.globs='src\/**\/_assets\/**']
- *
- * @param {gulp} [externalGulp=require('gulp')]
- *
- * @alias module:gulp-zkflow-angular.init
- */
 function init(options, outputDirsMap, externalGulp) {
 
   var computedOptions;
@@ -52,37 +23,22 @@ function init(options, outputDirsMap, externalGulp) {
 
   var defaultOptions = {
     assets: {
-      task: require('./tasks/assets')
-    },
-    beautify: {
-      task: require('./tasks/beautify')
-    },
-    bower: {
-      task: require('./tasks/bower')
+      task: require('refill-task-assets')
     },
     clean: {
-      task: require('./tasks/clean')
-    },
-    jshint: {
-      task: require('./tasks/jshint')
-    },
-    templates: {
-      task: require('./tasks/templates')
-    },
-    'webdriver-update': {
-      task: require('./tasks/webdriverUpdate')
+      task: require('refill-task-clean')
     },
     webserver: {
       task: require('./tasks/webserver')
     },
     assemble: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         'clean', ['inject', 'assets']
       ]
     },
     build: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         'assemble'
       ],
@@ -92,16 +48,15 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     ci: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         'ci-static-analysis',
         'ci-test',
-        'ci-build',
-        'ci-e2e'
+        'ci-build'
       ]
     },
     'ci-build': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['assemble']
       ],
@@ -110,28 +65,19 @@ function init(options, outputDirsMap, externalGulp) {
         watch: false
       }
     },
-    'ci-e2e': {
-      task: require('zkflow-task-sequence'),
-      sequence: [
-        ['e2e']
-      ],
-      mode: {
-        env: 'test',
-        watch: false
-      }
-    },
     'ci-static-analysis': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
-        ['beautify', 'jshint']
+        ['lint-js']
       ],
       mode: {
         env: 'prod',
-        watch: false
+        watch: false,
+        eslintFix: false
       }
     },
     'ci-test': {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
         ['test']
       ],
@@ -141,36 +87,33 @@ function init(options, outputDirsMap, externalGulp) {
       }
     },
     css: {
-      task: require('./tasks/css'),
-      dependencies: ['bower']
+      task: require('./tasks/css')
     },
     default: {
-      task: require('zkflow-task-sequence'),
+      task: require('refill-task-sequence'),
       sequence: [
-        'clean', ['inject', 'assets', 'jshint', 'test'],
+        ['clean', 'lint-js', 'test'], ['inject', 'assets'],
         'webserver'
-      ]
-    },
-    e2e: {
-      task: require('./tasks/protractor'),
-      dependencies: ['webdriver-update', 'assemble']
+      ],
+      mode: {
+        eslintFix: false
+      }
     },
     inject: {
       task: require('./tasks/inject'),
       dependencies: ['js', 'css']
     },
     js: {
-      task: require('zkflow-task-browserify'),
-      dependencies: ['bower', 'templates'],
-      browserifyTransforms: [
-        browserifyNgannotate
-      ]
+      task: require('refill-task-browserify')
     },
     test: {
-      task: require('zkflow-task-karma'),
-      dependencies: ['bower', 'templates'],
-      browsers: ['PhantomJS'],
-      plugins: [require('karma-phantomjs-launcher')]
+      task: require('refill-task-karma')
+    },
+    'lint-js': {
+      task: require('refill-task-eslint'),
+      eslint: {
+        configFile: path.join(__dirname, '.eslintrc.dist.json')
+      }
     }
   };
 
@@ -185,16 +128,16 @@ function init(options, outputDirsMap, externalGulp) {
   }
 
   outputDirsMap = outputDirsMap || {};
-  computedOutputDirsMap = _.defaults({}, defaultOutputDirsMap, outputDirsMap);
+  computedOutputDirsMap = defaults({}, defaultOutputDirsMap, outputDirsMap);
 
   options = options || {};
-  computedOptions = _.defaults({}, defaultOptions, options);
+  computedOptions = defaults({}, defaultOptions, options);
 
-  _.forEach(computedOptions, function(taskOptions, taskName) {
-    computedOptions[taskName] = _.defaults({}, options[taskName], taskOptions);
+  forEach(computedOptions, function (taskOptions, taskName) {
+    computedOptions[taskName] = defaults({}, options[taskName], taskOptions);
   });
 
-  zkflow(computedOptions, getGulp(externalGulp), mode, getOutputDir);
+  refill(computedOptions, getGulp(externalGulp), mode, getOutputDir);
 
   return getOutputDir;
 
