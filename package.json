@@ -60,8 +60,5 @@
   },
   "peerDependencies": {
     "gulp": "^3"
-  },
-  "publishConfig": {
-    "tag": "next"
   }
 }
